@@ -1,0 +1,95 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background-color: #f5f0e8;
+    color: #3b2f2f;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #2d5016;
+    color: #f5f0e8;
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.tagline {
+    font-style: italic;
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+main {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.grimorio h2 {
+    font-size: 1.8rem;
+    color: #2d5016;
+    margin-bottom: 0.5rem;
+}
+
+.grimorio > p {
+    margin-bottom: 1.5rem;
+    color: #666;
+}
+
+.remedios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.remedio-card {
+    background: white;
+    border: 1px solid #d4c9a8;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.remedio-card h3 {
+    color: #2d5016;
+    margin-bottom: 0.8rem;
+    font-size: 1.3rem;
+}
+
+.remedio-card p {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.contraindicaciones {
+    color: #8b4513;
+}
+
+.empty {
+    text-align: center;
+    font-style: italic;
+    color: #999;
+    padding: 3rem 0;
+}
+
+footer {
+    background-color: #2d5016;
+    color: #f5f0e8;
+    text-align: center;
+    padding: 1.5rem 1rem;
+    margin-top: 3rem;
+}
+
+footer a {
+    color: #c8dbb0;
+}

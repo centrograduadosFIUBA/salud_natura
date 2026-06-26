@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ settings.app_name }} — {{ settings.app_tagline }}</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>🌿 {{ settings.app_name }}</h1>
+        <p class="tagline">{{ settings.app_tagline }}</p>
+    </header>
+
+    <main>
+        <section class="grimorio">
+            <h2>El Grimorio</h2>
+            <p>Catálogo de remedios y hierbas medicinales</p>
+
+            {% if remedios %}
+            <div class="remedios-grid">
+                {% for remedio in remedios %}
+                <article class="remedio-card">
+                    <h3>{{ remedio.nombre_remedio }}</h3>
+                    {% if remedio.planta_base %}
+                    <p class="planta"><strong>Planta:</strong> {{ remedio.planta_base }}</p>
+                    {% endif %}
+                    {% if remedio.propiedades %}
+                    <p class="propiedades"><strong>Propiedades:</strong> {{ remedio.propiedades }}</p>
+                    {% endif %}
+                    {% if remedio.contraindicaciones %}
+                    <p class="contraindicaciones"><strong>⚠️ Contraindicaciones:</strong> {{ remedio.contraindicaciones }}</p>
+                    {% endif %}
+                    {% if remedio.dosificacion %}
+                    <p class="dosificacion"><strong>Dosificación:</strong> {{ remedio.dosificacion }}</p>
+                    {% endif %}
+                </article>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="empty">El Grimorio está vacío. Pronto se agregarán remedios.</p>
+            {% endif %}
+        </section>
+    </main>
+
+    <footer>
+        <p>{{ settings.app_name }} — {{ settings.app_tagline }}</p>
+        <p>Contacto: <a href="mailto:{{ settings.contact_email }}">{{ settings.contact_email }}</a></p>
+    </footer>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
