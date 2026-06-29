@@ -1,0 +1,2213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Grimorio – Salud Natura</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --verde: #0d2b1a; --dorado: #d4af37; --dorado2: #b5890a;
+  --crema: #f5edd8; --crema2: #ede0c4; --marron: #4a2c0a;
+  --texto: #2a1a05; --sombra: rgba(0,0,0,0.5);
+}
+html,body{height:100%;font-family:'Lato',sans-serif;background:var(--verde);overflow:hidden}
+
+/* ── NAV ── */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  background:rgba(13,43,26,0.97);border-bottom:1px solid rgba(212,175,55,0.2);
+  display:flex;align-items:center;justify-content:space-between;padding:.6rem 1.5rem;
+}
+.topbar-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none}
+.topbar-logo img{width:36px;height:36px;border-radius:50%;object-fit:cover}
+.topbar-logo span{font-family:'Cinzel',serif;color:var(--dorado);font-size:.95rem;letter-spacing:2px}
+.btn-back{
+  font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:2px;
+  color:var(--dorado);border:1px solid rgba(212,175,55,.3);
+  padding:.4rem 1rem;border-radius:3px;text-decoration:none;transition:all .3s;
+}
+.btn-back:hover{background:rgba(212,175,55,.1)}
+
+/* ── ESCENARIO ── */
+.scene{
+  display:flex;align-items:center;justify-content:center;
+  height:100vh;padding:4.5rem 1rem 1rem;
+  background:radial-gradient(ellipse at center,#1a3d20 0%,#040a06 100%);
+}
+
+/* ── LIBRO ── */
+.book-container{
+  position:relative;width:900px;max-width:98vw;height:580px;
+  perspective:2000px;
+}
+.book{
+  width:100%;height:100%;position:relative;
+  transform-style:preserve-3d;
+}
+
+/* ── PORTADA CUERO REPUJADO ── */
+.cover{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;z-index:10;
+  border-radius:4px 12px 12px 4px;
+  transition:transform .8s ease,opacity .5s ease;
+  overflow:hidden;
+
+  /* Base cuero oscuro */
+  background-color: #2a1505;
+
+  /* Capas de textura cuero: granulado + vetas + iluminación */
+  background-image:
+    /* viñeta perimetral */
+    radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.55) 100%),
+    /* iluminación central suave */
+    radial-gradient(ellipse at 48% 42%, rgba(120,70,20,.35) 0%, transparent 65%),
+    /* veta diagonal cuero */
+    repeating-linear-gradient(
+      127deg,
+      transparent,
+      transparent 3px,
+      rgba(0,0,0,.04) 3px,
+      rgba(0,0,0,.04) 4px
+    ),
+    /* grano fino cuero */
+    repeating-linear-gradient(
+      43deg,
+      transparent,
+      transparent 2px,
+      rgba(255,255,255,.015) 2px,
+      rgba(255,255,255,.015) 3px
+    ),
+    /* color base cuero marrón */
+    linear-gradient(160deg, #3d1f08 0%, #2a1505 40%, #1e0f02 70%, #2e1608 100%);
+
+  box-shadow:
+    -12px 14px 50px rgba(0,0,0,.8),
+    inset 0 0 80px rgba(0,0,0,.4),
+    inset 1px 1px 0 rgba(255,200,100,.06);
+}
+.cover.open{transform:rotateY(-180deg) translateX(-100%);opacity:0;pointer-events:none}
+
+/* Marco repujado exterior */
+.cover::before{
+  content:'';
+  position:absolute;inset:14px;
+  border:2px solid rgba(180,130,30,.35);
+  border-radius:3px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,200,80,.08),
+    0 0 0 1px rgba(0,0,0,.4);
+  pointer-events:none;
+}
+/* Marco repujado interior */
+.cover::after{
+  content:'';
+  position:absolute;inset:20px;
+  border:1px solid rgba(180,130,30,.2);
+  border-radius:2px;
+  pointer-events:none;
+}
+
+.cover-inner{
+  text-align:center;
+  padding:1.8rem 2.2rem;
+  position:relative;z-index:1;
+}
+
+/* Medallón del logo — aspecto bronce repujado */
+.cover-medallion{
+  position:relative;
+  width:130px;height:130px;
+  margin:0 auto 1.4rem;
+}
+.cover-medallion::before{
+  content:'';
+  position:absolute;inset:-6px;border-radius:50%;
+  background:
+    radial-gradient(circle at 35% 30%, #e8c060 0%, #b5890a 40%, #7a5408 70%, #4a3005 100%);
+  box-shadow:
+    0 4px 14px rgba(0,0,0,.7),
+    inset 0 2px 4px rgba(255,220,100,.3),
+    inset 0 -2px 4px rgba(0,0,0,.5);
+}
+.cover img{
+  position:relative;z-index:1;
+  width:130px;height:130px;border-radius:50%;object-fit:cover;
+  border:3px solid #7a5408;
+  filter:sepia(.15) contrast(1.05);
+  animation:sway 6s ease-in-out infinite;
+}
+@keyframes sway{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.01) rotate(.5deg)}}
+
+/* Título repujado */
+.cover h1{
+  font-family:'Cinzel',serif;
+  font-size:1.55rem;letter-spacing:5px;line-height:1.4;
+  margin-bottom:.3rem;
+  font-weight:700;
+  color:#d4a012;
+  text-shadow:
+    /* luz superior izquierda — brillo del relieve */
+    -1px -2px 0 rgba(255,230,100,.55),
+    -1px -1px 0 rgba(255,220,80,.3),
+    /* sombra inferior derecha — hundimiento */
+    2px  3px 0 rgba(0,0,0,.95),
+    3px  4px 2px rgba(0,0,0,.8),
+    4px  5px 6px rgba(0,0,0,.6),
+    /* halo cálido sutil */
+    0 0 18px rgba(180,110,0,.2);
+}
+
+/* Subtítulo repujado */
+.cover p{
+  font-size:.72rem;letter-spacing:5px;text-transform:uppercase;
+  margin-bottom:0;font-weight:600;
+  color:#a07818;
+  text-shadow:
+    -1px -1px 0 rgba(255,210,80,.3),
+     1px  2px 0 rgba(0,0,0,.95),
+     2px  3px 3px rgba(0,0,0,.7);
+}
+
+/* Separador dorado repujado */
+.cover-divider{
+  width:70px;height:1px;margin:.9rem auto;
+  background:linear-gradient(90deg,transparent,#b5890a,transparent);
+  box-shadow:0 1px 0 rgba(0,0,0,.6), 0 -1px 0 rgba(255,200,60,.1);
+}
+
+/* Ornamentos de esquina (SVG inline) */
+.cover-corners{
+  position:absolute;inset:24px;
+  pointer-events:none;
+}
+.cover-corner{
+  position:absolute;width:22px;height:22px;
+  border-color:rgba(160,110,20,.5);border-style:solid;
+}
+.cover-corner.tl{top:0;left:0;border-width:2px 0 0 2px;}
+.cover-corner.tr{top:0;right:0;border-width:2px 2px 0 0;}
+.cover-corner.bl{bottom:0;left:0;border-width:0 0 2px 2px;}
+.cover-corner.br{bottom:0;right:0;border-width:0 2px 2px 0;}
+
+/* Hint pulsante */
+.cover-hint{
+  display:block;margin-top:.9rem;
+  color:rgba(160,110,20,.6);font-size:.7rem;letter-spacing:3px;
+  text-shadow:0 1px 2px rgba(0,0,0,.8);
+  animation:pulse 2.5s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.9}}
+
+/* Lomo cuero */
+.cover-spine{
+  position:absolute;left:0;top:0;bottom:0;width:30px;
+  background:
+    linear-gradient(90deg,
+      #1a0c02 0%,
+      #3d1f08 20%,
+      #5a3010 50%,
+      #3d1f08 80%,
+      #1a0c02 100%
+    );
+  border-radius:4px 0 0 4px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:inset -3px 0 6px rgba(0,0,0,.5), inset 2px 0 4px rgba(255,180,60,.06);
+}
+.cover-spine span{
+  writing-mode:vertical-rl;font-family:'Cinzel',serif;
+  color:#8a6510;font-size:.58rem;letter-spacing:3px;font-weight:700;
+  text-shadow:1px 1px 2px rgba(0,0,0,.9),-1px -1px 0 rgba(255,200,60,.1);
+}
+
+/* ── PÁGINAS ── */
+.pages{
+  position:absolute;inset:0;
+  display:flex;border-radius:4px 12px 12px 4px;
+  overflow:hidden;
+  box-shadow:-10px 10px 40px rgba(0,0,0,.7);
+  opacity:0;pointer-events:none;transition:opacity .5s ease .3s;
+}
+.pages.visible{opacity:1;pointer-events:all}
+
+/* Lomo del libro abierto */
+.spine{
+  width:24px;flex-shrink:0;
+  background:linear-gradient(180deg,var(--dorado2),#7a5408,var(--dorado2));
+}
+
+/* Página izquierda (foto) */
+.page-left{
+  flex:1;
+  background-color:#e8d5a3;
+  background-image:
+    radial-gradient(ellipse at 15% 85%, rgba(139,90,30,.13) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 15%, rgba(100,60,10,.09) 0%, transparent 45%);
+  display:flex;flex-direction:column;align-items:center;
+  padding:.9rem 1.1rem;gap:.55rem;border-right:2px solid #b8924a;
+  position:relative;overflow:hidden;
+}
+.herb-photo{
+  width:100%;height:245px;object-fit:cover;
+  border:3px solid #c8a060;border-radius:2px;
+  box-shadow:0 4px 20px rgba(0,0,0,.25);
+  transition:opacity .4s ease;
+}
+.herb-photo.loading{opacity:.3}
+.lote-badge{
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-size:.7rem;letter-spacing:2px;
+  color:#8a6010;font-style:italic;
+}
+.herb-num{
+  position:absolute;bottom:.8rem;right:.8rem;
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-size:.62rem;color:rgba(74,44,10,.35);font-style:italic;
+}
+.page-corner{
+  position:absolute;bottom:0;right:0;width:0;height:0;
+  border-style:solid;border-width:0 0 28px 28px;
+  border-color:transparent transparent #d4b87a transparent;
+}
+/* Botón imprimir */
+.btn-print{
+  width:100%;padding:.38rem .6rem;
+  display:flex;align-items:center;justify-content:center;gap:.45rem;
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-style:italic;
+  font-size:.72rem;color:#5a3a00;
+  background:rgba(184,146,74,.18);border:1px solid #b8924a;border-radius:3px;
+  cursor:pointer;transition:background .2s;
+}
+.btn-print:hover{background:rgba(184,146,74,.35)}
+.btn-print svg{flex-shrink:0}
+/* Zonas reservadas */
+.herb-zone{
+  width:100%;border:1px dashed rgba(184,146,74,.5);border-radius:3px;
+  padding:.45rem .6rem;display:flex;align-items:center;gap:.5rem;
+  background:rgba(255,255,255,.15);
+}
+.herb-zone-icon{
+  width:28px;height:28px;flex-shrink:0;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(184,146,74,.2);
+}
+.herb-zone-icon svg{opacity:.6}
+.herb-zone-text{flex:1}
+.herb-zone-text strong{
+  display:block;font-family:'Cinzel',serif;font-size:.56rem;
+  letter-spacing:2px;text-transform:uppercase;color:#8a6010;
+}
+.herb-zone-text span{
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-style:italic;
+  font-size:.65rem;color:rgba(58,30,0,.5);line-height:1.35;
+}
+.herb-zone-link{
+  font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:1px;
+  color:#b8924a;text-decoration:none;white-space:nowrap;
+  border-bottom:1px solid rgba(184,146,74,.4);
+}
+.herb-zone-link:hover{color:#8a6010}
+
+/* Página derecha (contenido) */
+.page-right{
+  flex:1;
+  background-color:#e8d5a3;
+  background-image:
+    radial-gradient(ellipse at 85% 90%, rgba(139,90,30,.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 10% 10%, rgba(100,60,10,.07) 0%, transparent 40%);
+  display:flex;flex-direction:column;padding:1.5rem 1.8rem;
+  overflow-y:auto;position:relative;
+}
+.page-right::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(transparent,transparent 27px,rgba(74,44,10,.06) 28px);
+  pointer-events:none;
+}
+.herb-name-es{
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;
+  font-style:italic;font-size:1.55rem;color:#3a1e00;
+  border-bottom:2px solid #b8924a;padding-bottom:.4rem;margin-bottom:.2rem;
+  line-height:1.3;
+}
+.herb-name-lat{
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-style:italic;
+  font-size:.8rem;color:rgba(58,30,0,.55);margin-bottom:1rem;
+}
+.herb-section-title{
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-size:.68rem;letter-spacing:2px;
+  font-style:italic;color:#8a6010;margin:.9rem 0 .3rem;
+}
+.herb-props{list-style:none;padding:0}
+.herb-props li{
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-style:italic;font-size:.88rem;color:#2a1400;
+  padding:.25rem 0 .25rem 1.2rem;position:relative;
+  border-bottom:1px solid rgba(74,44,10,.07);
+}
+.herb-props li::before{content:'◆';position:absolute;left:0;color:#b8924a;font-size:.5rem;top:.45rem}
+.herb-usos{
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-style:italic;font-size:.88rem;
+  color:#2a1400;line-height:1.7;
+}
+.herb-nota{
+  margin-top:.6rem;padding:.5rem .7rem;
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;
+  font-size:.72rem;color:rgba(58,30,0,.65);
+  border-left:3px solid #b8924a;
+  background:rgba(139,90,30,.08);
+  font-style:italic;line-height:1.6;
+  border-radius:0 2px 2px 0;
+}
+.herb-extra-val{
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-style:italic;font-size:.82rem;
+  color:#2a1400;line-height:1.65;margin:0 0 .3rem;
+}
+.herb-fuentes{
+  font-size:.72rem;color:rgba(58,30,0,.55);
+}
+
+/* ── NAVEGACIÓN ── */
+.nav-bar{
+  position:absolute;bottom:-52px;left:0;right:0;
+  display:flex;align-items:center;justify-content:center;gap:1.5rem;
+  opacity:0;pointer-events:none;transition:opacity .4s ease;
+}
+.nav-bar.visible{opacity:1;pointer-events:all;}
+.nav-btn{
+  width:42px;height:42px;border-radius:50%;
+  background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.4);
+  color:var(--dorado);font-size:1.2rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .3s;
+}
+.nav-btn:hover{background:rgba(212,175,55,.3);transform:scale(1.08)}
+.nav-btn:disabled{opacity:.3;cursor:not-allowed;transform:none}
+.nav-counter{
+  font-family:'Cinzel',serif;color:rgba(212,175,55,.7);font-size:.8rem;letter-spacing:2px;
+  min-width:80px;text-align:center;
+}
+.lote-indicator{
+  font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:3px;
+  color:rgba(212,175,55,.5);text-transform:uppercase;
+}
+
+/* ── TRANSICIÓN DE PÁGINA ── */
+.page-flip{
+  animation:flipPage .5s ease;
+}
+@keyframes flipPage{
+  0%{opacity:1;transform:translateX(0)}
+  40%{opacity:0;transform:translateX(-30px)}
+  60%{opacity:0;transform:translateX(30px)}
+  100%{opacity:1;transform:translateX(0)}
+}
+
+/* ── JUGOS INLINE ── */
+.jugo-inline{margin-top:.9rem;border-top:1px solid rgba(184,146,74,.3);padding-top:.7rem}
+.jugo-toggle-btn{width:100%;text-align:left;background:rgba(184,146,74,.1);border:1px solid rgba(184,146,74,.45);color:#5a3000;font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:2px;text-transform:uppercase;padding:.45rem .8rem;cursor:pointer;border-radius:2px;display:flex;align-items:center;justify-content:space-between;transition:background .2s}
+.jugo-toggle-btn:hover{background:rgba(184,146,74,.22)}
+.jugo-panel{margin-top:.5rem;background:rgba(232,213,163,.55);border:1px solid rgba(184,146,74,.3);border-radius:2px;overflow:hidden}
+.jugo-panel-img{width:100%;height:130px;object-fit:cover;display:block}
+.jugo-panel-body{padding:.65rem .8rem}
+.jugo-panel-tag{font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:2px;text-transform:uppercase;color:#b8924a;margin:0 0 .2rem}
+.jugo-panel-nombre{font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-style:italic;font-size:.85rem;color:#3a1e00;line-height:1.3;margin:0 0 .4rem}
+.jugo-panel-ayuda{font-style:italic;font-size:.72rem;color:#5a3a1a;line-height:1.55;margin:0 0 .45rem;padding:.35rem .55rem;border-left:2px solid #b8924a;background:rgba(139,90,30,.07)}
+.jugo-ing-title{font-family:'Cinzel',serif;font-size:.46rem;letter-spacing:2px;text-transform:uppercase;color:#8a6010;margin:.45rem 0 .2rem;padding-bottom:.15rem;border-bottom:1px solid rgba(184,146,74,.3)}
+.jugo-ing-list{list-style:none;padding:0;margin:0 0 .45rem}
+.jugo-ing-list li{font-style:italic;font-size:.71rem;color:#2a1400;padding:2px 0 2px 12px;position:relative;border-bottom:1px solid rgba(74,44,10,.05)}
+.jugo-ing-list li::before{content:'◆';position:absolute;left:0;color:#b8924a;font-size:.38rem;top:5px}
+.jugo-prep-btn{width:100%;font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:2px;text-transform:uppercase;background:transparent;border:1px solid #b8924a;color:#8a6010;padding:.32rem;cursor:pointer;border-radius:2px;margin-bottom:.35rem}
+.jugo-prep-btn:hover{background:rgba(184,146,74,.1)}
+.jugo-prep-list{margin:0 0 .3rem;padding-left:.9rem}
+.jugo-prep-list li{font-style:italic;font-size:.71rem;color:#2a1400;line-height:1.6;padding:2px 0}
+
+/* ── FUENTES ── */
+.fuentes-view{display:none;flex:1;overflow:hidden}
+.fuentes-view.visible{display:flex}
+.fuentes-page{
+  flex:1;overflow-y:auto;padding:2rem 2.5rem;
+  background:#e8d5a3;
+  background-image:radial-gradient(ellipse at 85% 90%,rgba(139,90,30,.12) 0%,transparent 50%);
+}
+.fuentes-intro{
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-style:italic;
+  font-size:.85rem;color:#5a3a1a;margin-bottom:1.2rem;line-height:1.7;
+}
+.fuentes-list{list-style:none;padding:0;margin:0}
+.fuentes-list li{
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-style:italic;
+  font-size:.82rem;color:#2a1400;line-height:1.7;
+  padding:.5rem 0 .5rem 1.2rem;position:relative;
+  border-bottom:1px solid rgba(74,44,10,.1);
+}
+.fuentes-list li::before{content:'◆';position:absolute;left:0;color:#b8924a;font-size:.5rem;top:.75rem}
+.fuentes-cerrar{
+  margin-top:1.5rem;
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;
+  background:transparent;border:1px solid #b8924a;color:#8a6010;
+  padding:.5rem 1.5rem;cursor:pointer;font-size:.8rem;font-style:italic;
+  border-radius:2px;letter-spacing:1px;
+}
+.fuentes-cerrar:hover{background:rgba(184,146,74,.12)}
+
+/* ── ÍNDICE ── */
+#indexView{
+  display:none;flex:1;
+  overflow:hidden;
+}
+#indexView.visible{display:flex}
+#plantView{display:flex;flex:1;overflow:hidden}
+#plantView.hidden{display:none}
+
+.idx-page-l{
+  flex:1;
+  background-color:#e8d5a3;
+  background-image:
+    radial-gradient(ellipse at 15% 85%, rgba(139,90,30,.13) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 15%, rgba(100,60,10,.09) 0%, transparent 45%);
+  padding:1.4rem 1.6rem;
+  display:flex;flex-direction:column;gap:.85rem;
+  position:relative;border-right:2px solid #b8924a;
+  overflow:hidden;
+}
+.idx-page-l::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(transparent,transparent 27px,rgba(74,44,10,.06) 28px);
+}
+.idx-page-r{
+  flex:1;
+  background-color:#e8d5a3;
+  background-image:
+    radial-gradient(ellipse at 85% 90%, rgba(139,90,30,.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 10% 10%, rgba(100,60,10,.07) 0%, transparent 40%);
+  padding:1.4rem 1.6rem;
+  display:flex;flex-direction:column;gap:.5rem;
+  position:relative;overflow-y:auto;
+}
+.idx-page-r::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(transparent,transparent 27px,rgba(74,44,10,.06) 28px);
+}
+.idx-title{
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;
+  font-size:1.2rem;color:#3a1e00;font-style:italic;
+  text-align:center;border-bottom:2px solid #b8924a;padding-bottom:.5rem;
+  position:relative;z-index:1;
+}
+.idx-ornament{
+  text-align:center;color:#b8924a;font-size:.75rem;letter-spacing:4px;
+  position:relative;z-index:1;
+}
+.idx-field-label{
+  font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:3px;
+  text-transform:uppercase;color:#8a6010;
+  position:relative;z-index:1;
+}
+.idx-search-box{
+  display:flex;align-items:center;gap:.5rem;
+  background:rgba(255,255,255,.32);border:1px solid #b8924a;
+  border-radius:3px;padding:.38rem .7rem;
+  position:relative;z-index:1;
+}
+.idx-search-box input{
+  flex:1;background:none;border:none;outline:none;
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;
+  font-style:italic;font-size:.85rem;color:#3a1e00;
+}
+.idx-search-box input::placeholder{color:rgba(58,30,0,.38)}
+.idx-select{
+  width:100%;appearance:none;-webkit-appearance:none;
+  background-color:rgba(255,255,255,.32);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%23b8924a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right .75rem center;
+  border:1px solid #b8924a;border-radius:3px;
+  padding:.42rem 2rem .42rem .75rem;
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-style:italic;
+  font-size:.85rem;color:#3a1e00;cursor:pointer;outline:none;
+  position:relative;z-index:1;
+}
+.idx-select option{background:#f5e8c0;color:#3a1e00;font-style:normal}
+.idx-divider{border:none;border-top:1px solid rgba(184,146,74,.3);position:relative;z-index:1}
+.idx-hint{
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-style:italic;
+  font-size:.76rem;color:rgba(58,30,0,.42);line-height:1.55;
+  position:relative;z-index:1;margin-top:auto;
+}
+.idx-results-label{
+  font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:3px;
+  text-transform:uppercase;color:#8a6010;position:relative;z-index:1;
+}
+.idx-plant-list{list-style:none;padding:0;position:relative;z-index:1}
+.idx-plant-item{
+  display:flex;align-items:center;gap:.6rem;
+  padding:.38rem 0;border-bottom:1px solid rgba(184,146,74,.15);
+  cursor:pointer;transition:background .15s,padding-left .15s;
+  border-radius:3px;
+}
+.idx-plant-item:hover{background:rgba(184,146,74,.12);padding-left:.4rem}
+.idx-plant-num{
+  font-family:'Cinzel',serif;font-size:.56rem;color:rgba(184,146,74,.55);
+  min-width:20px;text-align:right;flex-shrink:0;
+}
+.idx-plant-name{
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;
+  font-style:italic;font-size:.88rem;color:#3a1e00;flex:1;
+}
+.idx-plant-lote{
+  font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:2px;
+  color:rgba(138,96,16,.55);text-transform:uppercase;flex-shrink:0;
+}
+.idx-plant-props{
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-style:italic;
+  font-size:.7rem;color:rgba(58,30,0,.45);
+  padding-left:1.8rem;margin-top:-.22rem;margin-bottom:.18rem;
+  position:relative;z-index:1;
+}
+.idx-no-results{
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-style:italic;
+  font-size:.88rem;color:rgba(58,30,0,.38);text-align:center;margin-top:2rem;
+  position:relative;z-index:1;
+}
+.idx-corner{
+  position:absolute;bottom:0;right:0;width:0;height:0;
+  border-style:solid;border-width:0 0 26px 26px;
+  border-color:transparent transparent #d4b87a transparent;
+}
+.idx-plant-wrap{display:none;flex-direction:column;gap:.5rem;position:relative;z-index:1}
+.idx-plant-wrap.visible{display:flex}
+/* ── JUGOS PANEL IZQUIERDO ── */
+.idx-jugos-toggle{width:100%;text-align:left;background-color:rgba(255,255,255,.32);border:1px solid rgba(184,146,74,.5);color:#3a1e00;font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-style:italic;font-size:.85rem;padding:.38rem .7rem;cursor:pointer;border-radius:3px;display:flex;justify-content:space-between;align-items:center;transition:background .2s;position:relative;z-index:1}
+.idx-jugos-toggle:hover{background:rgba(255,255,255,.5)}
+.idx-jugos-list{list-style:none;padding:0;margin:.3rem 0 0;border:1px solid rgba(184,146,74,.35);border-radius:2px;overflow:hidden;max-height:200px;overflow-y:auto;position:relative;z-index:1}
+.idx-jugos-item{padding:.38rem .7rem;cursor:pointer;border-bottom:1px solid rgba(184,146,74,.18);display:flex;flex-direction:column;gap:.15rem;transition:background .15s;background:#f5e8c0}
+.idx-jugos-item:hover{background:rgba(184,146,74,.18)}
+.idx-jugos-item:last-child{border-bottom:none}
+.idx-jugos-item-nombre{font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-style:italic;font-size:.85rem;color:#3a1e00}
+.idx-jugos-item-tag{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:#8a6010}
+#jugoView{display:flex;flex:1;overflow:hidden}
+#jugoView.hidden{display:none}
+#infusionView{display:flex;flex:1;overflow:hidden}
+#infusionView.hidden{display:none}
+.jugo-view-left{flex:1;background:#e8d5a3;position:relative;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid rgba(184,146,74,.4)}
+.jugo-view-left-img{width:100%;height:55%;object-fit:cover;display:block}
+.jugo-view-meta{padding:.9rem 1rem;flex:1}
+.jugo-view-tag{font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:3px;text-transform:uppercase;color:#b8924a;margin:0 0 .3rem}
+.jugo-view-nombre{font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-style:italic;font-size:1.05rem;color:#3a1e00;line-height:1.4;margin:0 0 .5rem}
+.jugo-view-ayuda{font-style:italic;font-size:.8rem;color:#4a2800;line-height:1.6;margin:0}
+.jugo-view-right{flex:1;background:#f5edcf;overflow-y:auto;padding:1.2rem 1.3rem}
+.jugo-view-sec{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:3px;text-transform:uppercase;color:#b8924a;margin:1rem 0 .3rem;border-bottom:1px solid rgba(184,146,74,.3);padding-bottom:.3rem}
+.jugo-view-sec:first-child{margin-top:0}
+.jugo-view-ing{list-style:none;padding:0;margin:0 0 .5rem}
+.jugo-view-ing li{font-style:italic;font-size:.82rem;color:#2a1400;padding:2px 0;padding-left:.9rem;position:relative}
+.jugo-view-ing li::before{content:'✦';position:absolute;left:0;color:#b8924a;font-size:.5rem;top:.35rem}
+.jugo-view-pasos{padding-left:1.2rem;margin:0}
+.jugo-view-pasos li{font-style:italic;font-size:.82rem;color:#2a1400;line-height:1.65;padding:3px 0;border-bottom:1px solid rgba(74,44,10,.06)}
+.jugo-view-pasos li:last-child{border-bottom:none}
+.nav-btn-idx{
+  width:auto;padding:0 1rem;border-radius:3px;
+  font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:2px;
+  background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.4);
+  color:var(--dorado);cursor:pointer;
+  display:none;align-items:center;justify-content:center;
+  transition:all .3s;height:42px;
+}
+.nav-btn-idx:hover{background:rgba(212,175,55,.3)}
+.nav-btn-idx.visible{display:flex}
+
+/* ── MODAL REGISTRO ── */
+.modal-overlay{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(10,25,10,.82);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .3s ease;
+}
+.modal-overlay.visible{opacity:1;pointer-events:all}
+.modal-box{
+  width:480px;max-width:94vw;max-height:90vh;overflow-y:auto;
+  background-color:#e8d5a3;
+  background-image:
+    radial-gradient(ellipse at 15% 85%, rgba(139,90,30,.13) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 15%, rgba(100,60,10,.09) 0%, transparent 45%);
+  border:2px solid #b8924a;border-radius:4px;
+  padding:1.8rem 2rem;
+  position:relative;
+}
+.modal-box::before{
+  content:'';position:absolute;inset:0;pointer-events:none;border-radius:4px;
+  background:repeating-linear-gradient(transparent,transparent 27px,rgba(74,44,10,.05) 28px);
+}
+.modal-title{
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-style:italic;
+  font-size:1.25rem;color:#3a1e00;text-align:center;
+  border-bottom:2px solid #b8924a;padding-bottom:.6rem;margin-bottom:.3rem;
+  position:relative;z-index:1;
+}
+.modal-ornament{text-align:center;color:#b8924a;font-size:.75rem;letter-spacing:4px;margin-bottom:1rem;position:relative;z-index:1}
+.modal-subtitle{
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-style:italic;
+  font-size:.78rem;color:rgba(58,30,0,.55);text-align:center;margin-bottom:1.2rem;
+  line-height:1.5;position:relative;z-index:1;
+}
+.modal-field{display:flex;flex-direction:column;gap:.3rem;margin-bottom:.85rem;position:relative;z-index:1}
+.modal-label{
+  font-family:'Cinzel',serif;font-size:.56rem;letter-spacing:3px;
+  text-transform:uppercase;color:#8a6010;
+}
+.modal-input{
+  background:rgba(255,255,255,.38);border:1px solid #b8924a;border-radius:3px;
+  padding:.42rem .7rem;
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-style:italic;
+  font-size:.88rem;color:#3a1e00;outline:none;width:100%;
+}
+.modal-input:focus{border-color:#8a6010;background:rgba(255,255,255,.55)}
+.modal-input option{background:#f5e8c0;color:#3a1e00;font-style:normal}
+.modal-error{
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-style:italic;
+  font-size:.72rem;color:#8b1a1a;margin-bottom:.6rem;display:none;
+  position:relative;z-index:1;
+}
+.modal-btn{
+  width:100%;padding:.55rem;margin-top:.3rem;
+  font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:3px;text-transform:uppercase;
+  background:rgba(184,146,74,.25);border:1px solid #b8924a;border-radius:3px;
+  color:#3a1e00;cursor:pointer;transition:background .2s;
+  position:relative;z-index:1;
+}
+.modal-btn:hover{background:rgba(184,146,74,.45)}
+.modal-switch{
+  font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-style:italic;
+  font-size:.72rem;color:rgba(58,30,0,.5);text-align:center;margin-top:.7rem;
+  position:relative;z-index:1;
+}
+.modal-switch a{color:#8a6010;cursor:pointer;border-bottom:1px solid rgba(138,96,16,.4)}
+.modal-corner{
+  position:absolute;bottom:0;right:0;width:0;height:0;
+  border-style:solid;border-width:0 0 22px 22px;
+  border-color:transparent transparent #d4b87a transparent;
+}
+
+/* Indicador usuario en topbar */
+.topbar-user{
+  font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:1px;
+  color:rgba(212,175,55,.7);display:flex;align-items:center;gap:.6rem;
+}
+.topbar-user-name{color:var(--dorado)}
+.topbar-user-logout{
+  font-size:.58rem;color:rgba(212,175,55,.45);cursor:pointer;
+  border-bottom:1px solid rgba(212,175,55,.25);
+}
+.topbar-user-logout:hover{color:rgba(212,175,55,.8)}
+.topbar-register{
+  font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:2px;
+  color:var(--dorado);border:1px solid rgba(212,175,55,.4);
+  padding:.4rem 1rem;border-radius:3px;cursor:pointer;
+  background:none;transition:all .3s;
+}
+.topbar-register:hover{background:rgba(212,175,55,.1)}
+</style>
+</head>
+<body>
+
+<!-- MODAL REGISTRO / LOGIN -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <!-- PANEL REGISTRO -->
+    <div id="panelRegistro">
+      <h2 class="modal-title">Acceso al Grimorio</h2>
+      <p class="modal-ornament">— ✦ —</p>
+      <p class="modal-subtitle">Crea tu cuenta para imprimir fichas, localizar herbolarios cercanos y comprar desde casa.</p>
+
+      <div class="modal-field">
+        <label class="modal-label">Nombre completo *</label>
+        <input class="modal-input" id="regNombreCompleto" type="text" placeholder="Nombre y apellidos…">
+      </div>
+
+      <div class="modal-field">
+        <label class="modal-label">Celular / Teléfono *</label>
+        <input class="modal-input" id="regCelular" type="tel" placeholder="+34 600 000 000">
+      </div>
+
+      <div class="modal-field">
+        <label class="modal-label">Correo electrónico *</label>
+        <input class="modal-input" id="regEmail" type="email" placeholder="correo@ejemplo.com">
+      </div>
+
+      <div class="modal-field">
+        <label class="modal-label">Contraseña *</label>
+        <input class="modal-input" id="regPassword" type="password" placeholder="Mínimo 6 caracteres">
+      </div>
+
+      <div class="modal-field">
+        <label class="modal-label">Dirección completa</label>
+        <input class="modal-input" id="regDireccion" type="text" placeholder="Calle, número, piso…">
+      </div>
+
+      <div class="modal-field">
+        <label class="modal-label">Ciudad, Provincia y País *</label>
+        <input class="modal-input" id="regCiudadProvPais" type="text" placeholder="Ej: Barcelona, Cataluña, España">
+      </div>
+
+      <div class="modal-field">
+        <label class="modal-label">País (para tienda y compras online) *</label>
+        <select class="modal-input" id="regPais">
+          <option value="">— Selecciona tu país —</option>
+          <option value="ES">España</option>
+          <option value="AR">Argentina</option>
+          <option value="MX">México</option>
+          <option value="CO">Colombia</option>
+          <option value="CL">Chile</option>
+          <option value="PE">Perú</option>
+          <option value="US">Estados Unidos</option>
+          <option value="OTRO">Otro</option>
+        </select>
+      </div>
+
+      <p class="modal-error" id="regError">Por favor completa los campos obligatorios (*).</p>
+      <button class="modal-btn" onclick="registrar()">✦ Crear cuenta y acceder</button>
+      <p class="modal-switch">¿Ya tienes cuenta? <a onclick="togglePanel()">Iniciar sesión</a></p>
+    </div>
+    <!-- PANEL LOGIN -->
+    <div id="panelLogin" style="display:none">
+      <h2 class="modal-title">Bienvenido de nuevo</h2>
+      <p class="modal-ornament">— ✦ —</p>
+      <p class="modal-subtitle">Introduce tu correo para acceder a tu cuenta.</p>
+      <div class="modal-field">
+        <label class="modal-label">Correo electrónico</label>
+        <input class="modal-input" id="loginEmail" type="email" placeholder="correo@ejemplo.com">
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Contraseña</label>
+        <input class="modal-input" id="loginPassword" type="password" placeholder="Tu contraseña">
+      </div>
+      <p class="modal-error" id="loginError">Email o contraseña incorrectos.</p>
+      <button class="modal-btn" onclick="login()">✦ Acceder</button>
+      <p class="modal-switch">¿Primera vez? <a onclick="togglePanel()">Crear cuenta</a></p>
+    </div>
+    <div class="modal-corner"></div>
+  </div>
+</div>
+
+<div class="topbar">
+  <a href="javascript:void(0)" class="topbar-logo" onclick="cerrarLibro()">
+    <img src="logo.jpg" alt="Logo"/>
+    <span>Salud Natura</span>
+  </a>
+  <div id="topbarAuth">
+    <button class="topbar-register" onclick="abrirModal()">✦ Registrarse</button>
+  </div>
+  <a href="index.html" class="btn-back">← Volver</a>
+</div>
+
+<div class="scene">
+  <div class="book-container">
+
+    <!-- PORTADA -->
+    <div class="cover" id="cover" onclick="abrirLibro()">
+      <div class="cover-spine"><span>GRIMORIO</span></div>
+      <!-- Ornamentos de esquina -->
+      <div class="cover-corners">
+        <div class="cover-corner tl"></div>
+        <div class="cover-corner tr"></div>
+        <div class="cover-corner bl"></div>
+        <div class="cover-corner br"></div>
+      </div>
+
+      <div class="cover-inner">
+        <div class="cover-medallion">
+          <img src="logo.jpg" alt="Logo Salud Natura"/>
+        </div>
+        <div class="cover-divider"></div>
+        <h1>Grimorio<br>Salud Natura</h1>
+        <div class="cover-divider"></div>
+        <p>Sabiduría Ancestral de la Tierra</p>
+        <span class="cover-hint">✦ Toca para abrir ✦</span>
+      </div>
+    </div>
+
+    <!-- PÁGINAS ABIERTAS -->
+    <div class="pages" id="pages">
+      <div class="spine"></div>
+
+      <!-- ÍNDICE -->
+      <div id="indexView">
+        <div class="idx-page-l">
+          <h2 class="idx-title">Índice del Grimorio</h2>
+          <p class="idx-ornament">— ✦ —</p>
+
+          <p class="idx-field-label">Buscar por dolencia</p>
+          <select class="idx-select" id="idxSelDolencia" onchange="idxSeleccionarDolencia()">
+            <option value="">— Elige una dolencia —</option>
+          </select>
+
+          <div class="idx-plant-wrap" id="idxPlantWrap">
+            <p class="idx-field-label">Plantas indicadas</p>
+            <select class="idx-select" id="idxSelPlanta" onchange="idxIrAPlanta()">
+              <option value="">— Elige una planta —</option>
+            </select>
+          </div>
+
+          <hr class="idx-divider">
+
+          <p class="idx-field-label">Buscar por nombre de planta</p>
+          <div class="idx-search-box">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#b8924a" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="idxSearch" placeholder="Escribe una planta…" oninput="idxBuscar()">
+          </div>
+
+          <hr class="idx-divider">
+
+          <p class="idx-field-label">Jugos herbales</p>
+          <button class="idx-jugos-toggle" id="idxJugosToggle" onclick="toggleIdxJugosList()">
+            <span>— Elige un elixir —</span><span id="idxJugosArrow">▾</span>
+          </button>
+          <ul class="idx-jugos-list" id="idxJugosList" style="display:none"></ul>
+
+          <hr class="idx-divider">
+
+          <p class="idx-field-label">Infusiones medicinales</p>
+          <button class="idx-jugos-toggle" id="idxInfusionesToggle" onclick="toggleIdxInfusionesList()">
+            <span>— Elige una infusión —</span><span id="idxInfusionesArrow">▾</span>
+          </button>
+          <ul class="idx-jugos-list" id="idxInfusionesList" style="display:none"></ul>
+
+          <p class="idx-hint">Selecciona una dolencia o escribe el nombre de la planta. En la página derecha puedes clicar cualquier planta directamente.</p>
+          <div class="idx-corner"></div>
+        </div>
+
+        <div class="idx-page-r">
+          <p class="idx-results-label" id="idxResultsLabel">Todas las plantas</p>
+          <ul class="idx-plant-list" id="idxPlantList"></ul>
+          <p class="idx-no-results" id="idxNoResults" style="display:none">Ninguna planta encontrada</p>
+        </div>
+      </div>
+
+      <!-- PANEL FUENTES -->
+      <div id="fuentesView" class="fuentes-view">
+        <div class="fuentes-page">
+          <h2 class="idx-title">Fuentes del Grimorio</h2>
+          <p class="idx-ornament">— ✦ —</p>
+          <p class="fuentes-intro">Referencias bibliográficas y documentales que avalan el contenido de este grimorio.</p>
+          <ul class="fuentes-list" id="fuentesList"></ul>
+          <button class="fuentes-cerrar" onclick="cerrarFuentes()">✦ Cerrar</button>
+        </div>
+      </div>
+
+      <!-- VISTAS DE PLANTA -->
+      <div id="plantView" class="hidden">
+
+      <!-- PÁGINA IZQUIERDA: FOTO -->
+      <div class="page-left" id="pageLeft">
+        <p class="lote-badge" id="loteBadge">Lote I</p>
+        <img class="herb-photo" id="herbPhoto" src="" alt="Hierba"/>
+
+        <!-- Botón imprimir/descargar ficha -->
+        <button class="btn-print" onclick="imprimirFicha()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8a6010" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Imprimir / Guardar ficha
+        </button>
+
+        <!-- Zona tienda física -->
+        <div class="herb-zone" id="zonaTienda">
+          <div class="herb-zone-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b8924a" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div class="herb-zone-text" id="zonaTiendaTexto">
+            <strong>Tienda naturista cercana</strong>
+            <span>Regístrate para ver dónde comprar en tu zona</span>
+          </div>
+          <a href="#" class="herb-zone-link" id="zonaTiendaLink" onclick="accionZona(event,'tienda')">Registrarse</a>
+        </div>
+
+        <!-- Zona compra online -->
+        <div class="herb-zone" id="zonaOnline">
+          <div class="herb-zone-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b8924a" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          </div>
+          <div class="herb-zone-text" id="zonaOnlineTexto">
+            <strong>Comprar desde casa</strong>
+            <span>Regístrate para ver la mejor opción de envío a tu dirección</span>
+          </div>
+          <a href="#" class="herb-zone-link" id="zonaOnlineLink" onclick="accionZona(event,'online')">Registrarse</a>
+        </div>
+
+        <span class="herb-num" id="herbNum">1 / —</span>
+        <div class="page-corner"></div>
+      </div>
+
+      <!-- PÁGINA DERECHA: CONTENIDO -->
+      <div class="page-right" id="pageRight">
+        <h2 class="herb-name-es" id="herbName">—</h2>
+        <p class="herb-name-lat" id="herbLat">—</p>
+        <p class="herb-section-title">Propiedades</p>
+        <ul class="herb-props" id="herbProps"></ul>
+        <p class="herb-section-title">Usos y dosificación</p>
+        <p class="herb-usos" id="herbUsos">—</p>
+        <p class="herb-nota" id="herbNota"></p>
+        <div id="herbExtra" class="herb-extra"></div>
+        <div id="herbJugo"></div>
+        <div id="herbInfusion"></div>
+      </div>
+
+      </div><!-- /plantView -->
+
+      <!-- FICHA COMPLETA DE JUGO -->
+      <div id="jugoView" class="hidden">
+        <div class="jugo-view-left">
+          <img class="jugo-view-left-img" id="jugoViewImg" src="" alt="Jugo herbal" onerror="this.style.display='none'"/>
+          <div class="jugo-view-meta">
+            <p class="jugo-view-tag" id="jugoViewTag"></p>
+            <p class="jugo-view-nombre" id="jugoViewNombre"></p>
+            <p class="jugo-view-ayuda" id="jugoViewAyuda"></p>
+          </div>
+          <div class="page-corner"></div>
+        </div>
+        <div class="jugo-view-right">
+          <p class="jugo-view-sec">Ingredientes</p>
+          <ul class="jugo-view-ing" id="jugoViewIng"></ul>
+          <p class="jugo-view-sec">Preparación paso a paso</p>
+          <ol class="jugo-view-pasos" id="jugoViewPasos"></ol>
+        </div>
+      </div><!-- /jugoView -->
+
+      <!-- FICHA COMPLETA DE INFUSIÓN -->
+      <div id="infusionView" class="hidden">
+        <div class="jugo-view-left">
+          <img class="jugo-view-left-img" id="infusionViewImg" src="" alt="Infusión herbal" onerror="this.style.display='none'"/>
+          <div class="jugo-view-meta">
+            <p class="jugo-view-tag" id="infusionViewTag"></p>
+            <p class="jugo-view-nombre" id="infusionViewNombre"></p>
+            <p class="jugo-view-ayuda" id="infusionViewAyuda"></p>
+          </div>
+          <div class="page-corner"></div>
+        </div>
+        <div class="jugo-view-right">
+          <p class="jugo-view-sec">Ingredientes</p>
+          <ul class="jugo-view-ing" id="infusionViewIng"></ul>
+          <p class="jugo-view-sec">Preparación paso a paso</p>
+          <ol class="jugo-view-pasos" id="infusionViewPasos"></ol>
+        </div>
+      </div><!-- /infusionView -->
+
+    </div>
+
+    <!-- NAVEGACIÓN -->
+    <div class="nav-bar" id="navBar">
+      <button class="nav-btn" id="btnPrev" onclick="cambiarHierba(-1)" disabled>◀</button>
+      <div>
+        <div class="nav-counter" id="navCounter">1 / —</div>
+        <div class="lote-indicator" id="loteIndicator">Lote I · Hierbas suaves</div>
+      </div>
+      <button class="nav-btn" id="btnNext" onclick="cambiarHierba(1)">▶</button>
+      <button class="nav-btn-idx" id="btnIdx" onclick="mostrarIndice()">✦ Índice</button>
+      <button class="nav-btn-idx" id="btnFuentes" onclick="mostrarFuentes()">✦ Fuentes</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let hierbas = [];
+const _hierbasFallback = [
+  {
+    nombre:"Manzanilla", lat:"Matricaria chamomilla",
+    lote:"Lote I", loteDesc:"Lote I · Hierbas suaves",
+    img:"img/manzanilla.jpg",
+    props:["Antiinflamatoria","Sedante suave","Digestiva","Antibacteriana","Antiespasmódica"],
+    usos:"Alivia insomnio y nerviosismo, calma cólicos y gastritis. Aplicada en piel reduce rojeces e irritaciones. En infusión es el remedio estrella para noches inquietas y malestares digestivos.",
+    nota:"La infusión debe reposar tapada 10 min para conservar sus aceites esenciales.",
+    dolencias:["insomnio","nerviosismo","digestión","gastritis","cólicos","inflamación"]
+  },
+  {
+    nombre:"Menta", lat:"Mentha × piperita",
+    lote:"Lote I", loteDesc:"Lote I · Hierbas suaves",
+    img:"img/menta.jpg",
+    props:["Digestiva","Analgésica","Refrescante","Antiespasmódica","Descongestionante"],
+    usos:"Reduce náuseas, flatulencias y espasmos intestinales. El mentol actúa sobre cefaleas tensionales aplicado en sienes. Inhalada despeja vías respiratorias en resfríos.",
+    nota:"Evitar en niños menores de 2 años. No usar aceite esencial puro sin diluir.",
+    dolencias:["náuseas","digestión","dolor de cabeza","resfriado","gases","espasmos"]
+  },
+  {
+    nombre:"Lavanda", lat:"Lavandula angustifolia",
+    lote:"Lote I", loteDesc:"Lote I · Hierbas suaves",
+    img:"img/lavanda.jpg",
+    props:["Ansiolítica","Sedante","Antifúngica","Cicatrizante","Analgésica"],
+    usos:"Reduce ansiedad e insomnio mediante aromaterapia o infusión. Aplicada en piel acelera cicatrización de quemaduras leves y heridas. Reconocida en medicina integrativa por su acción sobre el sistema nervioso.",
+    nota:"El aceite esencial de lavanda es uno de los pocos que puede aplicarse puro en pequeñas áreas.",
+    dolencias:["insomnio","ansiedad","estrés","quemaduras","piel","nerviosismo"]
+  },
+  {
+    nombre:"Romero", lat:"Salvia rosmarinus",
+    lote:"Lote II", loteDesc:"Lote II · Hierbas energizantes",
+    img:"img/romero.jpg",
+    props:["Estimulante circulatorio","Antioxidante","Antibacteriano","Hepatoprotector","Nootrópico suave"],
+    usos:"Mejora la memoria y concentración estimulando el flujo cerebral. En fricciones capilar combate la alopecia androgenética. Protege el hígado y activa la secreción biliar.",
+    nota:"Contraindicado en embarazo en dosis terapéuticas elevadas. No usar en epilepsia.",
+    dolencias:["memoria","concentración","circulación","cansancio","hígado","cabello"]
+  },
+  {
+    nombre:"Cúrcuma", lat:"Curcuma longa",
+    lote:"Lote II", loteDesc:"Lote II · Hierbas energizantes",
+    img:"img/curcuma.jpg",
+    props:["Antiinflamatoria potente","Antioxidante","Hepatoprotectora","Anticancerígena","Inmunomoduladora"],
+    usos:"La curcumina bloquea las mismas rutas inflamatorias que antiinflamatorios de síntesis. Indicada en artritis, enfermedades autoinmunes y protección hepática. Su biodisponibilidad aumenta 20× con pimienta negra.",
+    nota:"Absorción máxima combinada con pimienta negra (piperina) y grasas saludables.",
+    dolencias:["inflamación","artritis","hígado","dolor","defensas"]
+  },
+  {
+    nombre:"Jengibre", lat:"Zingiber officinale",
+    lote:"Lote II", loteDesc:"Lote II · Hierbas energizantes",
+    img:"img/jengibre.jpg",
+    props:["Antiemético","Antiinflamatorio","Termogénico","Digestivo","Circulatorio"],
+    usos:"Antiemético más estudiado en náuseas del embarazo y quimioterapia. Activa la circulación periférica y reduce dolor muscular postesfuerzo. Potencia el sistema inmune en procesos infecciosos.",
+    nota:"En personas con anticoagulantes, consultar al médico antes de usar en dosis altas.",
+    dolencias:["náuseas","digestión","circulación","dolor muscular","resfriado","defensas"]
+  },
+  {
+    nombre:"Eucalipto", lat:"Eucalyptus globulus",
+    lote:"Lote III", loteDesc:"Lote III · Hierbas respiratorias",
+    img:"img/eucalipto.jpg",
+    props:["Expectorante","Antiséptico","Broncodilatador","Antibacteriano","Febrífugo"],
+    usos:"El 1,8-cineol (eucaliptol) fluidifica el moco y dilata bronquios. Fundamental en gripe, bronquitis y sinusitis. En vaporizaciones libera las vías aéreas en minutos.",
+    nota:"No usar aceite esencial internamente. Evitar en niños menores de 6 años sin supervisión.",
+    dolencias:["resfriado","tos","bronquitis","sinusitis","gripe","fiebre"]
+  },
+  {
+    nombre:"Valeriana", lat:"Valeriana officinalis",
+    lote:"Lote III", loteDesc:"Lote III · Hierbas respiratorias",
+    img:"img/valeriana.jpg",
+    props:["Sedante","Ansiolítica","Antiespasmódica","Hipnótica","Miorelajante"],
+    usos:"Reduce la latencia de sueño sin generar dependencia. Ideal para insomnio de conciliación y ansiedad moderada. En contracturas musculares actúa como relajante natural.",
+    nota:"El efecto sedante se potencia con alcohol. Evitar conducir tras su consumo en dosis altas.",
+    dolencias:["insomnio","ansiedad","contracturas","nerviosismo","estrés","espasmos"]
+  },
+  {
+    nombre:"Cola de Caballo", lat:"Equisetum arvense",
+    lote:"Lote III", loteDesc:"Lote III · Hierbas respiratorias",
+    img:"img/cola_caballo.jpg",
+    props:["Diurética","Remineralizante","Cicatrizante","Antiinflamatoria","Hemostática"],
+    usos:"Rica en sílice orgánico, refuerza huesos, uñas y cabello. Excelente diurético natural para retención de líquidos e infecciones urinarias. Favorece la regeneración de tejido conectivo.",
+    nota:"No usar en insuficiencia renal. Tomar con abundante agua. Máximo 6 semanas continuas.",
+    dolencias:["retención de líquidos","huesos","cabello","uñas","infección urinaria"]
+  },
+  {
+    nombre:"Caléndula", lat:"Calendula officinalis",
+    lote:"Lote IV", loteDesc:"Lote IV · Hierbas reparadoras",
+    img:"img/calendula.jpg",
+    props:["Cicatrizante","Antiinflamatoria","Antifúngica","Emoliente","Antibacteriana"],
+    usos:"Acelera la cicatrización de heridas, quemaduras y ulceraciones. Trata dermatitis atópica, eccemas y eritemas del pañal. En uso interno alivia gastritis y úlceras gástricas.",
+    nota:"Una de las plantas más seguras. Raramente produce dermatitis de contacto en alérgicos a asteráceas.",
+    dolencias:["heridas","piel","eccemas","gastritis","quemaduras","hongos"]
+  },
+  {
+    nombre:"Tomillo", lat:"Thymus vulgaris",
+    lote:"Lote IV", loteDesc:"Lote IV · Hierbas reparadoras",
+    img:"img/tomillo.jpg",
+    props:["Antibacteriano","Expectorante","Antifúngico","Antioxidante","Antiviral"],
+    usos:"El timol es uno de los antisépticos naturales más potentes. Trata tos, bronquitis y laringitis con eficacia comparable a algunos mucolíticos. Preserva alimentos por sus propiedades antimicrobianas.",
+    nota:"Rico en hierro y vitamina C. En dosis terapéuticas altas puede irritar la mucosa digestiva.",
+    dolencias:["tos","bronquitis","resfriado","infecciones","gripe","hongos"]
+  },
+  {
+    nombre:"Pasiflora", lat:"Passiflora incarnata",
+    lote:"Lote IV", loteDesc:"Lote IV · Hierbas reparadoras",
+    img:"img/pasiflora.jpg",
+    props:["Sedante","Ansiolítica","Antiespasmódica","Hipnótica","Analgésica"],
+    usos:"Actúa sobre los receptores GABA reduciendo ansiedad sin somnolencia excesiva. Muy eficaz en insomnio de mantenimiento (despertares nocturnos). Alivia palpitaciones de origen nervioso.",
+    nota:"Compatible con valeriana para potenciar el efecto. Evitar combinación con benzodiacepinas.",
+    dolencias:["insomnio","ansiedad","palpitaciones","nerviosismo","estrés","espasmos"]
+  },
+  {
+    nombre:"Diente de León", lat:"Taraxacum officinale",
+    lote:"Lote V", loteDesc:"Lote V · Hierbas depurativas",
+    img:"img/diente_leon.jpg",
+    props:["Diurético","Depurativo","Digestivo","Hepatoprotector","Prebiótico"],
+    usos:"Estimula la producción de bilis y mejora la digestión de grasas. Depurativo hepático excepcional, rico en inulina (prebiótico). Las hojas son ricas en vitaminas A, C y K.",
+    nota:"El diente de león recoge contaminantes del suelo. Recolectar solo en zonas limpias.",
+    dolencias:["hígado","digestión","retención de líquidos","depuración","colesterol"]
+  },
+  {
+    nombre:"Boldo", lat:"Peumus boldus",
+    lote:"Lote V", loteDesc:"Lote V · Hierbas depurativas",
+    img:"img/boldo.jpg",
+    props:["Hepatoprotector","Colerético","Digestivo","Antioxidante","Laxante suave"],
+    usos:"La boldina estimula la secreción y expulsión de bilis, indicada en cálculos biliares y hígado perezoso. Endémico de Chile y Argentina, es el hepatoprotector más usado en Latinoamérica.",
+    nota:"Contraindicado en obstrucción de vías biliares. No usar más de 4 semanas seguidas.",
+    dolencias:["hígado","digestión","vesícula","depuración"]
+  },
+  {
+    nombre:"Ortiga", lat:"Urtica dioica",
+    lote:"Lote V", loteDesc:"Lote V · Hierbas depurativas",
+    img:"img/ortiga.jpg",
+    props:["Diurética","Antiinflamatoria","Remineralizante","Depurativa","Antihistamínica"],
+    usos:"La cocción elimina el ácido úrico y es aliada en gota y artritis. Extraordinariamente nutritiva: hierro, calcio, magnesio, vitaminas A y C. Uso tópico en alopecia androgenética.",
+    nota:"Cocida o seca pierde el poder urticante. Las semillas son adaptógenas y energizantes.",
+    dolencias:["artritis","retención de líquidos","cabello","gota","alergias","depuración"]
+  },
+  {
+    nombre:"Salvia", lat:"Salvia officinalis",
+    lote:"Lote VI", loteDesc:"Lote VI · Hierbas femeninas",
+    img:"img/salvia.jpg",
+    props:["Antisudorífica","Antimicrobiana","Estrogénica leve","Digestiva","Neuroprotectora"],
+    usos:"La planta de la menopausia por excelencia: reduce sofocos y sudoración nocturna. Antiséptico oral potente en gingivitis y aftas. Estudios muestran mejora en memoria y Alzheimer leve.",
+    nota:"Evitar en embarazo y lactancia por su contenido en tujona. No superar 15 g/día de hoja seca.",
+    dolencias:["menopausia","sofocos","memoria","encías","sudoración","digestión"]
+  },
+  {
+    nombre:"Anís Verde", lat:"Pimpinella anisum",
+    lote:"Lote VI", loteDesc:"Lote VI · Hierbas femeninas",
+    img:"img/anis.jpg",
+    props:["Carminativo","Espasmolítico","Expectorante","Galactagogo","Estrogénico suave"],
+    usos:"Alivia gases, meteorismo y cólicos intestinales. Estimula la producción de leche materna. En afecciones respiratorias actúa como expectorante suave que facilita la eliminación del moco.",
+    nota:"El aceite esencial (anetol) puede ser tóxico en dosis altas. Usar la planta en infusión es seguro.",
+    dolencias:["gases","digestión","tos","lactancia","cólicos","meteorismo"]
+  },
+  {
+    nombre:"Melisa", lat:"Melissa officinalis",
+    lote:"Lote VI", loteDesc:"Lote VI · Hierbas femeninas",
+    img:"img/melisa.jpg",
+    props:["Ansiolítica","Antiviral","Digestiva","Sedante","Antiespasmódica"],
+    usos:"La planta del corazón tranquilo: combate ansiedad, taquicardias nerviosas y nerviosismo. Antiviral demostrado contra herpes labial (VHS-1). Excelente para digestión nerviosa y colon irritable.",
+    nota:"Combina perfecto con valeriana para el insomnio. Las hojas frescas conservan mejor el aroma.",
+    dolencias:["ansiedad","herpes","digestión","palpitaciones","nerviosismo","insomnio","estrés"]
+  },
+  {
+    nombre:"Equinácea", lat:"Echinacea purpurea",
+    lote:"Lote VII", loteDesc:"Lote VII · Hierbas del escudo",
+    img:"img/echinacea.jpg",
+    props:["Inmunoestimulante","Antiviral","Antibacteriana","Antiinflamatoria","Cicatrizante"],
+    usos:"Reduce duración e intensidad de resfríos e infecciones virales. Estimula la producción de glóbulos blancos y la actividad de macrófagos. Ideal en cambios de estación como preventivo.",
+    nota:"No usar más de 8 semanas continuas. No recomendada en enfermedades autoinmunes sin supervisión.",
+    dolencias:["resfriado","defensas","infecciones","gripe","heridas"]
+  },
+  {
+    nombre:"Té Verde", lat:"Camellia sinensis",
+    lote:"Lote VII", loteDesc:"Lote VII · Hierbas del escudo",
+    img:"img/te_verde.jpg",
+    props:["Antioxidante potente","Termogénico","Cardioprotector","Neuroprotector","Anticancerígeno"],
+    usos:"Las catequinas (EGCG) neutralizan radicales libres con eficacia 100× superior a la vitamina C. Protege el corazón reduciendo LDL oxidado. La L-teanina produce calma y enfoque sin excitación.",
+    nota:"Contiene cafeína. Evitar en embarazo, hipertiroidismo y problemas de sueño en dosis altas.",
+    dolencias:["cansancio","colesterol","memoria","adelgazar","defensas","circulación"]
+  },
+  {
+    nombre:"Ginkgo Biloba", lat:"Ginkgo biloba",
+    lote:"Lote VII", loteDesc:"Lote VII · Hierbas del escudo",
+    img:"img/ginkgo.jpg",
+    props:["Vasodilatador","Antioxidante","Neuroprotector","Anticoagulante suave","Nootrópico"],
+    usos:"Mejora la microcirculación cerebral, aliviando tinnitus y mareos. Estudios muestran mejora en memoria y deterioro cognitivo leve. El árbol más antiguo del mundo: 270 millones de años de historia medicinal.",
+    nota:"Interacción con anticoagulantes (warfarina, aspirina). Consultar al médico si se toman medicamentos.",
+    dolencias:["memoria","mareos","circulación","tinnitus","concentración"]
+  }
+];
+
+let current = 0;
+let abierto = false;
+
+function abrirLibro(idx){
+  document.getElementById('cover').classList.add('open');
+  document.getElementById('pages').classList.add('visible');
+  document.getElementById('navBar').classList.add('visible');
+  abierto = true;
+  if(idx !== undefined && idx >= 0){
+    mostrarPlanta(idx);
+  } else {
+    mostrarIndice();
+  }
+}
+
+function cerrarLibro(){
+  document.getElementById('cover').classList.remove('open');
+  document.getElementById('pages').classList.remove('visible');
+  document.getElementById('navBar').classList.remove('visible');
+  abierto = false;
+}
+
+function _ocultarVistas(){
+  document.getElementById('indexView').classList.remove('visible');
+  document.getElementById('fuentesView').classList.remove('visible');
+  document.getElementById('plantView').classList.add('hidden');
+  document.getElementById('jugoView').classList.add('hidden');
+  document.getElementById('infusionView').classList.add('hidden');
+  document.getElementById('btnPrev').style.display = 'none';
+  document.getElementById('btnNext').style.display = 'none';
+  document.getElementById('navCounter').style.display = 'none';
+  document.getElementById('loteIndicator').style.display = 'none';
+}
+
+function mostrarIndice(){
+  _ocultarVistas();
+  document.getElementById('indexView').classList.add('visible');
+  document.getElementById('btnIdx').classList.remove('visible');
+  idxRenderLista(hierbas, 'Todas las plantas');
+}
+
+function mostrarFuentes(){
+  _ocultarVistas();
+  document.getElementById('fuentesView').classList.add('visible');
+  // Recopilar todas las fuentes únicas de todas las plantas
+  const set = new Set();
+  hierbas.forEach(h => {
+    if(!h.fuentes) return;
+    h.fuentes.split(/[;\n]/).forEach(f => {
+      const t = f.trim();
+      if(t) set.add(t);
+    });
+  });
+  const lista = document.getElementById('fuentesList');
+  lista.innerHTML = [...set].sort().map(f => `<li>${f}</li>`).join('');
+}
+
+function cerrarFuentes(){
+  mostrarPlanta(current);
+}
+
+/* ── JUGOS INLINE ── */
+const JUGOS = [
+  {
+    nombre: 'Néctar de Lavanda y Manzana Verde',
+    tag: 'Relajante nocturno',
+    fotoId: 4448078,
+    plantas: ['lavanda'],
+    ingredientes: ['2 manzanas verdes en trozos','1 cdta. flores de lavanda comestibles','½ limón, su jugo','1 taza de agua filtrada','1 cda. miel de agave (opcional)','4–5 cubitos de hielo'],
+    pasos: ['Infusiona las flores de lavanda en ¼ taza de agua caliente 3 minutos. Cuela y enfría.','Licuadora: manzana, agua restante, jugo de limón y hielo. Licúa 30 segundos.','Agrega la infusión fría y licúa 45 segundos más hasta mezcla homogénea.','Endulza con miel si deseas. Sirve de inmediato en vaso alto.'],
+    beneficio: 'La lavanda activa receptores GABA induciendo calma progresiva. La manzana verde aporta quercetina y magnesio que relajan la musculatura. Ideal 30 minutos antes de acostarse.'
+  },
+  {
+    nombre: 'Elixir de Plátano y Toronjil',
+    tag: 'Antiestrés natural',
+    fotoId: 12049998,
+    plantas: ['melisa','toronjil','melissa'],
+    ingredientes: ['2 plátanos maduros','2 cdas. hojas frescas de melisa (toronjil)','1 taza de leche de almendras','½ taza de yogur natural','¼ cdta. canela en polvo','5–6 cubitos de hielo'],
+    pasos: ['Lava bien las hojas de melisa y pícalas.','Licuadora: plátanos, leche de almendras, yogur y hielo.','Añade la melisa picada y la canela.','Licúa 1–2 minutos hasta crema homogénea. Sirve de inmediato.'],
+    beneficio: 'La melisa contiene ácido rosmarínico que reduce la ansiedad. El plátano aporta triptófano, precursor de la serotonina. Perfecto para momentos de alta tensión.'
+  },
+  {
+    nombre: 'Limonada de Pasiflora',
+    tag: 'Calmante del sistema nervioso',
+    fotoId: 8540254,
+    plantas: ['pasiflora','maracuya','maracuyá'],
+    ingredientes: ['2 cdas. flores y hojas secas de pasiflora','3 limones medianos, su jugo','3 cdas. miel de abeja o agave','4 tazas de agua filtrada','Menta fresca e hielo al gusto'],
+    pasos: ['Hierve 1 taza de agua, retira del fuego y añade la pasiflora. Infusiona 7 minutos tapado.','Cuela y deja enfriar completamente.','En jarra: jugo de limón, infusión fría, miel y el agua restante. Mezcla bien.','Sirve con hielo y decora con menta fresca.'],
+    beneficio: 'Los flavonoides de la pasiflora interactúan con receptores GABA produciendo efecto calmante sin dependencia. El limón aporta vitamina C que reduce el cortisol circulante.'
+  },
+  {
+    nombre: 'Jugo Verde de Menta y Espinaca',
+    tag: 'Revitalizante relajante',
+    fotoId: 616833,
+    plantas: ['menta','hierbabuena'],
+    ingredientes: ['2 tazas de espinacas frescas','½ taza de hojas de menta fresca','1 manzana verde','½ pepino','1 cdta. jengibre fresco rallado','1 taza de agua de coco','Jugo de 1 limón','Hielo al gusto'],
+    pasos: ['Lava bien todos los vegetales. Pela el pepino y corta en trozos.','Corta la manzana en cuartos sin semillas.','Licuadora: espinaca, menta, manzana, pepino, jengibre e hielo.','Añade agua de coco y jugo de limón. Licúa 1–2 minutos a alta velocidad.'],
+    beneficio: 'La menta actúa como relajante muscular natural. La espinaca es rica en magnesio, el mineral antiestrés. El agua de coco repone electrolitos agotados por el estrés crónico.'
+  },
+  {
+    nombre: 'Licuado de Valeriana y Avena',
+    tag: 'Inductor del sueño',
+    fotoId: 29906263,
+    plantas: ['valeriana'],
+    ingredientes: ['1 taza de leche de almendras','⅓ taza de avena en copos','15 almendras crudas remojadas 4 h','1 cdta. raíz de valeriana seca','½ plátano maduro','¼ cdta. canela · 1 pizca de nuez moscada'],
+    pasos: ['Infusión de valeriana: ½ taza agua caliente, 8 minutos tapado. Cuela y enfría.','Licuadora: avena, almendras escurridas, leche de almendras y plátano.','Añade la infusión fría, canela y nuez moscada.','Licúa 1–2 minutos hasta textura cremosa. Sirve con canela por encima.'],
+    beneficio: 'La valeriana eleva los niveles de GABA produciendo sedación natural sin crear dependencia. La avena contiene melatonina y vitaminas del grupo B que regulan el sistema nervioso.'
+  },
+  {
+    nombre: 'Batido de Cereza y Ashwagandha',
+    tag: 'Adaptógeno antiestrés',
+    fotoId: 7624615,
+    plantas: ['ashwagandha','withania'],
+    ingredientes: ['1 taza de cerezas frescas deshuesadas','½ cdta. polvo de ashwagandha','1 taza de leche de coco','¼ taza de yogur griego natural','1 cda. miel de manuka','½ cdta. extracto de vainilla','1 pizca de canela · hielo'],
+    pasos: ['Lava las cerezas y retira los huesos.','Licuadora: cerezas, leche de coco y yogur.','Añade ashwagandha, miel, vainilla y canela.','Agrega el hielo y licúa 1–2 minutos. Sirve con cerezas frescas.'],
+    beneficio: 'La ashwagandha reduce el cortisol y fortalece la resistencia al estrés a largo plazo. Las cerezas son fuente natural de melatonina y antocianinas con efecto antiinflamatorio.'
+  },
+  {
+    nombre: 'Jugo de Piña y Manzanilla',
+    tag: 'Digestivo antiestrés',
+    fotoId: 11278007,
+    plantas: ['manzanilla','camomila','camomilla'],
+    ingredientes: ['2 tazas de piña fresca en cubos','2 cdas. flores de manzanilla secas','1 manzana amarilla','1 cdta. jengibre fresco rallado','Jugo de ½ limón','1 cda. miel de acacia · hielo'],
+    pasos: ['Infusiona la manzanilla en 1 taza de agua caliente 5 minutos. Cuela y enfría.','Corta la manzana en trozos pequeños.','Licuadora: piña, manzana, jengibre e hielo.','Añade la infusión fría, agua fría y jugo de limón. Licúa 1 minuto.'],
+    beneficio: 'La manzanilla actúa sobre el sistema nervioso entérico calmando espasmos y digestión nerviosa. La bromelina de la piña reduce la inflamación gastrointestinal asociada al estrés.'
+  },
+  {
+    nombre: 'Agua Fresca de Pepino y Toronjil',
+    tag: 'Hidratante calmante',
+    fotoId: 8679633,
+    plantas: [],
+    ingredientes: ['1 pepino grande pelado en rodajas','½ taza de hojas frescas de melisa','Jugo de 1 limón','4 tazas de agua filtrada','Miel o stevia al gusto'],
+    pasos: ['Lava el pepino y la melisa. Pela el pepino y córtalo en rodajas finas.','En jarra grande: pepino, melisa, jugo de limón y agua.','Endulza al gusto y remueve.','Refrigera mínimo 2 horas (mejor toda la noche). Sirve con hielo.'],
+    beneficio: 'La melisa aporta ácido rosmarínico con acción ansiolítica suave. El pepino hidrata y refresca mientras reduce la temperatura corporal elevada por el estrés.'
+  },
+  {
+    nombre: 'Smoothie de Cacao Puro y Lavanda',
+    tag: 'Reconfortante antiestrés',
+    fotoId: 6341422,
+    plantas: [],
+    ingredientes: ['1 taza de leche de almendras tibia','1½ cdas. cacao puro en polvo sin azúcar','1 cdta. flores de lavanda secas comestibles','1 plátano mediano congelado','1 cda. mantequilla de almendras','1 dátil medjool sin hueso · canela · sal marina'],
+    pasos: ['Infusiona la lavanda en la leche tibia 5 minutos. Cuela y reserva.','Licuadora: cacao, mantequilla de almendras, dátil, canela y sal. Vierte la leche infusionada.','Añade el plátano congelado y licúa 1–2 minutos hasta textura suave.','Sirve con nibs de cacao y una flor de lavanda comestible.'],
+    beneficio: 'El cacao puro contiene anandamida —la molécula de la felicidad— y magnesio que relaja el sistema nervioso. La lavanda complementa con su efecto ansiolítico para el estrés emocional.'
+  },
+  {
+    nombre: 'Infusión Fría de Hierba Luisa y Jengibre',
+    tag: 'Digestivo relajante',
+    fotoId: 33789289,
+    plantas: ['hierba luisa','cedron','cedrón','jengibre','verbena'],
+    ingredientes: ['2 cdas. hojas secas de hierba luisa (cedrón)','1 cdta. jengibre fresco rallado','1 cda. miel de flores','Jugo de ½ lima','2 tazas de agua · hielo'],
+    pasos: ['Hierve 1 taza de agua y retira del fuego.','Añade la hierba luisa y el jengibre. Infusiona tapado 6–8 minutos.','Cuela y deja enfriar. Añade el agua fría, miel y jugo de lima.','Sirve con hielo y rodajas de lima.'],
+    beneficio: 'La hierba luisa calma simultáneamente el sistema nervioso y el digestivo. Especialmente eficaz cuando el estrés se manifiesta con náuseas o malestar estomacal.'
+  }
+];
+
+function getJugoParaHierba(nombre){
+  const n = nombre.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  return JUGOS.find(j => j.plantas && j.plantas.length && j.plantas.some(p => n.includes(p)));
+}
+
+function renderJugoInline(j){
+  const img = `https://images.pexels.com/photos/${j.fotoId}/pexels-photo-${j.fotoId}.jpeg?auto=compress&cs=tinysrgb&w=400&h=180&fit=crop`;
+  return `<div class="jugo-inline">
+    <button class="jugo-toggle-btn" onclick="toggleJugoPanel(this)">
+      <span>🍹 &nbsp;Elixir herbal &middot; ${j.tag}</span><span>▾</span>
+    </button>
+    <div class="jugo-panel" style="display:none">
+      <img class="jugo-panel-img" src="${img}" alt="${j.nombre}" onerror="this.style.display='none'"/>
+      <div class="jugo-panel-body">
+        <p class="jugo-panel-tag">${j.tag}</p>
+        <p class="jugo-panel-nombre">${j.nombre}</p>
+        <p class="jugo-panel-ayuda">${j.beneficio}</p>
+        <p class="jugo-ing-title">Ingredientes</p>
+        <ul class="jugo-ing-list">${j.ingredientes.map(x=>`<li>${x}</li>`).join('')}</ul>
+        <button class="jugo-prep-btn" onclick="toggleJugoPrep(this)">✦ Ver preparación paso a paso</button>
+        <ol class="jugo-prep-list" style="display:none">${j.pasos.map(p=>`<li>${p}</li>`).join('')}</ol>
+      </div>
+    </div>
+  </div>`;
+}
+
+function toggleJugoPanel(btn){
+  const panel = btn.nextElementSibling;
+  const open = panel.style.display === 'none';
+  panel.style.display = open ? 'block' : 'none';
+  btn.querySelectorAll('span')[1].textContent = open ? '▴' : '▾';
+}
+
+function toggleJugoPrep(btn){
+  const list = btn.nextElementSibling;
+  const open = list.style.display === 'none';
+  list.style.display = open ? 'block' : 'none';
+  btn.textContent = open ? '✦ Ocultar preparación' : '✦ Ver preparación paso a paso';
+}
+
+function mostrarPlanta(idx){
+  document.getElementById('indexView').classList.remove('visible');
+  document.getElementById('fuentesView').classList.remove('visible');
+  document.getElementById('plantView').classList.remove('hidden');
+  document.getElementById('btnIdx').classList.add('visible');
+  document.getElementById('btnFuentes').classList.add('visible');
+  document.getElementById('btnPrev').style.display = '';
+  document.getElementById('btnNext').style.display = '';
+  document.getElementById('navCounter').style.display = '';
+  document.getElementById('loteIndicator').style.display = '';
+  current = idx;
+  renderHierba(idx);
+}
+
+/* ── ÍNDICE: lógica ── */
+function idxInit(){
+  const sel = document.getElementById('idxSelDolencia');
+  const todas = [...new Set(hierbas.flatMap(h=>h.dolencias))].sort();
+  todas.forEach(d=>{
+    const o = document.createElement('option');
+    o.value = d;
+    o.textContent = d.charAt(0).toUpperCase()+d.slice(1);
+    sel.appendChild(o);
+  });
+}
+
+function norm(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+
+function idxBuscar(){
+  const q = norm(document.getElementById('idxSearch').value.trim());
+  document.getElementById('idxSelDolencia').value = '';
+  document.getElementById('idxPlantWrap').classList.remove('visible');
+  if(!q){ idxRenderLista(hierbas,'Todas las plantas'); return; }
+  const res = hierbas.filter(h=>
+    norm(h.nombre).includes(q)||
+    h.dolencias.some(d=>norm(d).includes(q))||
+    h.props.some(p=>norm(p).includes(q))
+  );
+  idxRenderLista(res, res.length ? `Resultados para "${document.getElementById('idxSearch').value.trim()}"` : 'Sin resultados');
+}
+
+function idxSeleccionarDolencia(){
+  const d = document.getElementById('idxSelDolencia').value;
+  document.getElementById('idxSearch').value = '';
+  const wrap = document.getElementById('idxPlantWrap');
+  const selP = document.getElementById('idxSelPlanta');
+  if(!d){ wrap.classList.remove('visible'); idxRenderLista(hierbas,'Todas las plantas'); return; }
+  const filtradas = hierbas.filter(h=>h.dolencias.includes(d));
+  selP.innerHTML = '<option value="">— Elige una planta —</option>';
+  filtradas.forEach(h=>{
+    const o = document.createElement('option');
+    o.value = hierbas.indexOf(h);
+    o.textContent = h.nombre;
+    selP.appendChild(o);
+  });
+  wrap.classList.add('visible');
+  idxRenderLista(filtradas, `Plantas para: ${d}`);
+}
+
+function idxIrAPlanta(){
+  const idx = parseInt(document.getElementById('idxSelPlanta').value);
+  if(isNaN(idx)) return;
+  mostrarPlanta(idx);
+}
+
+function idxRenderLista(lista, label){
+  document.getElementById('idxResultsLabel').textContent = label;
+  const ul = document.getElementById('idxPlantList');
+  const noR = document.getElementById('idxNoResults');
+  if(!lista.length){ ul.innerHTML=''; noR.style.display='block'; return; }
+  noR.style.display='none';
+  const ordenada = [...lista].sort((a,b)=>a.nombre.localeCompare(b.nombre,'es'));
+  ul.innerHTML = ordenada.map(h=>{
+    const idx = hierbas.indexOf(h);
+    return `
+      <li class="idx-plant-item" onclick="mostrarPlanta(${idx})">
+        <span class="idx-plant-num">${String(idx+1).padStart(2,'0')}</span>
+        <span class="idx-plant-name">${h.nombre}</span>
+        <span class="idx-plant-lote">${h.lote}</span>
+      </li>
+      <li class="idx-plant-props">${h.props.slice(0,3).join(' · ')}</li>`;
+  }).join('');
+}
+
+const INFUSIONES = [
+  {
+    nombre:'Infusión de Cúrcuma y Lavanda',
+    tag:'Antiinflamatoria articular',
+    fotoId:341514,
+    plantas:['curcuma','cúrcuma','lavanda','lavandula'],
+    ingredientes:['1 rodaja de cúrcuma fresca (2 cm)','1 cucharada de flores de lavanda secas','430 ml de agua filtrada','1 pizca de pimienta negra molida','1 cucharadita de miel cruda (opcional)'],
+    pasos:['Pela y corta la cúrcuma en trozos pequeños','Lleva el agua a ebullición','Añade la cúrcuma y cuece a fuego lento 10 minutos','Apaga el fuego y añade las flores de lavanda','Tapa y deja reposar 5 minutos','Cuela y añade miel al gusto'],
+    beneficio:'Alivia el dolor crónico de rodillas y articulaciones. La curcumina inhibe múltiples vías inflamatorias mientras la lavanda reduce la tensión muscular periarticular y potencia el efecto analgésico.'
+  },
+  {
+    nombre:'Infusión de Jengibre y Romero',
+    tag:'Recuperación muscular',
+    fotoId:6962419,
+    plantas:['jengibre','romero','rosmarinus'],
+    ingredientes:['1 rodaja de jengibre fresco (2-3 cm)','1 cucharadita de hojas de romero secas','450 ml de agua filtrada','1 cucharadita de miel de romero (opcional)','Unas gotas de limón (opcional)'],
+    pasos:['Pela y corta finamente el jengibre','Lleva el agua a ebullición','Añade el jengibre y cuece a fuego lento 5 minutos','Apaga el fuego y añade las hojas de romero','Tapa y deja reposar 7 minutos','Cuela y añade miel y limón al gusto'],
+    beneficio:'Combate la inflamación muscular reduciendo citocinas proinflamatorias. El jengibre y el romero actúan en sinergia mejorando la circulación sanguínea y acelerando la recuperación tisular.'
+  },
+  {
+    nombre:'Infusión de Harpagofito',
+    tag:'Artritis y rigidez de manos',
+    fotoId:6962404,
+    plantas:['harpagofito','garra del diablo','harpagophytum'],
+    ingredientes:['1 cucharada de raíz seca de harpagofito triturada','250 ml de agua filtrada','1 rodaja fina de limón (opcional)','1 ramita pequeña de canela (opcional)','1 cucharadita de miel de acacia (opcional)'],
+    pasos:['Tritura ligeramente la raíz para aumentar la superficie de contacto','Lleva el agua a ebullición','Añade la raíz triturada y reduce el fuego','Cuece a fuego suave 10 minutos','Retira del fuego y deja reposar tapado 5 minutos','Cuela con colador fino y añade limón o miel al gusto'],
+    beneficio:'Alivia la artritis y la rigidez en las articulaciones pequeñas de las manos. El harpagósido inhibe las enzimas que degradan el cartílago y reduce la inflamación sinovial de forma comparable a algunos antiinflamatorios convencionales.'
+  },
+  {
+    nombre:'Infusión de Sauce Blanco y Menta',
+    tag:'Analgésica para la espalda',
+    fotoId:1417945,
+    plantas:['sauce','sauce blanco','salix','menta','hierbabuena','mentha'],
+    ingredientes:['1 cucharadita de corteza de sauce blanco seca','1 cucharadita de hojas de menta fresca o seca','300 ml de agua filtrada','1 cucharadita de miel de tomillo (opcional)','1 rodaja de jengibre fresco (opcional)'],
+    pasos:['Lleva el agua a ebullición','Añade la corteza de sauce blanco y reduce el fuego','Hierve a fuego lento 5 minutos para extraer la salicina','Apaga el fuego y añade las hojas de menta','Tapa y deja reposar 8 minutos','Cuela y añade miel cuando la temperatura baje de 40°C'],
+    beneficio:'Alivia el dolor de espalda cervical, dorsal y lumbar. La salicina del sauce actúa como aspirina natural inhibiendo prostaglandinas, mientras el mentol de la menta relaja la musculatura paravertebral y aporta efecto analgésico local.'
+  },
+  {
+    nombre:'Infusión de Manzanilla e Hinojo',
+    tag:'Digestiva antiinflamatoria',
+    fotoId:8115976,
+    plantas:['manzanilla','camomila','camomilla','hinojo','foeniculum'],
+    ingredientes:['1 cucharada de flores de manzanilla secas','1 cucharadita de semillas de hinojo ligeramente machacadas','400 ml de agua filtrada','1 rodaja de jengibre fresco (opcional)','1 cucharadita de miel de acacia (opcional)'],
+    pasos:['Machaca las semillas de hinojo en un mortero para liberar aceites esenciales','Lleva el agua a ebullición','Añade las semillas de hinojo y las flores de manzanilla','Hierve a fuego lento 7 minutos','Retira del fuego y deja reposar 3-5 minutos','Cuela bien y sirve caliente, con miel si deseas'],
+    beneficio:'Alivia el colon irritable, la hinchazón y las digestiones pesadas. La manzanilla calma la mucosa intestinal irritada mientras el hinojo elimina gases y reduce los espasmos dolorosos gracias a su anetol.'
+  },
+  {
+    nombre:'Infusión de Canela y Manzanilla',
+    tag:'Alivio del dolor menstrual',
+    fotoId:17125144,
+    plantas:['canela','cinnamomum','manzanilla','camomila','camomilla'],
+    ingredientes:['1 rama de canela (Cinnamomum verum)','1 cucharada de flores de manzanilla secas','350 ml de agua filtrada','1 rodaja fina de jengibre fresco (opcional)','1 cucharadita de miel cruda (opcional)','2-3 clavos de olor (opcional)'],
+    pasos:['Parte la rama de canela en trozos pequeños','Lleva el agua a ebullición','Añade la canela y, si deseas, el jengibre y los clavos','Hierve a fuego lento 5 minutos','Retira del fuego y añade las flores de manzanilla','Tapa y deja reposar 10 minutos','Cuela y añade miel al gusto'],
+    beneficio:'Reduce el dolor menstrual y la inflamación pélvica. El cinamaldehído de la canela inhibe las prostaglandinas causantes de las contracciones uterinas dolorosas, mientras la manzanilla aporta efecto calmante y antiinflamatorio general.'
+  },
+  {
+    nombre:'Infusión de Melisa y Lavanda',
+    tag:'Tensión nerviosa y contracturas',
+    fotoId:18745034,
+    plantas:['melisa','toronjil','melissa','lavanda','lavandula'],
+    ingredientes:['1 cucharada de hojas frescas de melisa (o 2 cucharaditas si son secas)','1 cucharadita de flores de lavanda secas','400 ml de agua filtrada','1 cucharadita de miel de azahar (opcional)','1-2 flores de tila (opcional)'],
+    pasos:['Calienta el agua hasta unos 90°C, justo antes del punto de ebullición','Coloca la melisa y la lavanda en una tetera','Vierte el agua caliente sobre las hierbas','Tapa inmediatamente para conservar los aceites esenciales volátiles','Deja reposar 8 minutos','Cuela y añade miel cuando la temperatura baje de 40°C'],
+    beneficio:'Alivia el dolor de cabeza tensional, las contracturas cervicales y el insomnio por estrés. La melisa actúa sobre los receptores GABA reduciendo la ansiedad, mientras la lavanda relaja la musculatura y calma el sistema nervioso.'
+  },
+  {
+    nombre:'Infusión de Ortiga y Limón',
+    tag:'Recuperación post-ejercicio',
+    fotoId:5275234,
+    plantas:['ortiga','urtica'],
+    ingredientes:['1 cucharada de hojas secas de ortiga','Zumo de ½ limón fresco','400 ml de agua filtrada','1 cucharadita de miel cruda (opcional)','1 rodaja de jengibre fresco (opcional)','1 ramita de menta fresca (opcional)'],
+    pasos:['Lleva el agua a ebullición','Añade las hojas secas de ortiga','Hierve a fuego lento 10 minutos para extraer todos los principios activos','Retira del fuego y cuela','Deja enfriar hasta que esté tibia (unos 40°C)','Añade el zumo de limón recién exprimido y miel al gusto'],
+    beneficio:'Acelera la recuperación muscular tras el esfuerzo físico. La ortiga aporta quercetina y minerales esenciales que reducen la inflamación, mientras el limón neutraliza el ácido láctico y aporta vitamina C para la reparación tisular.'
+  },
+  {
+    nombre:'Infusión Dorada de Cúrcuma, Pimienta y Jengibre',
+    tag:'Antiinflamatoria sistémica',
+    fotoId:6962415,
+    plantas:['curcuma','cúrcuma','jengibre'],
+    ingredientes:['1 rodaja de cúrcuma fresca (2-3 cm) o 1 cucharadita de polvo','1 pizca generosa de pimienta negra recién molida','1 rodaja de jengibre fresco (2 cm)','430 ml de agua filtrada','1 cucharadita de aceite de oliva virgen extra (opcional)','1 cucharadita de miel cruda y 1 rodaja de limón (opcional)'],
+    pasos:['Pela y corta finamente la cúrcuma y el jengibre','Lleva el agua a ebullición','Añade la cúrcuma, el jengibre y la pimienta negra','Hierve a fuego suave 10 minutos','Retira del fuego y deja reposar 5 minutos','Añade el aceite de oliva si lo usas para mejorar la absorción de curcumina','Cuela, añade miel y limón al gusto cuando esté a temperatura bebible'],
+    beneficio:'Combate la inflamación crónica sistémica actuando sobre múltiples vías inflamatorias. La piperina de la pimienta negra aumenta la biodisponibilidad de la curcumina hasta un 2000%, potenciando enormemente su efecto antiinflamatorio.'
+  },
+  {
+    nombre:'Infusión de Valeriana y Pasiflora',
+    tag:'Tensión cervical y hombros',
+    fotoId:7948965,
+    plantas:['valeriana','pasiflora','maracuya','maracuyá','passiflora'],
+    ingredientes:['1 cucharadita de raíz seca de valeriana','1 cucharadita de partes aéreas de pasiflora secas','350 ml de agua filtrada','1 cucharadita de miel (opcional)','1-2 flores de tila (opcional)'],
+    pasos:['Calienta el agua hasta unos 90°C, justo antes del punto de ebullición','Añade la valeriana y la pasiflora','Tapa y deja reposar 10 minutos','Cuela la infusión con cuidado','Añade miel al gusto','Bebe caliente, preferiblemente 30 minutos antes de acostarse'],
+    beneficio:'Alivia el dolor de hombros y cuello por tensión muscular acumulada. La valeriana actúa como miorelajante natural reduciendo la tensión del trapecio, mientras la pasiflora modula los receptores GABA para calmar el sistema nervioso y romper el círculo dolor-tensión-dolor.'
+  }
+];
+
+function getInfusionParaHierba(nombre){
+  const n = nombre.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  return INFUSIONES.find(inf => inf.plantas && inf.plantas.length && inf.plantas.some(p => n.includes(p)));
+}
+
+function renderInfusionInline(inf){
+  const img = `https://images.pexels.com/photos/${inf.fotoId}/pexels-photo-${inf.fotoId}.jpeg?auto=compress&cs=tinysrgb&w=400&h=180&fit=crop`;
+  return `<div class="jugo-inline">
+    <button class="jugo-toggle-btn" onclick="toggleJugoPanel(this)">
+      <span>☕ &nbsp;Infusión medicinal &middot; ${inf.tag}</span><span>▾</span>
+    </button>
+    <div class="jugo-panel" style="display:none">
+      <img class="jugo-panel-img" src="${img}" alt="${inf.nombre}" onerror="this.style.display='none'"/>
+      <div class="jugo-panel-body">
+        <p class="jugo-panel-tag">${inf.tag}</p>
+        <p class="jugo-panel-nombre">${inf.nombre}</p>
+        <p class="jugo-panel-ayuda">${inf.beneficio}</p>
+        <p class="jugo-ing-title">Ingredientes</p>
+        <ul class="jugo-ing-list">${inf.ingredientes.map(x=>`<li>${x}</li>`).join('')}</ul>
+        <button class="jugo-prep-btn" onclick="toggleJugoPrep(this)">✦ Ver preparación paso a paso</button>
+        <ol class="jugo-prep-list" style="display:none">${inf.pasos.map(p=>`<li>${p}</li>`).join('')}</ol>
+      </div>
+    </div>
+  </div>`;
+}
+
+function initIdxInfusionesList(){
+  const ul = document.getElementById('idxInfusionesList');
+  if(!ul) return;
+  ul.innerHTML = INFUSIONES.map((inf,i)=>`
+    <li class="idx-jugos-item" onclick="seleccionarIdxInfusion(${i})">
+      <span class="idx-jugos-item-nombre">☕ ${inf.nombre}</span>
+      <span class="idx-jugos-item-tag">${inf.tag}</span>
+    </li>`).join('');
+}
+
+function toggleIdxInfusionesList(){
+  const ul = document.getElementById('idxInfusionesList');
+  const open = ul.style.display === 'none';
+  ul.style.display = open ? 'block' : 'none';
+  document.getElementById('idxInfusionesArrow').textContent = open ? '▴' : '▾';
+}
+
+function seleccionarIdxInfusion(i){
+  document.getElementById('idxInfusionesList').style.display = 'none';
+  document.getElementById('idxInfusionesArrow').textContent = '▾';
+  mostrarInfusion(i);
+}
+
+function mostrarInfusion(i){
+  const inf = INFUSIONES[i];
+  _ocultarVistas();
+  document.getElementById('btnIdx').classList.add('visible');
+  const img = `https://images.pexels.com/photos/${inf.fotoId}/pexels-photo-${inf.fotoId}.jpeg?auto=compress&cs=tinysrgb&w=800&h=500&fit=crop`;
+  document.getElementById('infusionViewImg').src = img;
+  document.getElementById('infusionViewImg').style.display = 'block';
+  document.getElementById('infusionViewTag').textContent = inf.tag;
+  document.getElementById('infusionViewNombre').textContent = inf.nombre;
+  document.getElementById('infusionViewAyuda').textContent = inf.beneficio;
+  document.getElementById('infusionViewIng').innerHTML = inf.ingredientes.map(x=>`<li>${x}</li>`).join('');
+  document.getElementById('infusionViewPasos').innerHTML = inf.pasos.map(p=>`<li>${p}</li>`).join('');
+  document.getElementById('infusionView').classList.remove('hidden');
+}
+
+function initIdxJugosList(){
+  const ul = document.getElementById('idxJugosList');
+  if(!ul) return;
+  ul.innerHTML = JUGOS.map((j,i)=>`
+    <li class="idx-jugos-item" onclick="seleccionarIdxJugo(${i})">
+      <span class="idx-jugos-item-nombre">🍹 ${j.nombre}</span>
+      <span class="idx-jugos-item-tag">${j.tag}</span>
+    </li>`).join('');
+}
+
+function toggleIdxJugosList(){
+  const ul = document.getElementById('idxJugosList');
+  const open = ul.style.display === 'none';
+  ul.style.display = open ? 'block' : 'none';
+  document.getElementById('idxJugosArrow').textContent = open ? '▴' : '▾';
+}
+
+function seleccionarIdxJugo(i){
+  document.getElementById('idxJugosList').style.display = 'none';
+  document.getElementById('idxJugosArrow').textContent = '▾';
+  mostrarJugo(i);
+}
+
+function mostrarJugo(i){
+  const j = JUGOS[i];
+  _ocultarVistas();
+  document.getElementById('btnIdx').classList.add('visible');
+  const img = `https://images.pexels.com/photos/${j.fotoId}/pexels-photo-${j.fotoId}.jpeg?auto=compress&cs=tinysrgb&w=800&h=500&fit=crop`;
+  document.getElementById('jugoViewImg').src = img;
+  document.getElementById('jugoViewImg').style.display = 'block';
+  document.getElementById('jugoViewTag').textContent = j.tag;
+  document.getElementById('jugoViewNombre').textContent = j.nombre;
+  document.getElementById('jugoViewAyuda').textContent = j.beneficio;
+  document.getElementById('jugoViewIng').innerHTML = j.ingredientes.map(x=>`<li>${x}</li>`).join('');
+  document.getElementById('jugoViewPasos').innerHTML = j.pasos.map(p=>`<li>${p}</li>`).join('');
+  document.getElementById('jugoView').classList.remove('hidden');
+}
+
+// Carga de plantas desde la API — se llama al iniciar la página
+const LOTE_DESC = [
+  'Lote I · Hierbas suaves','Lote II · Hierbas energizantes','Lote III · Hierbas respiratorias',
+  'Lote IV · Hierbas de la calma','Lote V · Hierbas depurativas','Lote VI · Hierbas femeninas',
+  'Lote VII · Hierbas nootrópicas','Lote VIII · Hierbas del huerto','Lote IX · Hierbas del huerto',
+  'Lote X · Hierbas del huerto'
+];
+
+function normImg(nombre){
+  return nombre.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+}
+
+function mapearPlanta(p, idx){
+  const loteNum  = Math.floor(idx / 3);
+  const loteLabel = `Lote ${['I','II','III','IV','V','VI','VII','VIII','IX','X'][loteNum] || (loteNum+1)}`;
+  const props = p.propiedades ? p.propiedades.split(',').map(s=>s.trim()).filter(Boolean) : [];
+  return {
+    nombre: p.nombre_remedio,
+    lat:    p.planta_base || '',
+    lote:   loteLabel,
+    loteDesc: LOTE_DESC[loteNum] || loteLabel,
+    img:    p.imagen ? `img/${p.imagen}` : `img/${normImg(p.nombre_remedio)}.jpg`,
+    props:  props,
+    usos:   p.dosificacion || '',
+    nota:   p.contraindicaciones || '',
+    dolencias: props.map(s=>s.toLowerCase()),
+    link:   p.link_articulo_web || '',
+    nombres_alternativos: p.nombres_alternativos || '',
+    partes_utilizadas:    p.partes_utilizadas || '',
+    fuentes:              p.fuentes || ''
+  };
+}
+
+async function cargarPlantas(){
+  try {
+    const res = await fetch('/api/plantas');
+    const data = await res.json();
+    if(data.ok && data.plantas.length){
+      hierbas = data.plantas.map((p,i) => mapearPlanta(p, i));
+    }
+  } catch(e) {
+    console.warn('Sin servidor — usando datos locales:', e);
+    hierbas = _hierbasFallback;
+  }
+  idxInit();
+  initIdxJugosList();
+  initIdxInfusionesList();
+  // Re-renderizar la lista si el índice ya estaba visible con hierbas vacías
+  const elIdx = document.getElementById('indexView');
+  if(elIdx && elIdx.classList.contains('visible')){
+    idxRenderLista(hierbas, 'Todas las plantas');
+  }
+  const paramH = parseInt(new URLSearchParams(window.location.search).get('h'));
+  if(!isNaN(paramH) && paramH >= 0 && paramH < hierbas.length){
+    setTimeout(() => abrirLibro(paramH), 50);
+  }
+}
+
+cargarPlantas();
+
+// Apagar servidor solo cuando se cierra el navegador, no en navegación interna
+window.addEventListener('pagehide', function(e){
+  if(!e.persisted){
+    navigator.sendBeacon('/api/apagar', '{}');
+  }
+});
+
+/* ── REGISTRO / LOGIN ── */
+const TIENDAS = {
+  ES:  { tipo:'herbolario',      gmaps:'herbolario'             },
+  AR:  { tipo:'dietética',       gmaps:'dietética naturista'    },
+  MX:  { tipo:'herbolaria',      gmaps:'herbolaria'             },
+  CO:  { tipo:'tienda naturista',gmaps:'tienda naturista'       },
+  CL:  { tipo:'herboristería',   gmaps:'herboristería'          },
+  PE:  { tipo:'botica natural',  gmaps:'botica natural'         },
+  US:  { tipo:'health store',    gmaps:'natural health store'   },
+  OTRO:{ tipo:'tienda naturista',gmaps:'tienda naturista'       },
+};
+const ONLINE = {
+  ES:  { nombre:'Amazon España',          url:'https://www.amazon.es/s?k={planta}+planta+medicinal'                  },
+  AR:  { nombre:'Mercado Libre Argentina',url:'https://listado.mercadolibre.com.ar/{planta}-planta-medicinal'        },
+  MX:  { nombre:'Mercado Libre México',   url:'https://listado.mercadolibre.com.mx/{planta}-planta-medicinal'        },
+  CO:  { nombre:'Mercado Libre Colombia', url:'https://listado.mercadolibre.com.co/{planta}-planta-medicinal'        },
+  CL:  { nombre:'Mercado Libre Chile',    url:'https://listado.mercadolibre.cl/{planta}-planta-medicinal'            },
+  PE:  { nombre:'Mercado Libre Perú',     url:'https://listado.mercadolibre.com.pe/{planta}-planta-medicinal'        },
+  US:  { nombre:'Amazon USA',             url:'https://www.amazon.com/s?k={planta}+medicinal+herb'                  },
+  OTRO:{ nombre:'tienda online',          url:'https://www.google.com/search?q=comprar+{planta}+planta+medicinal'   },
+};
+
+function getUsuario(){ try{ return JSON.parse(sessionStorage.getItem('sn_usuario')); }catch(e){ return null; } }
+
+function actualizarTopbar(){
+  const u = getUsuario();
+  const el = document.getElementById('topbarAuth');
+  if(u){
+    el.innerHTML = `<div class="topbar-user">✦ <span class="topbar-user-name">${u.nombre_completo.split(' ')[0]}</span> · <span class="topbar-user-logout" onclick="cerrarSesion()">Salir</span></div>`;
+  } else {
+    const backup = (() => { try{ return JSON.parse(localStorage.getItem('sn_usuario_backup')); }catch(e){ return null; } })();
+    const label = backup ? '✦ Entrar' : '✦ Registrarse';
+    el.innerHTML = `<button class="topbar-register" onclick="abrirModal()">${label}</button>`;
+  }
+}
+
+async function actualizarZonas(){
+  const u = getUsuario();
+  const h = hierbas[current];
+  const planta = encodeURIComponent(h.nombre.toLowerCase());
+
+  const tTexto = document.getElementById('zonaTiendaTexto');
+  const tLink  = document.getElementById('zonaTiendaLink');
+  const oTexto = document.getElementById('zonaOnlineTexto');
+  const oLink  = document.getElementById('zonaOnlineLink');
+
+  if(!u){
+    tTexto.innerHTML = `<strong>Tienda naturista cercana</strong><span>Regístrate para ver dónde comprar en tu zona</span>`;
+    tLink.textContent = 'Registrarse'; tLink.href = '#'; tLink.target = '';
+    tLink.onclick = (e)=>accionZona(e,'tienda');
+    oTexto.innerHTML = `<strong>Comprar desde casa</strong><span>Regístrate para ver la mejor opción en tu país</span>`;
+    oLink.textContent = 'Registrarse'; oLink.href = '#'; oLink.target = '';
+    oLink.onclick = (e)=>accionZona(e,'online');
+    return;
+  }
+
+  // ── Zona compra online (siempre disponible con sesión) ──
+  const o    = ONLINE[u.pais_codigo || u.pais] || ONLINE.OTRO;
+  const oUrl = o.url.replace('{planta}', planta);
+  oTexto.innerHTML = `<strong>Comprar en ${o.nombre}</strong><span>${h.nombre} · envío a ${u.ciudad}</span>`;
+  oLink.textContent = 'Ver ofertas';
+  oLink.href = oUrl; oLink.target = '_blank'; oLink.onclick = null;
+
+  // ── Zona tienda cercana ──
+  const t = TIENDAS[u.pais_codigo || u.pais] || TIENDAS.OTRO;
+  // Dirección completa del usuario para usar como punto A en Maps
+  const dirUsuario = encodeURIComponent((u.direccion_completa ? u.direccion_completa+', ' : '') + (u.ciudad_prov_pais || u.ciudad || ''));
+
+  // Función para generar URL de Maps con la casa del usuario marcada como punto A
+  const mapsDesdeCasa = (destino) =>
+    `https://www.google.com/maps/dir/${dirUsuario}/${encodeURIComponent(destino)}`;
+
+  if(u.lat && u.lon){
+    // Tenemos coordenadas → consultar API de tiendas reales
+    tTexto.innerHTML = `<strong>Buscando tiendas cercanas…</strong><span>${h.nombre} en tu zona</span>`;
+    tLink.textContent = '…'; tLink.href = '#'; tLink.onclick = null;
+
+    try {
+      const res = await fetch(`/api/tiendas?lat=${u.lat}&lon=${u.lon}`);
+      const data = await res.json();
+      const tiendas = data.tiendas || [];
+
+      if(tiendas.length > 0){
+        const primera = tiendas[0];
+        // Dirección exacta de la tienda como destino → tu casa aparece marcada como A
+        const destino = primera.direccion && primera.direccion !== 'Sin dirección registrada'
+          ? primera.nombre + ', ' + primera.direccion
+          : `${primera.lat},${primera.lon}`;
+        tTexto.innerHTML = `<strong>${primera.nombre}</strong><span>${primera.direccion || u.ciudad} · ${tiendas.length} tienda${tiendas.length>1?'s':''} encontrada${tiendas.length>1?'s':''}</span>`;
+        tLink.textContent = 'Cómo llegar';
+        tLink.href = mapsDesdeCasa(destino); tLink.target = '_blank';
+      } else {
+        // Sin resultados → ruta desde tu casa buscando el tipo de tienda cercana
+        tTexto.innerHTML = `<strong>${t.tipo.charAt(0).toUpperCase()+t.tipo.slice(1)} cerca de ti</strong><span>Tu casa marcada · busca en 1 km</span>`;
+        tLink.textContent = 'Buscar en Maps';
+        tLink.href = mapsDesdeCasa(t.gmaps+' cerca'); tLink.target = '_blank';
+      }
+    } catch(e){
+      tTexto.innerHTML = `<strong>Tiendas cerca de ti</strong><span>Abre Google Maps desde tu casa</span>`;
+      tLink.textContent = 'Abrir Maps';
+      tLink.href = mapsDesdeCasa(t.gmaps); tLink.target = '_blank';
+    }
+  } else {
+    // Sin coordenadas → geocodificar la dirección registrada automáticamente
+    tTexto.innerHTML = `<strong>Tienda ${t.tipo} cerca de ti</strong><span>Localizando tu dirección…</span>`;
+    tLink.textContent = '…'; tLink.href = '#'; tLink.target = ''; tLink.onclick = null;
+
+    try {
+      const res = await fetch('/api/geocodificar', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          email: u.email,
+          direccion_completa: u.direccion_completa || '',
+          ciudad_prov_pais: u.ciudad_prov_pais || u.ciudad || ''
+        })
+      });
+      const data = await res.json();
+      if(res.ok && data.lat){
+        u.lat = data.lat; u.lon = data.lon;
+        sessionStorage.setItem('sn_usuario', JSON.stringify(u));
+        actualizarZonas();
+      } else {
+        throw new Error('sin coords');
+      }
+    } catch(e){
+      // Fallback: desde tu dirección buscando el tipo de tienda — tu casa queda marcada
+      tTexto.innerHTML = `<strong>${t.tipo.charAt(0).toUpperCase()+t.tipo.slice(1)} en ${u.ciudad}</strong><span>Tu casa como punto de partida</span>`;
+      tLink.textContent = 'Buscar desde mi casa';
+      tLink.href = mapsDesdeCasa(t.gmaps+' '+u.ciudad); tLink.target = '_blank';
+    }
+  }
+}
+
+function accionZona(e, tipo){
+  e.preventDefault();
+  if(!getUsuario()){ abrirModal(); }
+}
+
+function abrirModal(){
+  document.getElementById('modalOverlay').classList.add('visible');
+  document.getElementById('regError').style.display = 'none';
+  document.getElementById('loginError').style.display = 'none';
+  // Si hay cuenta guardada → abrir directo en login
+  const backup = (() => { try{ return JSON.parse(localStorage.getItem('sn_usuario_backup')); }catch(e){ return null; } })();
+  if(backup){
+    document.getElementById('panelRegistro').style.display = 'none';
+    document.getElementById('panelLogin').style.display = '';
+    // Pre-rellenar el email
+    const inputEmail = document.getElementById('loginEmail');
+    if(inputEmail && backup.email) inputEmail.value = backup.email;
+  } else {
+    document.getElementById('panelRegistro').style.display = '';
+    document.getElementById('panelLogin').style.display = 'none';
+  }
+}
+
+function cerrarModal(){
+  document.getElementById('modalOverlay').classList.remove('visible');
+}
+
+function togglePanel(){
+  const r = document.getElementById('panelRegistro');
+  const l = document.getElementById('panelLogin');
+  r.style.display = r.style.display === 'none' ? '' : 'none';
+  l.style.display = l.style.display === 'none' ? '' : 'none';
+  document.getElementById('regError').style.display = 'none';
+  document.getElementById('loginError').style.display = 'none';
+}
+
+async function registrar(){
+  const nombre_completo    = document.getElementById('regNombreCompleto').value.trim();
+  const celular            = document.getElementById('regCelular').value.trim();
+  const email              = document.getElementById('regEmail').value.trim();
+  const direccion_completa = document.getElementById('regDireccion').value.trim();
+  const ciudad_prov_pais   = document.getElementById('regCiudadProvPais').value.trim();
+  const pais_codigo        = document.getElementById('regPais').value;
+  const err                = document.getElementById('regError');
+  const btn                = document.querySelector('#panelRegistro .modal-btn');
+
+  const password = document.getElementById('regPassword').value.trim();
+
+  if(!nombre_completo || !celular || !email || !password || !ciudad_prov_pais || !pais_codigo){
+    err.textContent = 'Por favor completa los campos obligatorios (*).';
+    err.style.display = 'block'; return;
+  }
+  if(password.length < 6){
+    err.textContent = 'La contraseña debe tener al menos 6 caracteres.';
+    err.style.display = 'block'; return;
+  }
+
+  btn.textContent = '✦ Guardando…'; btn.disabled = true;
+
+  // 1. Guardar en localStorage INMEDIATAMENTE — el usuario nunca pierde su sesión
+  const uLocal = {nombre_completo, celular, email, password, direccion_completa,
+                  ciudad_prov_pais, pais_codigo, pais: pais_codigo,
+                  ciudad: ciudad_prov_pais.split(',')[0].trim(),
+                  pendiente_sync: true};
+  sessionStorage.setItem('sn_usuario', JSON.stringify(uLocal));
+  localStorage.setItem('sn_usuario_backup', JSON.stringify(uLocal));
+
+  cerrarModal();
+  actualizarTopbar();
+  actualizarZonas();
+
+  // 2. Intentar guardar en el servidor en segundo plano (sin bloquear al usuario)
+  try {
+    const res = await fetch('/api/registro', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({nombre_completo, celular, email, password, direccion_completa,
+                            ciudad_prov_pais, pais_codigo})
+    });
+    const data = await res.json();
+
+    if(res.status === 409){
+      // Email ya en DB → hacer login automático con esos datos
+      const res2 = await fetch('/api/login', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({email})
+      });
+      const data2 = await res2.json();
+      if(res2.ok){
+        const u = {...data2.usuario, pais: data2.usuario.pais_codigo,
+                   ciudad: (data2.usuario.ciudad_prov_pais||'').split(',')[0].trim()};
+        sessionStorage.setItem('sn_usuario', JSON.stringify(u));
+        localStorage.setItem('sn_usuario_backup', JSON.stringify(u));
+        actualizarTopbar(); actualizarZonas();
+      }
+    } else if(res.ok){
+      // Servidor respondió con lat/lon del geocoding → actualizar sesión
+      const u = {...data.usuario, pais: pais_codigo,
+                 ciudad: ciudad_prov_pais.split(',')[0].trim()};
+      sessionStorage.setItem('sn_usuario', JSON.stringify(u));
+      localStorage.setItem('sn_usuario_backup', JSON.stringify(u));
+      actualizarZonas(); // refrescar con coordenadas reales
+    }
+  } catch(e){
+    // Sin servidor: los datos ya están en localStorage, no pasa nada
+  } finally {
+    btn.textContent = '✦ Crear cuenta y acceder'; btn.disabled = false;
+  }
+}
+
+async function login(){
+  const email    = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+  const err      = document.getElementById('loginError');
+  const btn      = document.querySelector('#panelLogin .modal-btn');
+
+  if(!email || !password){ err.style.display='block'; return; }
+
+  btn.textContent = '✦ Accediendo…'; btn.disabled = true;
+
+  try {
+    const res  = await fetch('/api/login', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({email, password})
+    });
+    const data = await res.json();
+    if(!res.ok){
+      err.style.display = 'block';
+    } else {
+      const u = {...data.usuario,
+                 pais: data.usuario.pais_codigo,
+                 ciudad: (data.usuario.ciudad_prov_pais||'').split(',')[0].trim()};
+      // Guardar en sesión Y en backup local (cada usuario sobreescribe su propio backup)
+      sessionStorage.setItem('sn_usuario', JSON.stringify(u));
+      localStorage.setItem('sn_usuario_backup', JSON.stringify(u));
+      cerrarModal();
+      actualizarTopbar();
+      actualizarZonas();
+    }
+  } catch(e) {
+    // Sin servidor → verificar contra copia local
+    try {
+      const backup = JSON.parse(localStorage.getItem('sn_usuario_backup'));
+      const pwOk = !backup?.password || backup.password === password;
+      if(backup && backup.email === email && pwOk){
+        sessionStorage.setItem('sn_usuario', JSON.stringify(backup));
+        cerrarModal(); actualizarTopbar(); actualizarZonas();
+      } else { err.style.display = 'block'; }
+    } catch(_){ err.style.display = 'block'; }
+  } finally {
+    btn.textContent = '✦ Acceder'; btn.disabled = false;
+  }
+}
+
+function cerrarSesion(){
+  // Guardar copia antes de borrar para poder volver a entrar
+  const u = getUsuario();
+  if(u) localStorage.setItem('sn_usuario_backup', JSON.stringify(u));
+  sessionStorage.removeItem('sn_usuario');
+  actualizarTopbar();
+  actualizarZonas();
+}
+
+function imprimirFicha(){
+  if(!getUsuario()){ abrirModal(); return; }
+  const h = hierbas[current];
+  const win = window.open('','_blank');
+  win.document.write(`<!DOCTYPE html><html lang="es"><head>
+<meta charset="UTF-8"/>
+<title>Ficha – ${h.nombre}</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+@page{size:A4 portrait;margin:12mm 14mm}
+@media print{.btn-wrap{display:none!important}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+body{font-family:'EB Garamond',serif;color:#2a1400;background:#e8d5a3;padding:20px;max-width:800px;margin:0 auto}
+.btn-wrap{text-align:center;margin-bottom:14px}
+.btn-print{padding:.5rem 2rem;font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:2px;
+  text-transform:uppercase;background:rgba(184,146,74,.2);border:1px solid #b8924a;
+  border-radius:3px;cursor:pointer;color:#5a3a00}
+/* CABECERA */
+.cab{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #b8924a}
+.logo{width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid #c8a060;flex-shrink:0}
+.cab-linea{font-family:'Cinzel',serif;font-size:5.5pt;letter-spacing:3px;text-transform:uppercase;color:#8a6010}
+.cab-nombre{font-family:'Lucida Calligraphy','Palatino Linotype',serif;font-style:italic;font-size:20pt;color:#3a1e00;line-height:1.1}
+.cab-lat{font-style:italic;font-size:8pt;color:rgba(58,30,0,.5);margin-top:2px}
+.cab-lote{font-family:'Cinzel',serif;font-size:5.5pt;letter-spacing:3px;text-transform:uppercase;color:#b8924a;margin-top:2px}
+/* CUERPO: foto izq, contenido der — igual que el grimorio */
+.cuerpo{display:table;width:100%;border-collapse:separate;border-spacing:12px 0}
+.col-foto{display:table-cell;width:200px;vertical-align:top}
+.col-info{display:table-cell;vertical-align:top}
+.foto{width:200px;height:230px;object-fit:cover;border:2px solid #c8a060;display:block}
+/* SECCIONES */
+h2{font-family:'Cinzel',serif;font-size:5.5pt;letter-spacing:3px;text-transform:uppercase;
+  color:#8a6010;margin:8px 0 3px;padding-bottom:2px;border-bottom:1px solid rgba(184,146,74,.4)}
+p.t{font-style:italic;font-size:9pt;line-height:1.6;text-align:justify;margin-bottom:4px}
+.nota{margin-top:6px;padding:5px 8px;font-style:italic;font-size:8pt;
+  color:rgba(58,30,0,.7);border-left:3px solid #b8924a;background:rgba(139,90,30,.08);line-height:1.5}
+ul{list-style:none;padding:0;margin:0}
+ul li{font-style:italic;font-size:9pt;padding:2px 0 2px 10px;position:relative;border-bottom:1px solid rgba(74,44,10,.05)}
+ul li::before{content:'◆';position:absolute;left:0;color:#b8924a;font-size:4pt;top:5px}
+.pie{border-top:1px solid rgba(184,146,74,.3);margin-top:12px;padding-top:5px;
+  text-align:center;font-family:'Cinzel',serif;font-size:4.5pt;
+  letter-spacing:2px;color:rgba(58,30,0,.3);text-transform:uppercase}
+</style></head><body>
+<div class="btn-wrap">
+  <button class="btn-print" onclick="window.print()">🖨 Imprimir / Guardar como PDF</button>
+</div>
+<div class="cab">
+  <img class="logo" src="${location.origin}/logo.jpg" alt="logo"/>
+  <div>
+    <p class="cab-linea">Salud Natura · Grimorio de Plantas Medicinales</p>
+    <p class="cab-nombre">${h.nombre}</p>
+    <p class="cab-lat">${h.lat}</p>
+    <p class="cab-lote">${h.loteDesc}</p>
+  </div>
+</div>
+<div class="cuerpo">
+  <div class="col-foto">
+    <img class="foto" src="${location.origin}/${h.img}" alt="${h.nombre}"/>
+  </div>
+  <div class="col-info">
+    <h2>Propiedades medicinales</h2>
+    <ul>${h.props.map(p=>`<li>${p}</li>`).join('')}</ul>
+    <h2>Usos y dosificación</h2>
+    <p class="t">${h.usos}</p>
+    ${h.nota ? `<div class="nota">⚕ ${h.nota}</div>` : ''}
+    ${h.nombres_alternativos ? `<h2>También conocida como</h2><p class="t">${h.nombres_alternativos}</p>` : ''}
+    ${h.partes_utilizadas ? `<h2>Partes utilizadas</h2><p class="t">${h.partes_utilizadas}</p>` : ''}
+  </div>
+</div>
+<div class="pie">Salud Natura · Información con fines divulgativos · Consulte siempre a un profesional de la salud</div>
+</body></html>`);
+  win.document.close();
+}
+
+document.getElementById('modalOverlay').addEventListener('click', function(e){
+  if(e.target === this) cerrarModal();
+});
+
+actualizarTopbar();
+
+// Abrir modal de registro si viene desde el botón de index.html
+if(sessionStorage.getItem('abrirRegistro')){
+  sessionStorage.removeItem('abrirRegistro');
+  setTimeout(abrirModal, 300);
+}
+
+function renderHierba(idx, dir=0){
+  const h = hierbas[idx];
+  const left = document.getElementById('pageLeft');
+  const right = document.getElementById('pageRight');
+
+  // Animación flip
+  if(dir !== 0){
+    left.classList.add('page-flip');
+    right.classList.add('page-flip');
+    setTimeout(()=>{left.classList.remove('page-flip');right.classList.remove('page-flip')},500);
+  }
+
+  // Lote badge
+  document.getElementById('loteBadge').textContent = h.lote;
+  document.getElementById('herbNum').textContent = (idx+1)+' / '+hierbas.length;
+
+  // Foto local
+  const img = document.getElementById('herbPhoto');
+  img.classList.add('loading');
+  img.onload = () => img.classList.remove('loading');
+  img.onerror = () => img.classList.remove('loading');
+  img.src = h.img;
+
+  // Nombre
+  document.getElementById('herbName').textContent = h.nombre;
+  document.getElementById('herbLat').textContent = h.lat;
+
+  // Propiedades
+  const ul = document.getElementById('herbProps');
+  ul.innerHTML = h.props.map(p=>`<li>${p}</li>`).join('');
+
+  // Usos
+  document.getElementById('herbUsos').textContent = h.usos;
+
+  // Nota / contraindicaciones
+  document.getElementById('herbNota').textContent = h.nota ? '⚕ ' + h.nota : '';
+
+  // Campos extra: nombres alternativos, partes, fuentes
+  const extra = document.getElementById('herbExtra');
+  let extraHtml = '';
+  if(h.nombres_alternativos) extraHtml += `<p class="herb-section-title">También conocida como</p><p class="herb-extra-val">${h.nombres_alternativos}</p>`;
+  if(h.partes_utilizadas)    extraHtml += `<p class="herb-section-title">Partes utilizadas</p><p class="herb-extra-val">${h.partes_utilizadas}</p>`;
+  extra.innerHTML = extraHtml;
+
+  // Jugo herbal inline
+  const jugo = getJugoParaHierba(h.nombre);
+  document.getElementById('herbJugo').innerHTML = jugo ? renderJugoInline(jugo) : '';
+  const infusion = getInfusionParaHierba(h.nombre);
+  document.getElementById('herbInfusion').innerHTML = infusion ? renderInfusionInline(infusion) : '';
+
+  // Indicador
+  document.getElementById('navCounter').textContent = (idx+1)+' / '+hierbas.length;
+  document.getElementById('loteIndicator').textContent = h.loteDesc;
+
+  // Botones
+  document.getElementById('btnPrev').disabled = idx === 0;
+  document.getElementById('btnNext').disabled = idx === hierbas.length-1;
+
+  // Actualizar enlace de descarga PDF
+  const nombrePDF = h.nombre.toLowerCase()
+    .replace(/ /g,'_').replace(/\//g,'_')
+    .replace(/á/g,'a').replace(/é/g,'e').replace(/í/g,'i')
+    .replace(/ó/g,'o').replace(/ú/g,'u').replace(/ñ/g,'n').replace(/ü/g,'u');
+  const btnPDF = document.getElementById('btnDescargaPDF');
+  if(btnPDF){
+    btnPDF.href = `fichas_pdf/${nombrePDF}.pdf`;
+    btnPDF.download = `${h.nombre}.pdf`;
+  }
+
+  actualizarZonas();
+}
+
+function cambiarHierba(dir){
+  const next = current + dir;
+  if(next < 0 || next >= hierbas.length) return;
+  current = next;
+  renderHierba(current, dir);
+}
+
+// Teclas de dirección
+document.addEventListener('keydown', e=>{
+  if(!abierto) return;
+  if(e.key==='ArrowRight') cambiarHierba(1);
+  if(e.key==='ArrowLeft') cambiarHierba(-1);
+});
+</script>
+</body>
+</html>

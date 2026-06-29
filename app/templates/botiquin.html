@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Botiquín Herbal · Salud Natura</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── BOTIQUÍN ── */
+    .bq-hero {
+      background: linear-gradient(160deg, #0c1a0a 0%, #162510 50%, #0a1208 100%);
+      padding: 110px 20px 65px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(184,146,74,.25);
+    }
+    .bq-hero::before {
+      content:'';position:absolute;inset:0;
+      background: radial-gradient(ellipse at 50% 80%, rgba(184,146,74,.07) 0%, transparent 65%);
+    }
+    .bq-eyebrow {
+      font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:5px;
+      text-transform:uppercase;color:#b8924a;margin-bottom:14px;display:block;
+      position:relative;
+    }
+    .bq-hero h1 {
+      font-family:'Cinzel',serif;font-size:clamp(1.8rem,4vw,3rem);
+      color:#e8d5a3;margin-bottom:10px;font-weight:600;position:relative;line-height:1.2;
+    }
+    .bq-hero h1 em { color:#b8924a;font-style:normal; }
+    .bq-hero p {
+      font-family:'Lato',sans-serif;font-size:.9rem;
+      color:rgba(232,213,163,.55);letter-spacing:2px;margin-bottom:42px;position:relative;
+    }
+
+    /* Filters */
+    .bq-filters {
+      display:flex;flex-wrap:wrap;gap:8px;justify-content:center;position:relative;
+    }
+    .bq-filter {
+      font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:2px;
+      text-transform:uppercase;padding:7px 18px;border-radius:20px;
+      border:1px solid rgba(184,146,74,.35);background:rgba(255,255,255,.04);
+      color:rgba(232,213,163,.65);cursor:pointer;transition:all .2s;
+    }
+    .bq-filter:hover { background:rgba(184,146,74,.14);color:#e8d5a3; }
+    .bq-filter.active { background:#b8924a;color:#1a0f00;border-color:#b8924a;font-weight:600; }
+
+    /* Main */
+    .bq-main { background:#0f0800;padding:50px 20px 90px; }
+    .bq-instruction {
+      text-align:center;font-family:'Cinzel',serif;font-size:.52rem;
+      letter-spacing:4px;color:rgba(184,146,74,.4);text-transform:uppercase;margin-bottom:32px;
+    }
+
+    /* Grid */
+    .bq-grid {
+      max-width:1120px;margin:0 auto;
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:10px;
+    }
+
+    /* Card */
+    .bq-card {
+      background:#f5edcf;border-radius:4px;overflow:hidden;
+      border:1px solid rgba(184,146,74,.3);
+      transition:transform .2s,box-shadow .2s,opacity .3s,filter .3s;
+      position:relative;
+    }
+    .bq-card:hover { transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,.45); }
+    .bq-card.out { opacity:.1;filter:blur(1px);pointer-events:none;transform:scale(.97); }
+
+    .bq-card-head {
+      padding:15px 13px 10px;display:flex;align-items:flex-start;gap:10px;cursor:pointer;
+    }
+    .bq-icon { font-size:1.6rem;flex-shrink:0;line-height:1;margin-top:1px; }
+    .bq-card-info { flex:1;min-width:0; }
+    .bq-card-name {
+      font-family:'Cinzel',serif;font-size:.85rem;color:#2a1400;
+      font-weight:600;line-height:1.3;margin-bottom:6px;
+    }
+    .bq-badge {
+      display:inline-block;font-family:'Lato',sans-serif;font-size:.58rem;
+      letter-spacing:1px;text-transform:uppercase;padding:3px 9px;
+      border-radius:10px;font-weight:700;color:#fff;
+    }
+    .bq-arrow {
+      position:absolute;bottom:10px;right:12px;font-size:.8rem;
+      color:rgba(58,30,0,.35);transition:transform .25s;pointer-events:none;
+    }
+    .bq-card.open .bq-arrow { transform:rotate(180deg); }
+
+    /* Detail panel */
+    .bq-detail {
+      max-height:0;overflow:hidden;
+      transition:max-height .35s cubic-bezier(.4,0,.2,1);
+      background:#ede0b8;border-top:1px solid rgba(184,146,74,.2);
+    }
+    .bq-card.open .bq-detail { max-height:360px; }
+    .bq-detail-in { padding:13px 15px 17px; }
+    .bq-planta {
+      font-family:'Cinzel',serif;font-size:.85rem;color:#3a1e00;
+      margin-bottom:2px;
+    }
+    .bq-lat { font-style:italic;font-size:.72rem;color:#8a6010;margin-bottom:10px; }
+    .bq-label {
+      font-family:'Cinzel',serif;font-size:.56rem;letter-spacing:2px;
+      text-transform:uppercase;color:#8a6010;margin-bottom:5px;
+    }
+    .bq-prep {
+      font-family:'Lato',sans-serif;font-size:.82rem;color:#3a1e00;
+      line-height:1.7;margin-bottom:10px;
+    }
+    .bq-nota {
+      font-family:'Lato',sans-serif;font-style:italic;font-size:.75rem;
+      color:#5a3000;background:rgba(184,146,74,.1);
+      border-left:2px solid #b8924a;padding:6px 10px;border-radius:0 2px 2px 0;
+    }
+
+    /* Category badge colors */
+    .cat-d  { background:#8b2517; }
+    .cat-di { background:#236640; }
+    .cat-r  { background:#14527a; }
+    .cat-e  { background:#5c2d80; }
+    .cat-p  { background:#924a1a; }
+    .cat-c  { background:#6a5500; }
+
+    /* Aviso */
+    .bq-aviso {
+      max-width:1120px;margin:40px auto 0;padding:16px 20px;
+      background:rgba(184,146,74,.07);border:1px solid rgba(184,146,74,.22);
+      border-radius:4px;display:flex;gap:14px;align-items:flex-start;
+    }
+    .bq-aviso-icon { font-size:1.3rem;flex-shrink:0;margin-top:1px; }
+    .bq-aviso p {
+      font-family:'Lato',sans-serif;font-size:.73rem;
+      color:rgba(232,213,163,.6);line-height:1.75;margin:0;
+    }
+    .bq-aviso strong { color:#b8924a; }
+
+    @media(max-width:600px){
+      .bq-grid{grid-template-columns:repeat(2,1fr);gap:8px;}
+      .bq-filter{font-size:.46rem;padding:6px 12px;}
+    }
+
+    /* ── BOTÓN "Ver ficha" dentro del desplegable ── */
+    .bq-ficha-btn {
+      display:inline-flex;align-items:center;gap:6px;margin-top:11px;
+      font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:2px;text-transform:uppercase;
+      color:#b8924a;border:1px solid rgba(184,146,74,.45);padding:6px 14px;
+      border-radius:20px;background:rgba(184,146,74,.06);cursor:pointer;
+      transition:background .2s,color .2s,border-color .2s;
+    }
+    .bq-ficha-btn:hover { background:rgba(184,146,74,.18);border-color:#b8924a;color:#7a4a00; }
+
+    /* ── FICHA OVERLAY ── */
+    #fichaOverlay {
+      display:none;position:fixed;inset:0;z-index:9000;
+      background:rgba(10,6,0,.82);backdrop-filter:blur(4px);
+      align-items:center;justify-content:center;padding:20px;
+    }
+    #fichaOverlay.visible { display:flex; }
+
+    #fichaPanel {
+      background:#f5edcf;border-radius:5px;overflow:hidden;
+      box-shadow:0 30px 80px rgba(0,0,0,.7);
+      width:100%;max-width:720px;max-height:90vh;overflow-y:auto;
+      position:relative;
+    }
+
+    /* Cabecera de la ficha */
+    .fp-head {
+      background:linear-gradient(135deg,#2a1400 0%,#4a2800 100%);
+      padding:20px 24px 18px;display:flex;align-items:flex-start;gap:18px;
+      position:relative;
+    }
+    .fp-head-icon { font-size:2.6rem;flex-shrink:0;line-height:1; }
+    .fp-head-info { flex:1; }
+    .fp-head-cat {
+      font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:3px;
+      text-transform:uppercase;color:#b8924a;margin-bottom:6px;
+    }
+    .fp-head-dolencia {
+      font-family:'Cinzel',serif;font-size:1.3rem;color:#e8d5a3;
+      font-weight:600;line-height:1.2;margin-bottom:5px;
+    }
+    .fp-head-planta {
+      font-family:'Cinzel',serif;font-size:.82rem;color:#d4af37;margin-bottom:2px;
+    }
+    .fp-head-lat {
+      font-style:italic;font-size:.7rem;color:rgba(232,213,163,.5);
+    }
+    .fp-head-badge {
+      display:inline-block;font-family:'Lato',sans-serif;font-size:.46rem;
+      letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;
+      border-radius:10px;font-weight:700;color:#fff;margin-top:8px;
+    }
+
+    /* Barra de acciones */
+    .fp-actions {
+      background:#ede0b8;border-bottom:1px solid rgba(184,146,74,.25);
+      padding:10px 20px;display:flex;align-items:center;justify-content:space-between;
+    }
+    .fp-btn-back {
+      font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:2px;
+      text-transform:uppercase;color:#8a6010;border:1px solid rgba(184,146,74,.4);
+      padding:6px 14px;border-radius:20px;background:transparent;
+      cursor:pointer;transition:background .2s;display:flex;align-items:center;gap:6px;
+    }
+    .fp-btn-back:hover { background:rgba(184,146,74,.12); }
+    .fp-btn-print {
+      font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:2px;
+      text-transform:uppercase;color:#fff;border:none;
+      padding:7px 18px;border-radius:20px;background:#b8924a;
+      cursor:pointer;transition:background .2s;display:flex;align-items:center;gap:7px;
+    }
+    .fp-btn-print:hover { background:#9a7832; }
+
+    /* Cuerpo de la ficha */
+    .fp-body { padding:24px 28px 30px; }
+    .fp-section-title {
+      font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:3px;
+      text-transform:uppercase;color:#8a6010;margin-bottom:8px;
+      border-bottom:1px solid rgba(184,146,74,.3);padding-bottom:5px;
+    }
+    .fp-prep-text {
+      font-family:'Lato',sans-serif;font-size:.88rem;color:#2a1400;
+      line-height:1.75;margin-bottom:22px;
+    }
+    .fp-nota-box {
+      background:rgba(184,146,74,.1);border:1px solid rgba(184,146,74,.3);
+      border-left:3px solid #b8924a;border-radius:0 4px 4px 0;
+      padding:12px 16px;margin-bottom:22px;
+    }
+    .fp-nota-label {
+      font-family:'Cinzel',serif;font-size:.46rem;letter-spacing:2.5px;
+      text-transform:uppercase;color:#8a6010;margin-bottom:5px;
+    }
+    .fp-nota-text {
+      font-family:'Lato',sans-serif;font-style:italic;font-size:.82rem;
+      color:#5a3000;line-height:1.65;
+    }
+    .fp-divider {
+      text-align:center;font-family:'Cinzel',serif;font-size:.72rem;
+      letter-spacing:2px;color:#8a6010;margin:20px 0 0;
+    }
+
+    /* ── PRINT ── */
+    @media print {
+      * { -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+      body > *:not(#fichaOverlay) { display:none !important; }
+      #fichaOverlay {
+        display:block !important;position:static !important;
+        background:none !important;backdrop-filter:none !important;padding:0 !important;
+      }
+      #fichaPanel {
+        box-shadow:none !important;max-height:none !important;
+        max-width:100% !important;border-radius:0 !important;
+      }
+      .fp-actions { display:none !important; }
+      .fp-body { padding:28px 32px 40px !important; }
+      .fp-divider { margin-top:30px !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <div class="logo-img-wrap"><img src="logo.jpg" alt="Logo Salud Natura" class="logo-img"/></div>
+        <div class="logo-text">
+          <span class="logo-main">Salud Natura</span>
+          <span class="logo-sub">Sabiduría Ancestral</span>
+        </div>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="index.html#pilares">Filosofía</a></li>
+        <li><a href="grimorio.html">El Grimorio</a></li>
+        <li><a href="botiquin.html" style="color:#b8924a">Botiquín</a></li>
+        <li><a href="index.html#contacto">Contacto</a></li>
+      </ul>
+      <div class="hamburger" onclick="toggleMenu()">☰</div>
+      <a href="grimorio.html#registro" class="btn-registro-nav" onclick="sessionStorage.setItem('abrirRegistro','1')">Registrarse</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="bq-hero">
+    <span class="bq-eyebrow">✦ Remedios herbales de acción rápida ✦</span>
+    <h1>Botiquín <em>Herbal</em><br>de Urgencias</h1>
+    <p>29 dolencias · 29 plantas · preparación en minutos</p>
+    <div class="bq-filters">
+      <button class="bq-filter active" data-cat="all">Todos</button>
+      <button class="bq-filter" data-cat="d">💢 Dolor</button>
+      <button class="bq-filter" data-cat="di">🌿 Digestivo</button>
+      <button class="bq-filter" data-cat="r">🫁 Respiratorio</button>
+      <button class="bq-filter" data-cat="e">🧠 Emocional</button>
+      <button class="bq-filter" data-cat="p">🩹 Piel & Heridas</button>
+      <button class="bq-filter" data-cat="c">❤️ Corazón & Órganos</button>
+    </div>
+  </section>
+
+  <!-- CARDS -->
+  <section class="bq-main">
+    <p class="bq-instruction">── ✦ ── Toca cualquier dolencia para ver el remedio ── ✦ ──</p>
+    <div class="bq-grid" id="bqGrid"></div>
+    <div class="bq-aviso">
+      <span class="bq-aviso-icon">⚕️</span>
+      <p><strong>Aviso médico importante:</strong> Los remedios aquí presentados tienen carácter informativo y educativo basado en tradiciones herbales. No constituyen diagnóstico ni tratamiento médico. Ante síntomas graves, persistentes o ante cualquier duda, consulta siempre a un profesional de la salud. Las plantas medicinales pueden interactuar con medicamentos. Salud Natura no reemplaza la atención médica profesional.</p>
+    </div>
+  </section>
+
+  <!-- FICHA OVERLAY -->
+  <div id="fichaOverlay" onclick="cerrarFicha(event)">
+    <div id="fichaPanel">
+      <div class="fp-head" id="fpHead">
+        <span class="fp-head-icon" id="fpIcon"></span>
+        <div class="fp-head-info">
+          <div class="fp-head-cat" id="fpCat"></div>
+          <div class="fp-head-dolencia" id="fpDolencia"></div>
+          <div class="fp-head-planta" id="fpPlanta"></div>
+          <div class="fp-head-lat" id="fpLat"></div>
+          <span class="fp-head-badge" id="fpBadge"></span>
+        </div>
+      </div>
+      <div class="fp-actions">
+        <button class="fp-btn-back" onclick="cerrarFichaBtn()">← Volver al botiquín</button>
+        <button class="fp-btn-print" onclick="window.print()">🖨️ Imprimir ficha</button>
+      </div>
+      <div class="fp-body">
+        <div class="fp-section-title">Preparación</div>
+        <div class="fp-prep-text" id="fpPrep"></div>
+        <div class="fp-nota-box">
+          <div class="fp-nota-label">⚠ Nota importante</div>
+          <div class="fp-nota-text" id="fpNota"></div>
+        </div>
+        <div class="fp-divider">── ✦ ── Salud Natura · Botiquín Herbal · saludnaturalezamundo.com ── ✦ ──</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-logo">
+        <img src="logo.jpg" alt="Logo Salud Natura" class="footer-logo-img"/>
+        <span>Salud Natura</span>
+      </div>
+      <p class="footer-quote">"La naturaleza contiene el remedio para todo lo que aflige al hombre." — Hipócrates</p>
+      <p class="footer-legal">© 2026 Salud Natura. Todos los derechos reservados. | Este sitio tiene fines informativos y educativos únicamente. No reemplaza la consulta médica profesional.</p>
+    </div>
+  </footer>
+
+  <script>
+  function toggleMenu(){ document.querySelector('.nav-links').classList.toggle('open'); }
+
+  const CATS = {
+    d:  { label:'Dolor & Inflamación',  cls:'cat-d'  },
+    di: { label:'Sistema Digestivo',    cls:'cat-di' },
+    r:  { label:'Sistema Respiratorio', cls:'cat-r'  },
+    e:  { label:'Salud Emocional',      cls:'cat-e'  },
+    p:  { label:'Piel & Heridas',       cls:'cat-p'  },
+    c:  { label:'Corazón & Órganos',    cls:'cat-c'  },
+  };
+
+  const R = [
+    // ── DOLOR & INFLAMACIÓN ──
+    { d:'Dolor de cabeza',      i:'🤕', c:'d',
+      p:'Sauce Blanco', l:'Salix alba',
+      prep:'Hierve 1 cucharadita de corteza seca en 300 ml de agua durante 10 min a fuego lento. Cuela, deja templar y bebe. Repite 2-3 veces al día según necesidad.',
+      n:'Evitar si eres alérgico a la aspirina, tomas anticoagulantes o tienes úlcera gástrica.' },
+    { d:'Dolor muscular',       i:'💪', c:'d',
+      p:'Árnica', l:'Arnica montana',
+      prep:'Uso externo únicamente. Prepara infusión concentrada con 2 cucharadas de flores en 200 ml de agua. Empapa una gasa y aplica en compresa sobre la zona afectada 20 min, 3 veces al día.',
+      n:'Nunca ingerir ni aplicar sobre piel abierta, heridas o mucosas. Solo uso tópico.' },
+    { d:'Dolor articular',      i:'🦵', c:'d',
+      p:'Harpagofito', l:'Harpagophytum procumbens',
+      prep:'Hierve 1 cucharada de raíz seca triturada en 250 ml de agua a fuego suave 10 min. Deja reposar 5 min tapado. Cuela y bebe. 2 veces al día durante al menos 4 semanas.',
+      n:'No usar con úlcera gástrica, embarazo o medicación antihipertensiva sin consultar al médico.' },
+    { d:'Inflamación crónica',  i:'🔥', c:'d',
+      p:'Cúrcuma', l:'Curcuma longa',
+      prep:'Hierve 1 rodaja de cúrcuma fresca con una pizca de pimienta negra en 400 ml de agua 10 min. Cuela, añade miel al gusto. 2 tazas al día durante mínimo 3 semanas.',
+      n:'La pimienta negra aumenta la absorción de curcumina hasta un 2.000%. Evitar en cálculos biliares.' },
+    { d:'Cólicos menstruales',  i:'🌸', c:'d',
+      p:'Cardo Mariano', l:'Silybum marianum',
+      prep:'Muele 1 cucharadita de semillas. Infusiona en 250 ml de agua caliente 10 min. Bebe 3 tazas al día desde 2 días antes del período hasta el final.',
+      n:'La silimarina actúa como antiespasmódico y antiinflamatorio uterino natural.' },
+    { d:'Dolor de garganta',    i:'😮', c:'d',
+      p:'Salvia', l:'Salvia officinalis',
+      prep:'Infusiona 2 cucharaditas de hojas secas en 200 ml de agua caliente 10 min. Usa templada para gárgaras de 30 seg. No tragar si está muy concentrada. Repite cada 2-3 horas.',
+      n:'Sus aceites esenciales (tujona, cineol) tienen propiedades antisépticas potentes y comprobadas.' },
+    // ── SISTEMA DIGESTIVO ──
+    { d:'Acidez estomacal',     i:'🫁', c:'di',
+      p:'Malvavisco', l:'Althaea officinalis',
+      prep:'Maceración fría: 1 cucharada de raíz seca en 200 ml de agua fría durante 8 horas. Nunca hervir — el calor destruye los mucílagos activos. Cuela y bebe antes de las comidas.',
+      n:'El gel mucilaginoso crea una barrera protectora sobre la mucosa del esófago y el estómago.' },
+    { d:'Digestión lenta',      i:'🍽️', c:'di',
+      p:'Hinojo', l:'Foeniculum vulgare',
+      prep:'Machaca 1 cucharadita de semillas de hinojo en un mortero. Infusiona en 250 ml de agua caliente 6-7 min. Bebe caliente después de cada comida principal.',
+      n:'Alivia simultáneamente la pesadez, la hinchazón, los gases y los espasmos intestinales.' },
+    { d:'Náuseas',              i:'🤢', c:'di',
+      p:'Jengibre', l:'Zingiber officinale',
+      prep:'Hierve 3-4 rodajas de jengibre fresco en 300 ml de agua 5 min. Deja templar y bebe a sorbos lentos. Alternativa rápida: mastica un trozo pequeño de raíz fresca.',
+      n:'Tan eficaz como medicamentos convencionales para náuseas del embarazo y quimioterapia.' },
+    { d:'Gases intestinales',   i:'💨', c:'di',
+      p:'Anís Verde', l:'Pimpinella anisum',
+      prep:'Infusiona 1 cucharadita de semillas de anís en 250 ml de agua caliente 6 min. Bebe caliente después de las comidas. Añade una hoja de menta fresca si deseas.',
+      n:'El anetol relaja el músculo liso intestinal y facilita la expulsión de gases acumulados.' },
+    { d:'Mareos y vértigos',    i:'😵', c:'di',
+      p:'Jengibre', l:'Zingiber officinale',
+      prep:'Mastica un trozo de raíz fresca 30 min antes de viajar. O infusiona 3 rodajas en 250 ml de agua 5 min y bebe antes del trayecto.',
+      n:'Tan eficaz como el dimenhidrinato para el mareo por movimiento, sin somnolencia.' },
+    { d:'Hígado graso',         i:'🫀', c:'di',
+      p:'Cardo Mariano', l:'Silybum marianum',
+      prep:'Muele las semillas y disuelve 1 cucharada en un vaso de agua tibia. Toma en ayunas. O infusiona semillas trituradas en agua caliente 10 min. 3 veces al día, durante 4-8 semanas.',
+      n:'La silimarina protege y regenera activamente los hepatocitos dañados por grasa acumulada.' },
+    // ── SISTEMA RESPIRATORIO ──
+    { d:'Resfriado común',      i:'🤧', c:'r',
+      p:'Saúco', l:'Sambucus nigra',
+      prep:'Infusiona 2 cucharadas de flores secas de saúco en 350 ml de agua caliente 10 min. Bebe caliente 3 tazas al día. Más eficaz en las primeras 24-48 horas de síntomas.',
+      n:'Sus flavonoides impiden activamente que los virus respiratorios penetren en las células.' },
+    { d:'Tos seca',             i:'😤', c:'r',
+      p:'Malvavisco', l:'Althaea officinalis',
+      prep:'Infusiona flores y hojas de malvavisco en 300 ml de agua caliente 10 min sin hervir. Bebe caliente a sorbos lentos añadiendo miel de tomillo. 4-5 tazas al día.',
+      n:'Los mucílagos recubren la mucosa respiratoria irritada como una película protectora calmante.' },
+    { d:'Fiebre',               i:'🌡️', c:'r',
+      p:'Tilo', l:'Tilia europaea',
+      prep:'Infusiona 2 cucharadas de flores de tilo en 300 ml de agua caliente 10 min. Tapa. Bebe caliente para inducir sudoración suave. 3 tazas al día mientras dure la fiebre.',
+      n:'Regula la temperatura de forma natural y progresiva. No usar en menores de 3 años.' },
+    // ── SALUD EMOCIONAL ──
+    { d:'Estrés crónico',       i:'😰', c:'e',
+      p:'Melisa', l:'Melissa officinalis',
+      prep:'Calienta agua a 90°C (sin llegar a hervir). Infusiona 1 cucharada de hojas frescas durante 7 min. Tapa para conservar los aceites esenciales volátiles. 3 tazas al día.',
+      n:'El ácido rosmarínico reduce el cortisol en sangre demostrado en estudios clínicos controlados.' },
+    { d:'Ansiedad',             i:'😟', c:'e',
+      p:'Pasiflora', l:'Passiflora incarnata',
+      prep:'Infusiona 1 cucharada de partes aéreas secas en 250 ml de agua caliente 8-10 min. Bebe 2-3 tazas al día. La última taza, 1 hora antes de acostarte.',
+      n:'Actúa sobre receptores GABA con efecto ansiolítico suave. No crea dependencia ni tolerancia.' },
+    { d:'Insomnio',             i:'😴', c:'e',
+      p:'Valeriana', l:'Valeriana officinalis',
+      prep:'Decocción: 1 cucharadita de raíz seca triturada en 300 ml de agua 5 min. Deja reposar tapado 10 min. Cuela y bebe 30-60 min antes de acostarte. No superar la dosis indicada.',
+      n:'El efecto óptimo se alcanza tras 2-4 semanas de uso regular. No produce somnolencia diurna.' },
+    { d:'Problemas de memoria', i:'🧠', c:'e',
+      p:'Ginkgo Biloba', l:'Ginkgo biloba',
+      prep:'Infusiona 1 cucharada de hojas secas en 250 ml de agua caliente 10 min. Bebe 2 tazas al día: una por la mañana y otra al mediodía. Mínimo 6-8 semanas para evaluar el efecto.',
+      n:'Mejora la microcirculación cerebral. No combinar con anticoagulantes ni antiagregantes.' },
+    { d:'Fatiga crónica',       i:'😫', c:'e',
+      p:'Eleuterococo', l:'Eleutherococcus senticosus',
+      prep:'Decocción de 1 cucharadita de raíz seca en 300 ml de agua 15 min. Bebe por la mañana en ayunas. Sigue ciclos de 3 semanas de toma seguidas de 1 semana de descanso.',
+      n:'Adaptógeno que regula la respuesta al estrés físico y mental sin estimulantes ni efectos rebote.' },
+    { d:'Depresión leve',       i:'🌤️', c:'e',
+      p:'Hierba de San Juan', l:'Hypericum perforatum',
+      prep:'Infusiona 1 cucharada de flores secas en 250 ml de agua caliente 10 min. Bebe 3 tazas al día. Se necesitan mínimo 4-6 semanas de uso continuado para ver efecto terapéutico.',
+      n:'No combinar con antidepresivos, anticonceptivos, anticoagulantes ni antivirales. Puede causar fotosensibilidad.' },
+    // ── PIEL & HERIDAS ──
+    { d:'Heridas leves',        i:'🩹', c:'p',
+      p:'Caléndula', l:'Calendula officinalis',
+      prep:'Prepara infusión concentrada con 3 cucharadas de flores en 200 ml de agua. Empapa una gasa y aplica como compresa sobre la herida durante 20 min. Repite 3-4 veces al día.',
+      n:'Antiséptica, antiinflamatoria y cicatrizante potente. Una de las plantas tópicas más versátiles.' },
+    { d:'Quemaduras leves',     i:'🔆', c:'p',
+      p:'Aloe Vera', l:'Aloe barbadensis',
+      prep:'Corta una hoja de aloe vera. Aplica el gel transparente del interior directamente sobre la quemadura. No cubrir. Deja actuar. Repite 3-4 veces al día hasta la recuperación.',
+      n:'Solo para quemaduras de primer grado (sin ampollas). Quemaduras graves requieren atención médica urgente.' },
+    { d:'Picaduras de insecto', i:'🦟', c:'p',
+      p:'Llantén', l:'Plantago major',
+      prep:'Estruja una hoja fresca de llantén entre los dedos para liberar el jugo y aplica directamente sobre la picadura. Mantén 10-15 min con presión suave. Repite según necesidad.',
+      n:'Antihistamínico y antiinflamatorio natural. Actúa en minutos sobre el picor, el enrojecimiento y la hinchazón.' },
+    // ── CORAZÓN & ÓRGANOS ──
+    { d:'Retención de líquidos',i:'💧', c:'c',
+      p:'Diente de León', l:'Taraxacum officinale',
+      prep:'Infusiona 1 cucharada de hojas secas en 250 ml de agua caliente 10 min. Bebe 3 tazas al día repartidas. También puedes consumir las hojas frescas y tiernas en ensalada.',
+      n:'Diurético natural que, a diferencia de los fármacos, no provoca pérdida de potasio.' },
+    { d:'Infección urinaria',   i:'🫧', c:'c',
+      p:'Arándano Rojo', l:'Vaccinium macrocarpon',
+      prep:'Bebe 200 ml de zumo de arándano rojo sin azúcar 3 veces al día. O infusiona hojas secas 10 min. Acompaña siempre con 2 litros de agua al día.',
+      n:'Preventivo y coadyuvante — no reemplaza a los antibióticos si hay infección activa diagnosticada.' },
+    { d:'Cálculos renales',     i:'🪨', c:'c',
+      p:'Cola de Caballo', l:'Equisetum arvense',
+      prep:'Infusiona 1 cucharada de la planta seca en 300 ml de agua caliente 10-15 min. Bebe 3 tazas al día siempre con abundante agua entre tomas (mínimo 2 litros al día).',
+      n:'Acción preventiva y disolvente suave. Ante dolor renal intenso o hematuria, acude a urgencias.' },
+    { d:'Presión alta',         i:'❤️', c:'c',
+      p:'Olivo', l:'Olea europaea',
+      prep:'Infusiona 10-15 hojas de olivo secas en 300 ml de agua caliente 10-15 min. Bebe 2-3 tazas al día. El efecto es acumulativo: se aprecia mejoría en 2-4 semanas de uso regular.',
+      n:'Complemento natural — nunca suspender la medicación antihipertensiva sin supervisión médica.' },
+    { d:'Colesterol elevado',   i:'🩸', c:'c',
+      p:'Ajo', l:'Allium sativum',
+      prep:'Consume 1-2 dientes de ajo crudo al día en ayunas, con agua. El alicina se activa al cortar o machacar. O infusiona ajo machacado en agua templada 5 min. El efecto es a largo plazo.',
+      n:'La acción hipocolesterolemiante es significativamente mayor con ajo crudo que cocinado.' },
+  ];
+
+  // ── RENDER ──
+  const grid = document.getElementById('bqGrid');
+  R.forEach((r,i)=>{
+    const cat = CATS[r.c];
+    const el = document.createElement('div');
+    el.className = 'bq-card';
+    el.dataset.cat = r.c;
+    el.id = `bq-${i}`;
+    el.innerHTML = `
+      <div class="bq-card-head" onclick="toggle(${i})">
+        <span class="bq-icon">${r.i}</span>
+        <div class="bq-card-info">
+          <div class="bq-card-name">${r.d}</div>
+          <span class="bq-badge ${cat.cls}">${cat.label}</span>
+        </div>
+      </div>
+      <span class="bq-arrow" onclick="toggle(${i})">▾</span>
+      <div class="bq-detail" id="dt-${i}">
+        <div class="bq-detail-in">
+          <div class="bq-planta">🌿 ${r.p}</div>
+          <div class="bq-lat">${r.l}</div>
+          <div class="bq-label">Preparación</div>
+          <div class="bq-prep">${r.prep}</div>
+          <div class="bq-nota">${r.n}</div>
+          <button class="bq-ficha-btn" onclick="abrirFicha(${i})">📋 Ver ficha completa</button>
+        </div>
+      </div>`;
+    grid.appendChild(el);
+  });
+
+  function abrirFicha(i){
+    const r = R[i];
+    const cat = CATS[r.c];
+    document.getElementById('fpIcon').textContent = r.i;
+    document.getElementById('fpCat').textContent = cat.label;
+    document.getElementById('fpDolencia').textContent = r.d;
+    document.getElementById('fpPlanta').textContent = '🌿 ' + r.p;
+    document.getElementById('fpLat').textContent = r.l;
+    const badge = document.getElementById('fpBadge');
+    badge.textContent = cat.label;
+    badge.className = 'fp-head-badge bq-badge ' + 'cat-' + r.c;
+    document.getElementById('fpPrep').textContent = r.prep;
+    document.getElementById('fpNota').textContent = r.n;
+    document.getElementById('fichaOverlay').classList.add('visible');
+    document.body.style.overflow = 'hidden';
+  }
+  function cerrarFichaBtn(){
+    document.getElementById('fichaOverlay').classList.remove('visible');
+    document.body.style.overflow = '';
+  }
+  function cerrarFicha(e){
+    if(e.target === document.getElementById('fichaOverlay')) cerrarFichaBtn();
+  }
+  document.addEventListener('keydown', e => { if(e.key==='Escape') cerrarFichaBtn(); });
+
+  function toggle(i){
+    const card = document.getElementById(`bq-${i}`);
+    const wasOpen = card.classList.contains('open');
+    document.querySelectorAll('.bq-card.open').forEach(c=>c.classList.remove('open'));
+    if(!wasOpen) card.classList.add('open');
+  }
+
+  // ── FILTER ──
+  document.querySelectorAll('.bq-filter').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.bq-filter').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const cat = btn.dataset.cat;
+      document.querySelectorAll('.bq-card').forEach(card=>{
+        const matches = cat==='all' || card.dataset.cat===cat;
+        card.classList.toggle('out',!matches);
+        if(!matches) card.classList.remove('open');
+      });
+    });
+  });
+  </script>
+</body>
+</html>

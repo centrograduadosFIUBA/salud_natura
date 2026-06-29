@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Salud Natura – Sabiduría Ancestral de la Tierra</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- HEADER / NAV -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <div class="logo-img-wrap">
+          <img src="logo.jpg" alt="Logo Salud Natura" class="logo-img" />
+        </div>
+        <div class="logo-text">
+          <span class="logo-main">Salud Natura</span>
+          <span class="logo-sub">Sabiduría Ancestral</span>
+        </div>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#pilares">Filosofía</a></li>
+        <li><a href="#grimorio">El Grimorio</a></li>
+        <li><a href="#hierbas">Hierbas</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+      <div class="hamburger" onclick="toggleMenu()">☰</div>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section id="inicio" class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-logo-wrap">
+        <img src="logo.jpg" alt="Logo Salud Natura" class="hero-logo" />
+      </div>
+      <h1 class="hero-title">Bienvenidos al Grimorio<br><span>de Salud Natura</span></h1>
+      <p class="hero-subtitle">Sabiduría Ancestral de la Tierra</p>
+      <p class="hero-quote">"Conocerse a uno mismo es la verdadera sabiduría."<br><em>— Lao Tsé</em></p>
+      <a href="#grimorio" class="btn-primary">Explorar el Grimorio</a>
+    </div>
+    <div class="scroll-indicator">↓</div>
+  </section>
+
+  <!-- PILARES -->
+  <section id="pilares" class="pilares">
+    <div class="container">
+      <h2 class="section-title">Nuestra Filosofía</h2>
+      <p class="section-subtitle">Tres ejes que sostienen cada hoja, cada raíz, cada conocimiento</p>
+      <div class="pilares-grid">
+        <div class="pilar-card">
+          <div class="pilar-icon">⚗️</div>
+          <h3>Saber Científico</h3>
+          <p>Validación y rigor en cada información. Respetamos la evidencia y la investigación como base del conocimiento.</p>
+        </div>
+        <div class="pilar-card">
+          <div class="pilar-icon">🌙</div>
+          <h3>Tradición Alquímica</h3>
+          <p>Rescate de prácticas ancestrales que la humanidad ha cultivado durante siglos en comunión con la naturaleza.</p>
+        </div>
+        <div class="pilar-card">
+          <div class="pilar-icon">✨</div>
+          <h3>Conexión Espiritual</h3>
+          <p>Enfoque holístico del bienestar. La limpieza comienza desde adentro hacia afuera, en cuerpo, mente y espíritu.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRIMORIO INTRO -->
+  <section id="grimorio" class="grimorio-intro">
+    <div class="container">
+      <div class="grimorio-content">
+        <div class="grimorio-text">
+          <span class="eyebrow">El Grimorio Digital</span>
+          <h2>Un Catálogo Vivo<br>de Sabiduría Verde</h2>
+          <p>El Grimorio de Salud Natura es un catálogo digital interactivo que preserva y difunde el conocimiento ancestral de las plantas medicinales. Cada hierba documentada es un puente entre el pasado y el presente, entre la ciencia y la tradición.</p>
+          <p>21 plantas. 7 lotes. Un universo de posibilidades naturales, presentado con rigor científico y respeto por las tradiciones milenarias.</p>
+          <a href="#hierbas" class="btn-secondary">Ver las 21 Hierbas</a>
+        </div>
+        <div class="grimorio-visual">
+          <a href="grimorio.html" class="book-icon" title="Abrir el Grimorio">
+            <div class="book-cover">
+              <div class="book-spine-bar"></div>
+              <div class="book-corners">
+                <div class="bc tl"></div><div class="bc tr"></div>
+                <div class="bc bl"></div><div class="bc br"></div>
+              </div>
+              <div class="book-cover-inner">
+                <div class="book-medallion">
+                  <img src="logo.jpg" alt="Logo"/>
+                </div>
+                <div class="book-divider"></div>
+                <p class="book-title">Grimorio<br>Salud Natura</p>
+                <div class="book-divider"></div>
+                <span class="book-hint">✦ Abrir ✦</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HIERBAS / LOTES -->
+  <section id="hierbas" class="hierbas">
+    <div class="container">
+      <h2 class="section-title">Las 21 Hierbas del Grimorio</h2>
+      <p class="section-subtitle">Organizadas en siete lotes para una exploración ordenada del conocimiento ancestral</p>
+      <div class="lotes-grid">
+        <div class="lote-card">
+          <div class="lote-header"><span class="lote-num">Lote I</span></div>
+          <ul>
+            <li><a class="hierba-link" href="grimorio.html?h=0"><img class="hierba-icon" src="img/manzanilla.jpg" alt="Manzanilla"/> Manzanilla</a></li>
+            <li><a class="hierba-link" href="grimorio.html?h=1"><img class="hierba-icon" src="img/menta.jpg" alt="Menta"/> Menta</a></li>
+            <li><a class="hierba-link" href="grimorio.html?h=2"><img class="hierba-icon" src="img/lavanda.jpg" alt="Lavanda"/> Lavanda</a></li>
+          </ul>
+        </div>
+        <div class="lote-card">
+          <div class="lote-header"><span class="lote-num">Lote II</span></div>
+          <ul>
+            <li><a class="hierba-link" href="grimorio.html?h=3"><img class="hierba-icon" src="img/romero.jpg" alt="Romero"/> Romero</a></li>
+            <li><a class="hierba-link" href="grimorio.html?h=4"><img class="hierba-icon" src="img/curcuma.jpg" alt="Cúrcuma"/> Cúrcuma</a></li>
+            <li><a class="hierba-link" href="grimorio.html?h=5"><img class="hierba-icon" src="img/jengibre.jpg" alt="Jengibre"/>Jengibre</a></li>
+          </ul>
+        </div>
+        <div class="lote-card">
+          <div class="lote-header"><span class="lote-num">Lote III</span></div>
+          <ul>
+            <li><a class="hierba-link" href="grimorio.html?h=6"><img class="hierba-icon" src="img/eucalipto.jpg" alt="Eucalipto"/> Eucalipto</a></li>
+            <li><a class="hierba-link" href="grimorio.html?h=7"><img class="hierba-icon" src="img/valeriana.jpg" alt="Valeriana"/> Valeriana</a></li>
+            <li><a class="hierba-link" href="grimorio.html?h=8"><img class="hierba-icon" src="img/cola_caballo.jpg" alt="Cola de Caballo"/>Cola de Caballo</a></li>
+          </ul>
+        </div>
+        <div class="lote-card">
+          <div class="lote-header"><span class="lote-num">Lote IV</span></div>
+          <ul>
+            <li><a class="hierba-link" href="grimorio.html?h=9"><img class="hierba-icon" src="img/calendula.jpg" alt="Caléndula"/>Caléndula</a></li>
+            <li><a class="hierba-link" href="grimorio.html?h=10"><img class="hierba-icon" src="img/tomillo.jpg" alt="Tomillo"/> Tomillo</a></li>
+            <li><a class="hierba-link" href="grimorio.html?h=11"><img class="hierba-icon" src="img/pasiflora.jpg" alt="Pasiflora"/>Pasiflora</a></li>
+          </ul>
+        </div>
+        <div class="lote-card">
+          <div class="lote-header"><span class="lote-num">Lote V</span></div>
+          <ul>
+            <li><a class="hierba-link" href="grimorio.html?h=12"><img class="hierba-icon" src="img/diente_leon.jpg" alt="Diente de León"/>Diente de León</a></li>
+            <li><a class="hierba-link" href="grimorio.html?h=13"><img class="hierba-icon" src="img/boldo.jpg" alt="Boldo"/> Boldo</a></li>
+            <li><a class="hierba-link" href="grimorio.html?h=14"><img class="hierba-icon" src="img/ortiga.jpg" alt="Ortiga"/> Ortiga</a></li>
+          </ul>
+        </div>
+        <div class="lote-card">
+          <div class="lote-header"><span class="lote-num">Lote VI</span></div>
+          <ul>
+            <li><a class="hierba-link" href="grimorio.html?h=15"><img class="hierba-icon" src="img/salvia.jpg" alt="Salvia"/> Salvia</a></li>
+            <li><a class="hierba-link" href="grimorio.html?h=16"><img class="hierba-icon" src="img/anis.jpg" alt="Anís Verde"/>Anís Verde</a></li>
+            <li><a class="hierba-link" href="grimorio.html?h=17"><img class="hierba-icon" src="img/melisa.jpg" alt="Melisa"/> Melisa</a></li>
+          </ul>
+        </div>
+        <div class="lote-card">
+          <div class="lote-header"><span class="lote-num">Lote VII</span></div>
+          <ul>
+            <li><a class="hierba-link" href="grimorio.html?h=18"><img class="hierba-icon" src="img/echinacea.jpg" alt="Equinácea"/> Equinácea</a></li>
+            <li><a class="hierba-link" href="grimorio.html?h=19"><img class="hierba-icon" src="img/te_verde.jpg" alt="Té Verde"/> Té Verde</a></li>
+            <li><a class="hierba-link" href="grimorio.html?h=20"><img class="hierba-icon" src="img/ginkgo.jpg" alt="Ginkgo Biloba"/>Ginkgo Biloba</a></li>
+          </ul>
+        </div>
+        <div class="lote-card lote-cta">
+          <div class="lote-header"><span class="lote-num">+21</span></div>
+          <p>El Grimorio crece constantemente con nueva sabiduría ancestral</p>
+          <a href="#contacto" class="btn-primary small">Contactanos</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DISCLAIMER LEGAL -->
+  <section class="disclaimer">
+    <div class="container">
+      <div class="disclaimer-box">
+        <span class="disclaimer-icon">⚕️</span>
+        <div>
+          <strong>Aviso Médico Importante</strong>
+          <p>La información contenida en este sitio es de carácter educativo e informativo sobre plantas y tradiciones ancestrales. No constituye asesoramiento médico, diagnóstico ni tratamiento. Ante cualquier condición de salud, consulte siempre a un profesional médico calificado. El uso de hierbas medicinales puede interactuar con medicamentos. Salud Natura no reemplaza la atención médica profesional.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto" class="contacto">
+    <div class="container">
+      <h2 class="section-title">Contacto</h2>
+      <p class="section-subtitle">¿Tenés consultas sobre el Grimorio o las hierbas? Escribinos.</p>
+      <div class="contacto-grid">
+        <form class="contacto-form" onsubmit="enviarFormulario(event)">
+          <input type="text" placeholder="Tu nombre" required />
+          <input type="email" placeholder="Tu correo electrónico" required />
+          <textarea placeholder="Tu consulta..." rows="5" required></textarea>
+          <button type="submit" class="btn-primary">Enviar mensaje</button>
+          <p id="form-msg" style="display:none; color:#d4af37; margin-top:1rem;">✅ Mensaje enviado. Te respondemos pronto.</p>
+        </form>
+        <div class="contacto-info">
+          <div class="info-item"><span>📧</span><div><strong>Correo</strong><p>josepsaludnatura@gmail.com</p></div></div>
+          <div class="info-item"><span>🌐</span><div><strong>Dominio Principal</strong><p>saludnaturalezamundo.com</p></div></div>
+          <div class="info-item"><span>🇦🇷</span><div><strong>Dominio Local</strong><p>saludnatura.com.ar</p></div></div>
+          <a href="https://wa.me/549XXXXXXXXXX" class="btn-whatsapp" target="_blank">💬 Escribinos por WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-logo">
+        <img src="logo.jpg" alt="Logo Salud Natura" class="footer-logo-img"/>
+        <span>Salud Natura</span>
+      </div>
+      <p class="footer-quote">"El que conoce a los demás es sabio. El que se conoce a sí mismo es iluminado." — Lao Tsé</p>
+      <p class="footer-legal">© 2026 Salud Natura. Todos los derechos reservados. | Este sitio tiene fines informativos y educativos únicamente. No reemplaza la consulta médica profesional.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
