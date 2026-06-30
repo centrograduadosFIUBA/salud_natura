@@ -64,6 +64,16 @@ def init_db():
         )
     """)
 
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS usuarios_auth (
+            id_usuario_auth INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombre_usuario TEXT NOT NULL UNIQUE,
+            email TEXT NOT NULL UNIQUE,
+            contraseña_hash TEXT NOT NULL,
+            fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+
     # Seed data si la tabla está vacía
     count = conn.execute("SELECT COUNT(*) FROM botiquin").fetchone()[0]
     if count == 0:

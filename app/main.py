@@ -1,5 +1,5 @@
-from fastapi import FastAPI, Form, Request
-from fastapi.responses import RedirectResponse
+from fastapi import FastAPI, Form, Request, HTTPException, status
+from fastapi.responses import RedirectResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from contextlib import asynccontextmanager
@@ -8,6 +8,7 @@ from typing import Optional
 from app.config import settings
 from app.database import init_db, get_db
 from app.models import RemedioIn, UsuarioIn
+from app.auth import hashear_contraseña, verificar_contraseña, crear_access_token
 
 
 @asynccontextmanager
@@ -285,3 +286,130 @@ async def admin_usuarios_eliminar(id_usuario: int):
     conn.commit()
     conn.close()
     return RedirectResponse("/admin/usuarios?mensaje=Usuario eliminado", status_code=303)
+
+
+# ── Autenticación ──
+
+@app.post("/api/registro")
+async def registro(request: Request):
+    try:
+        data = await request.json()
+        nombre_completo = data.get("nombre_completo", "").strip()
+        celular = data.get("celular", "").strip()
+        email = data.get("email", "").strip()
+        password = data.get("password", "").strip()
+        direccion_completa = data.get("direccion_completa", "").strip()
+        ciudad_prov_pais = data.get("ciudad_prov_pais", "").strip()
+        pais_codigo = data.get("pais_codigo", "").strip()
+
+        if not nombre_completo or not email or not password:
+            raise HTTPException(status_code=400, detail="Faltan campos requeridos")
+
+        conn = get_db()
+
+        # Verificar si el email ya existe en usuarios_auth
+        existe_auth = conn.execute("SELECT id_usuario_auth FROM usuarios_auth WHERE email=?", (email,)).fetchone()
+        if existe_auth:
+            conn.close()
+            return JSONResponse(
+                status_code=409,
+                content={"ok": False, "detail": "El email ya está registrado"}
+            )
+
+        # Hashear la contraseña
+        contraseña_hash = hashear_contraseña(password)
+
+        # Insertar en tabla de autenticación
+        conn.execute(
+            "INSERT INTO usuarios_auth (nombre_usuario, email, contraseña_hash) VALUES (?, ?, ?)",
+            (nombre_completo, email, contraseña_hash)
+        )
+
+        # También insertar en tabla de usuarios_y_clientes para compatibilidad
+        cursor_usuarios = conn.execute(
+            "INSERT INTO usuarios_y_clientes (nombre_completo, celular, email, direccion_completa, ciudad_prov_pais) VALUES (?, ?, ?, ?, ?)",
+            (nombre_completo, celular or None, email, direccion_completa or None, ciudad_prov_pais or None)
+        )
+        conn.commit()
+
+        usuario_id = cursor_usuarios.lastrowid
+        conn.close()
+
+        return {
+            "ok": True,
+            "id_usuario": usuario_id,
+            "usuario": {
+                "id_usuario": usuario_id,
+                "nombre_completo": nombre_completo,
+                "email": email,
+                "celular": celular,
+                "ciudad_prov_pais": ciudad_prov_pais,
+                "pais_codigo": pais_codigo,
+            }
+        }
+    except Exception as e:
+        return JSONResponse(
+            status_code=400,
+            content={"ok": False, "detail": str(e)}
+        )
+
+
+@app.post("/api/login")
+async def login(request: Request):
+    try:
+        data = await request.json()
+        email = data.get("email", "").strip()
+        password = data.get("password", "").strip()
+
+        if not email or not password:
+            raise HTTPException(status_code=400, detail="Email y contraseña requeridos")
+
+        conn = get_db()
+
+        # Buscar usuario por email en tabla de autenticación
+        db_usuario = conn.execute("SELECT * FROM usuarios_auth WHERE email=?", (email,)).fetchone()
+
+        if not db_usuario:
+            conn.close()
+            return JSONResponse(
+                status_code=401,
+                content={"ok": False, "detail": "Credenciales inválidas"}
+            )
+
+        # Verificar contraseña
+        if not verificar_contraseña(password, db_usuario["contraseña_hash"]):
+            conn.close()
+            return JSONResponse(
+                status_code=401,
+                content={"ok": False, "detail": "Credenciales inválidas"}
+            )
+
+        # Obtener datos completos del usuario desde tabla usuarios_y_clientes
+        usuario_completo = conn.execute(
+            "SELECT * FROM usuarios_y_clientes WHERE email=?", (email,)
+        ).fetchone()
+        conn.close()
+
+        # Crear token
+        access_token = crear_access_token(data={"sub": email, "id": db_usuario["id_usuario_auth"]})
+
+        usuario_data = {
+            "id_usuario": usuario_completo["id_usuario"] if usuario_completo else db_usuario["id_usuario_auth"],
+            "nombre_completo": usuario_completo["nombre_completo"] if usuario_completo else db_usuario["nombre_usuario"],
+            "email": email,
+            "celular": usuario_completo["celular"] if usuario_completo else None,
+            "ciudad_prov_pais": usuario_completo["ciudad_prov_pais"] if usuario_completo else None,
+            "pais_codigo": None,
+        }
+
+        return {
+            "ok": True,
+            "access_token": access_token,
+            "token_type": "bearer",
+            "usuario": usuario_data
+        }
+    except Exception as e:
+        return JSONResponse(
+            status_code=400,
+            content={"ok": False, "detail": str(e)}
+        )
