@@ -1,7 +1,7 @@
 import http.server, os, sys, json, sqlite3, re
 from urllib.parse import urlparse
 
-REPO = r'C:\Users\CONECT~1\AppData\Local\Temp\claude\C--Users-CONECTIA-BA-OnEdrive-Escritorio-CLAUDE-PRO-pago-anual\4c438cd4-b839-490d-9141-6512e3c4d5e0\scratchpad\salud_natura'
+REPO = r'C:\Users\leoca\salud_natura'
 DB = os.path.join(REPO, 'data', 'salud_natura.db')
 
 def get_remedios():
