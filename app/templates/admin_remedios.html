@@ -33,7 +33,7 @@
         {% endif %}
 
         <table>
-            <thead>
+           <thead>
                 <tr>
                     <th>ID</th>
                     <th>Imagen</th>
@@ -42,6 +42,7 @@
                     <th>Propiedades</th>
                     <th>Contraindicaciones</th>
                     <th>Dosificación</th>
+                    <th>Origen</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -56,7 +57,7 @@
                     <td class="truncate">{{ r.contraindicaciones or '-' }}</td>
                     <td class="truncate">{{ r.dosificacion or '-' }}</td>
                     <td class="acciones">
-                        <button class="btn btn-sm" onclick="editarRemedio({{ r.id_remedio }}, '{{ r.nombre_remedio | e }}', '{{ (r.planta_base or '') | e }}', '{{ (r.propiedades or '') | e }}', '{{ (r.contraindicaciones or '') | e }}', '{{ (r.dosificacion or '') | e }}', '{{ (r.link_articulo_web or '') | e }}', '{{ (r.imagen_url or '') | e }}')">✏️</button>
+                        <<button class="btn btn-sm" onclick="editarRemedio({{ r.id_remedio }}, '{{ r.nombre_remedio | e }}', '{{ (r.planta_base or '') | e }}', '{{ (r.propiedades or '') | e }}', '{{ (r.contraindicaciones or '') | e }}', '{{ (r.dosificacion or '') | e }}', '{{ (r.link_articulo_web or '') | e }}', '{{ (r.imagen_url or '') | e }}', '{{ (r.origen or '') | e }}')">✏️</button>
                         <form method="post" action="/admin/remedios/{{ r.id_remedio }}/eliminar" style="display:inline" onsubmit="return confirm('¿Eliminar este remedio?')">
                             <button class="btn btn-sm btn-danger">🗑️</button>
                         </form>
@@ -98,6 +99,9 @@
                     <label>URL de imagen
                         <input type="text" name="imagen_url" id="f_imagen" placeholder="/static/img/nombre.jpg o URL externa">
                     </label>
+                    <label>Origen
+                        <input type="text" name="origen" id="f_origen">
+                    </label>
                     <div class="modal-actions">
                         <button type="button" class="btn" onclick="cerrarModal()">Cancelar</button>
                         <button type="submit" class="btn btn-primary">Guardar</button>
@@ -118,9 +122,12 @@
         document.getElementById('f_dosificacion').value = '';
         document.getElementById('f_link').value = '';
         document.getElementById('f_imagen').value = '';
+        document.getElementById('f_origen').value = ''; // <--- Agregado
         document.getElementById('modal').style.display = 'flex';
     }
-    function editarRemedio(id, nombre, planta, propiedades, contras, dosis, link, imagen) {
+    
+    // Agregamos 'origen' en los parámetros:
+    function editarRemedio(id, nombre, planta, propiedades, contras, dosis, link, imagen, origen) {
         document.getElementById('modal-titulo').textContent = 'Editar Remedio';
         document.getElementById('f_id').value = id;
         document.getElementById('f_nombre').value = nombre;
@@ -130,8 +137,10 @@
         document.getElementById('f_dosificacion').value = dosis;
         document.getElementById('f_link').value = link;
         document.getElementById('f_imagen').value = imagen;
+        document.getElementById('f_origen').value = origen; // <--- Ahora funcionará
         document.getElementById('modal').style.display = 'flex';
     }
+    
     function cerrarModal() {
         document.getElementById('modal').style.display = 'none';
     }
