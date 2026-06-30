@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Salud Natura – Sabiduría Ancestral de la Tierra</title>
-  <link rel="stylesheet" href="style.css?v=6" />
+  <link rel="stylesheet" href="/static/css/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" />
 </head>
 <body>
@@ -14,7 +14,7 @@
     <nav class="navbar">
       <div class="logo">
         <div class="logo-img-wrap">
-          <img src="logo.jpg" alt="Logo Salud Natura" class="logo-img" />
+          <img src="/static/img/logo.jpg" alt="Logo Salud Natura" class="logo-img" />
         </div>
         <div class="logo-text">
           <span class="logo-main">Salud Natura</span>
@@ -39,7 +39,7 @@
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <div class="hero-logo-wrap">
-        <img src="logo.jpg" alt="Logo Salud Natura" class="hero-logo" />
+        <img src="/static/img/logo.jpg" alt="Logo Salud Natura" class="hero-logo" />
       </div>
       <h1 class="hero-title">Bienvenidos al Grimorio<br><span>de Salud Natura</span></h1>
       <p class="hero-subtitle">Sabiduría Ancestral de la Tierra</p>
@@ -95,7 +95,7 @@
               </div>
               <div class="book-cover-inner">
                 <div class="book-medallion">
-                  <img src="logo.jpg" alt="Logo"/>
+                  <img src="/static/img/logo.jpg" alt="Logo"/>
                 </div>
                 <div class="book-divider"></div>
                 <p class="book-title">Grimorio<br>Salud Natura</p>
@@ -141,8 +141,8 @@
             const card = document.createElement('div');
             card.className = 'lote-card';
             const items = grupo.map((p,j)=>{
-              const img = p.imagen ? 'img/'+p.imagen : 'img/'+p.nombre_remedio.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'')+'.jpg';
-              return '<li><a class="hierba-link" href="grimorio.html?h='+(i+j)+'"><img class="hierba-icon" src="'+img+'" alt="'+p.nombre_remedio+'"/> '+p.nombre_remedio+'</a></li>';
+              const img = p.imagen ? '/static/img/'+p.imagen : '/static/img/'+p.nombre_remedio.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'')+'.jpg';
+              return '<li><a class="hierba-link" href="/grimorio?h='+(i+j)+'"><img class="hierba-icon" src="'+img+'" alt="'+p.nombre_remedio+'"/> '+p.nombre_remedio+'</a></li>';
             }).join('');
             card.innerHTML = '<div class="lote-header"><span class="lote-num">Lote '+ROMANOS[numLote]+'</span></div><ul>'+items+'</ul>';
             grid.appendChild(card);
@@ -503,7 +503,7 @@
   <footer>
     <div class="container">
       <div class="footer-logo">
-        <img src="logo.jpg" alt="Logo Salud Natura" class="footer-logo-img"/>
+        <img src="/static/img/logo.jpg" alt="Logo Salud Natura" class="footer-logo-img"/>
         <span>Salud Natura</span>
       </div>
       <p class="footer-quote">"El que conoce a los demás es sabio. El que se conoce a sí mismo es iluminado." — Lao Tsé</p>
@@ -511,6 +511,6 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="/static/js/script.js"></script>
 </body>
 </html>
