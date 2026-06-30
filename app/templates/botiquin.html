@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Botiquín Herbal · Salud Natura</title>
-  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="stylesheet" href="/static/css/style.css?v=2" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" />
   <style>
     /* ── BOTIQUÍN ── */
     .bq-hero {
-      background: linear-gradient(160deg, #0c1a0a 0%, #162510 50%, #0a1208 100%);
+          background: linear-gradient(160deg, #1a1405 0%, #3d300f 50%, #1a1405 100%);
       padding: 110px 20px 65px;
       text-align: center;
       position: relative;
@@ -459,7 +459,24 @@
         if(!matches) card.classList.remove('open');
       });
     });
-  });
-  </script>
-</body>
-</html>
+      });
+  
+      // Música Ambiental de Fondo
+      window.addEventListener('load', function() {
+        const music = document.getElementById('ambient-music');
+        if (music) {
+          music.volume = 0.5;
+          music.play().catch(function(err) {
+            console.log('Autoplay bloqueado:', err);
+          });
+        }
+      });
+      </script>
+  
+      <!-- Música Ambiental de Fondo -->
+      <audio id="ambient-music" loop preload="auto">
+        <source src="/static/audio/ambient.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+      </audio>
+    </body>
+    </html>

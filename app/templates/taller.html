@@ -260,9 +260,26 @@ git commit -m "feat: descripción corta de mi cambio"</code>
     </main>
 
     <footer>
-        <p>{{ settings.app_name }} — Taller de Página Web Dinámica con Claude Code</p>
-        <p>Centro de Graduados — Facultad de Ingeniería — UBA</p>
-        <p><a href="/">← Volver al sitio</a></p>
-    </footer>
-</body>
-</html>
+            <p>{{ settings.app_name }} — Taller de Página Web Dinámica con Claude Code</p>
+            <p>Centro de Graduados — Facultad de Ingeniería — UBA</p>
+            <p><a href="/">← Volver al sitio</a></p>
+        </footer>
+
+        <!-- Música Ambiental de Fondo -->
+        <audio id="ambient-music" loop preload="auto">
+          <source src="/static/audio/ambient.mp3" type="audio/mpeg">
+          Tu navegador no soporta el elemento de audio.
+        </audio>
+        <script>
+          window.addEventListener('load', function() {
+            const music = document.getElementById('ambient-music');
+            if (music) {
+              music.volume = 0.5;
+              music.play().catch(function(err) {
+                console.log('Autoplay bloqueado:', err);
+              });
+            }
+          });
+        </script>
+    </body>
+    </html>

@@ -7,8 +7,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --verde: #0d2b1a; --dorado: #d4af37; --dorado2: #b5890a;
+:root {
+  --verde: #1a1405; --dorado: #d4af37; --dorado2: #b5890a;
   --crema: #f5edd8; --crema2: #ede0c4; --marron: #4a2c0a;
   --texto: #2a1a05; --sombra: rgba(0,0,0,0.5);
 }
@@ -2259,8 +2259,25 @@ function cambiarHierba(dir){
 document.addEventListener('keydown', e=>{
   if(!abierto) return;
   if(e.key==='ArrowRight') cambiarHierba(1);
-  if(e.key==='ArrowLeft') cambiarHierba(-1);
-});
-</script>
-</body>
-</html>
+    if(e.key==='ArrowLeft') cambiarHierba(-1);
+  });
+
+  // Música Ambiental de Fondo
+    window.addEventListener('load', function() {
+      const music = document.getElementById('ambient-music');
+      if (music) {
+        music.volume = 0.5;
+        music.play().catch(function(err) {
+          console.log('Autoplay bloqueado:', err);
+        });
+      }
+    });
+    </script>
+  
+    <!-- Música Ambiental de Fondo -->
+    <audio id="ambient-music" loop preload="auto">
+      <source src="/static/audio/ambient.mp3" type="audio/mpeg">
+      Tu navegador no soporta el elemento de audio.
+    </audio>
+  </body>
+  </html>

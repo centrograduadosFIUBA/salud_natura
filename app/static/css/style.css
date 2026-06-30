@@ -5,10 +5,10 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --verde-oscuro:  #0d2b1a;
-  --verde-medio:   #1a4a2e;
-  --verde-claro:   #2d6e45;
-  --verde-menta:   #4a9b6f;
+  --verde-oscuro:  #1a1405;
+  --verde-medio:   #3d300f;
+  --verde-claro:   #5c4a1a;
+  --verde-menta:   #8a6f2e;
   --dorado:        #d4af37;
   --dorado-oscuro: #b5890a;
   --crema:         #f5f0e8;
