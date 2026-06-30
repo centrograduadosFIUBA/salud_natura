@@ -28,7 +28,8 @@ def init_db():
             contraindicaciones TEXT,
             dosificacion TEXT,
             link_articulo_web TEXT,
-            imagen_url TEXT
+            imagen_url TEXT,
+            origen TEXT
         )
     """)
 
@@ -126,8 +127,8 @@ def init_db():
         existe = conn.execute("SELECT id_remedio FROM base_conocimiento_salud WHERE nombre_remedio=?", (nombre,)).fetchone()
         if not existe:
             conn.execute(
-                "INSERT INTO base_conocimiento_salud (nombre_remedio, planta_base, propiedades, contraindicaciones, dosificacion, link_articulo_web, imagen_url) VALUES (?,?,?,?,?,?,?)",
-                (nombre, planta_base, propiedades, contraindicaciones, dosificacion, link, imagen)
+                "INSERT INTO base_conocimiento_salud (nombre_remedio, planta_base, propiedades, contraindicaciones, dosificacion, link_articulo_web, imagen_url, origen) VALUES (?,?,?,?,?,?,?,?)",
+                (nombre, planta_base, propiedades, contraindicaciones, dosificacion, link, imagen, None)
             )
     conn.commit()
 
