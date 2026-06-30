@@ -26,7 +26,7 @@
         <li><a href="#pilares">Filosofía</a></li>
         <li><a href="#grimorio">El Grimorio</a></li>
         <li><a href="#hierbas">Hierbas</a></li>
-        <li><a href="botiquin.html">Botiquín</a></li>
+        <li><a href="/botiquin">Botiquín</a></li>
         <li><a href="#contacto">Contacto</a></li>
       </ul>
       <div class="hamburger" onclick="toggleMenu()">☰</div>
@@ -86,7 +86,7 @@
           <a href="#hierbas" class="btn-secondary" id="btn-ver-hierbas">Ver las Hierbas</a>
         </div>
         <div class="grimorio-visual">
-          <a href="grimorio.html" class="book-icon" title="Abrir el Grimorio">
+          <a href="/grimorio" class="book-icon" title="Abrir el Grimorio">
             <div class="book-cover">
               <div class="book-spine-bar"></div>
               <div class="book-corners">
@@ -149,7 +149,7 @@
           }
         }).catch(()=>{
           // Si el servidor no responde, mostrar mensaje simple
-          document.getElementById('lotes-grid').innerHTML = '<div class="lote-card lote-cta"><p>Abre el servidor para ver todas las hierbas</p><a href="grimorio.html" class="btn-primary small">Ir al Grimorio</a></div>';
+          document.getElementById('lotes-grid').innerHTML = '<div class="lote-card lote-cta"><p>Abre el servidor para ver todas las hierbas</p><a href="/grimorio" class="btn-primary small">Ir al Grimorio</a></div>';
         });
       })();
       </script>
@@ -309,7 +309,7 @@
         </ul>
       </div>
       <div class="sueno-cta">
-        <a href="grimorio.html">Ver fichas de estas plantas en el Grimorio →</a>
+        <a href="/grimorio">Ver fichas de estas plantas en el Grimorio →</a>
       </div>
     </div>
   </section>
