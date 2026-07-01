@@ -453,7 +453,7 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--verde);over
 /* ── ÍNDICE ── */
 #indexView{
   display:none;flex:1;
-  overflow:hidden;
+  overflow-x:hidden;overflow-y:auto;
 }
 #indexView.visible{display:flex}
 #plantView{display:flex;flex:1;overflow:hidden}
@@ -576,9 +576,9 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--verde);over
 .idx-plant-wrap{display:none;flex-direction:column;gap:.5rem;position:relative;z-index:1}
 .idx-plant-wrap.visible{display:flex}
 /* ── JUGOS PANEL IZQUIERDO ── */
-.idx-jugos-toggle{width:100%;text-align:left;background-color:rgba(255,255,255,.06);border:1px solid rgba(184,146,74,.5);color:rgba(232,224,208,.92);font-family:'EB Garamond',serif;font-style:italic;font-size:.85rem;padding:.38rem .7rem;cursor:pointer;border-radius:3px;display:flex;justify-content:space-between;align-items:center;transition:background .2s;position:relative;z-index:1}
+.idx-jugos-toggle{width:100%;text-align:left;background-color:rgba(255,255,255,.06);border:1px solid rgba(184,146,74,.5);color:rgba(232,224,208,.92);font-family:'EB Garamond',serif;font-style:italic;font-size:.85rem;padding:.38rem .7rem;cursor:pointer;border-radius:3px;display:flex;justify-content:space-between;align-items:center;transition:background .2s;position:relative;z-index:10}
 .idx-jugos-toggle:hover{background:rgba(212,175,55,.12)}
-.idx-jugos-list{list-style:none;padding:0;margin:.3rem 0 0;border:1px solid rgba(184,146,74,.35);border-radius:2px;overflow:hidden;max-height:200px;overflow-y:auto;position:relative;z-index:1}
+.idx-jugos-list{list-style:none;padding:0;margin:0 0 .3rem;border:1px solid rgba(184,146,74,.35);border-radius:2px;overflow-x:hidden;max-height:280px;overflow-y:auto;position:absolute;bottom:100%;left:0;right:0;z-index:100;background:#0d1810}
 .idx-jugos-item{padding:.38rem .7rem;cursor:pointer;border-bottom:1px solid rgba(212,175,55,.15);display:flex;flex-direction:column;gap:.15rem;transition:background .15s;background:#0d1810}
 .idx-jugos-item:hover{background:rgba(184,146,74,.18)}
 .idx-jugos-item:last-child{border-bottom:none}
@@ -902,18 +902,22 @@ html,body{height:100%;font-family:'Lato',sans-serif;background:var(--verde);over
           <hr class="idx-divider">
 
           <p class="idx-field-label">Jugos herbales</p>
-          <button class="idx-jugos-toggle" id="idxJugosToggle" onclick="toggleIdxJugosList()">
-            <span>— Elige un elixir —</span><span id="idxJugosArrow">▾</span>
-          </button>
-          <ul class="idx-jugos-list" id="idxJugosList" style="display:none"></ul>
+          <div style="position:relative">
+            <ul class="idx-jugos-list" id="idxJugosList" style="display:none"></ul>
+            <button class="idx-jugos-toggle" id="idxJugosToggle" onclick="toggleIdxJugosList()">
+              <span>— Elige un elixir —</span><span id="idxJugosArrow">▾</span>
+            </button>
+          </div>
 
           <hr class="idx-divider">
 
           <p class="idx-field-label">Infusiones medicinales</p>
-          <button class="idx-jugos-toggle" id="idxInfusionesToggle" onclick="toggleIdxInfusionesList()">
-            <span>— Elige una infusión —</span><span id="idxInfusionesArrow">▾</span>
-          </button>
-          <ul class="idx-jugos-list" id="idxInfusionesList" style="display:none"></ul>
+          <div style="position:relative">
+            <ul class="idx-jugos-list" id="idxInfusionesList" style="display:none"></ul>
+            <button class="idx-jugos-toggle" id="idxInfusionesToggle" onclick="toggleIdxInfusionesList()">
+              <span>— Elige una infusión —</span><span id="idxInfusionesArrow">▾</span>
+            </button>
+          </div>
 
           <p class="idx-hint">Selecciona una dolencia o escribe el nombre de la planta. En la página derecha puedes clicar cualquier planta directamente.</p>
           <div class="idx-corner"></div>
@@ -1747,7 +1751,12 @@ function mapearPlanta(p, idx){
     lat:    p.planta_base || '',
     lote:   loteLabel,
     loteDesc: LOTE_DESC[loteNum] || loteLabel,
-    img:    p.imagen ? `/static/img/${p.imagen}` : `/static/img/${normImg(p.nombre_remedio)}.jpg`,
+    img:    p.imagen
+              ? (p.imagen.startsWith('/') ? p.imagen : `/static/img/${p.imagen}`)
+              : `/static/img/${normImg(p.nombre_remedio)}.jpg`,
+    imgFull: p.imagen_directa_url || (p.imagen
+              ? (p.imagen.startsWith('/') ? p.imagen : `/static/img/${p.imagen}`)
+              : `/static/img/${normImg(p.nombre_remedio)}.jpg`),
     props:  props,
     usos:   p.dosificacion || '',
     nota:   p.contraindicaciones || '',
@@ -1765,6 +1774,8 @@ async function cargarPlantas(){
     const data = await res.json();
     if(data.ok && data.plantas.length){
       hierbas = data.plantas.map((p,i) => mapearPlanta(p, i));
+    } else {
+      hierbas = _hierbasFallback;
     }
   } catch(e) {
     console.warn('Sin servidor — usando datos locales:', e);
@@ -2197,7 +2208,7 @@ function renderHierba(idx, dir=0){
   img.classList.add('loading');
   img.onload = () => img.classList.remove('loading');
   img.onerror = () => img.classList.remove('loading');
-  img.src = h.img;
+  img.src = h.imgFull || h.img;
 
   // Nombre
   document.getElementById('herbName').textContent = h.nombre;
