@@ -24,7 +24,7 @@
       <ul class="nav-links">
         <li><a href="#inicio">Inicio</a></li>
         <li><a href="#pilares">Filosofía</a></li>
-        <li><a href="#grimorio">El Grimorio</a></li>
+        <li><a href="#grimorio">Grimorio</a></li>
         <li><a href="#hierbas">Hierbas</a></li>
         <li><a href="/botiquin">Botiquín</a></li>
         <li><a href="/taller">Taller</a></li>
@@ -142,7 +142,7 @@
             const card = document.createElement('div');
             card.className = 'lote-card';
             const items = grupo.map((p,j)=>{
-              const img = p.imagen ? '/static/img/'+p.imagen : '/static/img/'+p.nombre_remedio.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'')+'.jpg';
+              const img = p.imagen ? (p.imagen.startsWith('/') ? p.imagen : '/static/img/'+p.imagen) : '/static/img/'+p.nombre_remedio.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'')+'.jpg';
               return '<li><a class="hierba-link" href="/grimorio?h='+(i+j)+'"><img class="hierba-icon" src="'+img+'" alt="'+p.nombre_remedio+'"/> '+p.nombre_remedio+'</a></li>';
             }).join('');
             card.innerHTML = '<div class="lote-header"><span class="lote-num">Lote '+ROMANOS[numLote]+'</span></div><ul>'+items+'</ul>';
@@ -154,6 +154,38 @@
         });
       })();
       </script>
+    </div>
+  </section>
+
+  <!-- BOTIQUÍN HERBAL -->
+  <section id="botiquin-cta" style="background:#060f08;padding:60px 1rem;">
+    <style>
+      .bq-cta-wrap{max-width:700px;margin:0 auto;text-align:center;}
+      .bq-cta-eyebrow{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:4px;color:#d4af37;opacity:.8;margin-bottom:18px;}
+      .bq-cta-card{background:linear-gradient(135deg,#0d2b1a 0%,#0a1a0d 100%);border:1px solid rgba(212,175,55,.35);border-radius:6px;padding:40px 36px;position:relative;overflow:hidden;}
+      .bq-cta-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(212,175,55,.07) 0%,transparent 70%);pointer-events:none;}
+      .bq-cta-title{font-family:'Cinzel',serif;font-size:2rem;color:#f5edd8;line-height:1.2;margin-bottom:10px;}
+      .bq-cta-title span{color:#d4af37;}
+      .bq-cta-sub{color:rgba(245,237,216,.6);font-size:.95rem;margin-bottom:28px;line-height:1.6;}
+      .bq-cta-stats{display:flex;justify-content:center;gap:32px;margin-bottom:32px;flex-wrap:wrap;}
+      .bq-cta-stat{text-align:center;}
+      .bq-cta-stat strong{display:block;font-family:'Cinzel',serif;font-size:1.6rem;color:#d4af37;}
+      .bq-cta-stat span{font-size:.78rem;color:rgba(245,237,216,.55);letter-spacing:1px;text-transform:uppercase;}
+      .bq-cta-btn{display:inline-block;font-family:'Cinzel',serif;font-size:.85rem;letter-spacing:3px;color:#0d2b1a;background:#d4af37;padding:.85rem 2.2rem;border-radius:3px;text-decoration:none;transition:all .3s;}
+      .bq-cta-btn:hover{background:#b5890a;transform:translateY(-2px);}
+    </style>
+    <div class="bq-cta-wrap">
+      <div class="bq-cta-eyebrow">✦ Remedios herbales de acción rápida ✦</div>
+      <div class="bq-cta-card">
+        <h2 class="bq-cta-title">Botiquín Herbal<br><span>de Urgencias</span></h2>
+        <p class="bq-cta-sub">Remedios naturales organizados por dolencia.<br>Preparación en minutos, con lo que tienes en casa.</p>
+        <div class="bq-cta-stats">
+          <div class="bq-cta-stat"><strong>29</strong><span>dolencias</span></div>
+          <div class="bq-cta-stat"><strong>29</strong><span>plantas</span></div>
+          <div class="bq-cta-stat"><strong>⚡</strong><span>preparación en minutos</span></div>
+        </div>
+        <a href="/botiquin" class="bq-cta-btn">ABRIR EL BOTIQUÍN</a>
+      </div>
     </div>
   </section>
 
