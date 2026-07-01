@@ -37,6 +37,11 @@ def init_db():
         conn.commit()
     except:
         pass
+    try:
+        conn.execute("ALTER TABLE base_conocimiento_salud ADD COLUMN nivel_evidencia TEXT")
+        conn.commit()
+    except:
+        pass
 
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS usuarios_y_clientes (
