@@ -93,6 +93,9 @@ hierbas = [
     ('Ginkgo',       'Ginkgo biloba',            'Vasodilatador,Antioxidante,Neuroprotector,Anticoagulante suave,Nootrópico',
      'Interacción con anticoagulantes (warfarina, aspirina). Consultar al médico.',
      'Mejora la microcirculación cerebral aliviando tinnitus y mareos. El árbol más antiguo del mundo.'),
+('Hierba Del Rio', 'Mentholatum fluvialis', 'Diuretica,Refrescante,Digestiva,Antiinflamatoria,Depurativa',
+ 'Evitar en personas con presion arterial baja. No combinar con otros diureticos sin supervision.',
+ 'Crece en las margenes de rios y arroyos. Favorece la eliminacion de liquidos y calma la pesadez digestiva despues de las comidas.'),
 ]
 
 existing = conn.execute('SELECT COUNT(*) FROM base_conocimiento_salud').fetchone()[0]
