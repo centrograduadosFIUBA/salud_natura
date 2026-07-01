@@ -41,6 +41,11 @@ async def botiquin(request: Request):
     return templates.TemplateResponse("botiquin.html", {"request": request})
 
 
+@app.get("/newsletter")
+async def newsletter(request: Request):
+    return templates.TemplateResponse("newsletter.html", {"request": request})
+
+
 @app.get("/taller")
 async def taller(request: Request):
     return templates.TemplateResponse("taller.html", {

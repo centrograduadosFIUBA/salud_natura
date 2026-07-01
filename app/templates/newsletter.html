@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Newsletter — Salud Natura</title>
+  <link rel="stylesheet" href="/static/css/style.css"/>
+  <style>
+    body { background:#0d1810; color:rgba(232,224,208,.9); display:flex; flex-direction:column; min-height:100vh; }
+    .nl-wrap {
+      flex:1; display:flex; align-items:center; justify-content:center; padding:40px 20px;
+    }
+    .nl-card {
+      background:rgba(255,255,255,.04); border:1px solid rgba(184,146,74,.25);
+      border-radius:8px; padding:48px 40px; max-width:480px; width:100%; text-align:center;
+    }
+    .nl-logo { font-size:2.5rem; margin-bottom:8px; }
+    .nl-title {
+      font-family:'Cinzel',serif; font-size:1.5rem; color:#d4af37;
+      margin-bottom:8px;
+    }
+    .nl-sub { font-family:'EB Garamond',serif; font-size:1rem; color:rgba(232,224,208,.6); margin-bottom:32px; }
+    .nl-form { display:flex; flex-direction:column; gap:16px; text-align:left; }
+    .nl-label { font-family:'Cinzel',serif; font-size:.55rem; letter-spacing:2px; text-transform:uppercase; color:#b8924a; display:block; margin-bottom:6px; }
+    .nl-input {
+      width:100%; box-sizing:border-box;
+      background:rgba(255,255,255,.05); border:1px solid rgba(184,146,74,.3);
+      border-radius:4px; padding:12px 14px; color:rgba(232,224,208,.9);
+      font-family:'EB Garamond',serif; font-size:1rem;
+    }
+    .nl-input:focus { outline:none; border-color:#d4af37; }
+    .nl-btn {
+      margin-top:8px; padding:14px; background:linear-gradient(135deg,#b8924a,#d4af37);
+      border:none; border-radius:4px; color:#0d1810;
+      font-family:'Cinzel',serif; font-size:.75rem; letter-spacing:2px; text-transform:uppercase;
+      cursor:pointer; font-weight:700; transition:opacity .2s;
+    }
+    .nl-btn:hover { opacity:.88; }
+    .nl-btn:disabled { opacity:.5; cursor:default; }
+    .nl-msg { margin-top:20px; font-family:'EB Garamond',serif; font-size:.95rem; min-height:24px; }
+    .nl-msg.ok { color:#7ec87e; }
+    .nl-msg.err { color:#e07070; }
+    .nl-footer { margin-top:40px; font-family:'EB Garamond',serif; font-size:.8rem; color:rgba(232,224,208,.3); }
+    .nl-footer a { color:#b8924a; text-decoration:none; }
+  </style>
+</head>
+<body>
+  <div class="nl-wrap">
+    <div class="nl-card">
+      <div class="nl-logo">🌿</div>
+      <h1 class="nl-title">Newsletter Salud Natura</h1>
+      <p class="nl-sub">Recibí novedades sobre plantas medicinales, nuevas fichas y eventos del Centro de Graduados.</p>
+
+      <form class="nl-form" id="nlForm" onsubmit="enviar(event)">
+        <div>
+          <label class="nl-label" for="nombre">Nombre completo</label>
+          <input class="nl-input" type="text" id="nombre" placeholder="Tu nombre y apellido" required>
+        </div>
+        <div>
+          <label class="nl-label" for="email">Email</label>
+          <input class="nl-input" type="email" id="email" placeholder="correo@ejemplo.com" required>
+        </div>
+        <div>
+          <label class="nl-label" for="celular">Celular <span style="font-size:.6em;opacity:.6">(opcional)</span></label>
+          <input class="nl-input" type="tel" id="celular" placeholder="+54 11 1234-5678">
+        </div>
+        <button class="nl-btn" type="submit" id="nlBtn">Suscribirme</button>
+      </form>
+
+      <div class="nl-msg" id="nlMsg"></div>
+
+      <div class="nl-footer">
+        <a href="/">← Volver al inicio</a> &nbsp;·&nbsp;
+        Centro de Graduados — Facultad de Ingeniería — UBA
+      </div>
+    </div>
+  </div>
+
+  <script>
+  async function enviar(e) {
+    e.preventDefault();
+    const btn = document.getElementById('nlBtn');
+    const msg = document.getElementById('nlMsg');
+    btn.disabled = true;
+    btn.textContent = 'Enviando…';
+    msg.className = 'nl-msg';
+    msg.textContent = '';
+    try {
+      const resp = await fetch('/api/usuarios', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          nombre_completo: document.getElementById('nombre').value.trim(),
+          email: document.getElementById('email').value.trim(),
+          celular: document.getElementById('celular').value.trim() || null,
+          direccion_completa: null,
+          ciudad_prov_pais: null,
+          latitud: null,
+          longitud: null,
+        })
+      });
+      const json = await resp.json();
+      if (json.ok) {
+        msg.className = 'nl-msg ok';
+        msg.textContent = '¡Gracias! Te agregamos a la lista. 🌿';
+        document.getElementById('nlForm').reset();
+      } else {
+        throw new Error('Error del servidor');
+      }
+    } catch(err) {
+      msg.className = 'nl-msg err';
+      msg.textContent = 'Algo salió mal, intentá de nuevo.';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Suscribirme';
+    }
+  }
+  </script>
+</body>
+</html>
