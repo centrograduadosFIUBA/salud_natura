@@ -1,4 +1,8 @@
-from fastapi import FastAPI, Form, Query, Request
+import json
+import urllib.parse
+import urllib.request
+
+from fastapi import FastAPI, Form, HTTPException, Query, Request
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -33,17 +37,24 @@ async def home(request: Request):
 async def grimorio(request: Request):
     return templates.TemplateResponse("grimorio.html", {
         "request": request,
+        "settings": settings,
     })
 
 
 @app.get("/botiquin")
 async def botiquin(request: Request):
-    return templates.TemplateResponse("botiquin.html", {"request": request})
+    return templates.TemplateResponse("botiquin.html", {
+        "request": request,
+        "settings": settings,
+    })
 
 
 @app.get("/newsletter")
 async def newsletter(request: Request):
-    return templates.TemplateResponse("newsletter.html", {"request": request})
+    return templates.TemplateResponse("newsletter.html", {
+        "request": request,
+        "settings": settings,
+    })
 
 
 @app.get("/taller")
@@ -148,13 +159,72 @@ async def crear_remedio(remedio: RemedioIn):
 async def registrar_usuario(usuario: UsuarioIn):
     conn = get_db()
     cursor = conn.execute(
-        "INSERT INTO usuarios_y_clientes (nombre_completo, celular, email, direccion_completa, ciudad_prov_pais, latitud, longitud) VALUES (?, ?, ?, ?, ?, ?, ?)",
-        (usuario.nombre_completo, usuario.celular, usuario.email, usuario.direccion_completa, usuario.ciudad_prov_pais, usuario.latitud, usuario.longitud),
+        "INSERT INTO usuarios_y_clientes (nombre_completo, celular, email, password, pais_codigo, direccion_completa, ciudad_prov_pais, latitud, longitud) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        (usuario.nombre_completo, usuario.celular, usuario.email, usuario.password, usuario.pais_codigo, usuario.direccion_completa, usuario.ciudad_prov_pais, usuario.latitud, usuario.longitud),
     )
     conn.commit()
     id_nuevo = cursor.lastrowid
     conn.close()
     return {"ok": True, "id_usuario": id_nuevo}
+
+
+def _geocodificar(direccion: str, ciudad: str):
+    q = f"{direccion}, {ciudad}".strip(", ")
+    if not q:
+        return None, None
+    url = f"https://nominatim.openstreetmap.org/search?q={urllib.parse.quote(q)}&format=json&limit=1"
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "SaludNatura/1.0"})
+        with urllib.request.urlopen(req, timeout=5) as r:
+            data = json.loads(r.read())
+            if data:
+                return float(data[0]["lat"]), float(data[0]["lon"])
+    except Exception:
+        pass
+    return None, None
+
+
+@app.post("/api/registro")
+async def registro_grimorio(usuario: UsuarioIn):
+    conn = get_db()
+    try:
+        existing = conn.execute("SELECT id_usuario FROM usuarios_y_clientes WHERE email = ?", (usuario.email,)).fetchone()
+        if existing:
+            raise HTTPException(status_code=409, detail="Email ya registrado")
+        lat, lon = _geocodificar(usuario.direccion_completa or "", usuario.ciudad_prov_pais or "")
+        cursor = conn.execute(
+            "INSERT INTO usuarios_y_clientes (nombre_completo, celular, email, password, pais_codigo, direccion_completa, ciudad_prov_pais, latitud, longitud) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (usuario.nombre_completo, usuario.celular, usuario.email, usuario.password, usuario.pais_codigo, usuario.direccion_completa, usuario.ciudad_prov_pais, lat, lon),
+        )
+        conn.commit()
+        id_nuevo = cursor.lastrowid
+        row = conn.execute("SELECT * FROM usuarios_y_clientes WHERE id_usuario = ?", (id_nuevo,)).fetchone()
+        return {"ok": True, "usuario": dict(row)}
+    finally:
+        conn.close()
+
+
+@app.post("/api/login")
+async def login_grimorio(payload: dict):
+    conn = get_db()
+    try:
+        row = conn.execute("SELECT * FROM usuarios_y_clientes WHERE email = ?", (payload.get("email"),)).fetchone()
+        if not row or row["password"] != payload.get("password"):
+            raise HTTPException(status_code=401, detail="Credenciales inválidas")
+        return {"ok": True, "usuario": dict(row)}
+    finally:
+        conn.close()
+
+
+@app.get("/api/tiendas")
+async def tiendas_cercanas(lat: float, lon: float):
+    return {"ok": True, "tiendas": []}
+
+
+@app.post("/api/geocodificar")
+async def geocodificar_usuario(payload: dict):
+    lat, lon = _geocodificar(payload.get("direccion_completa", ""), payload.get("ciudad_prov_pais", ""))
+    return {"ok": True, "lat": lat, "lon": lon}
 
 
 # ── Admin ──
