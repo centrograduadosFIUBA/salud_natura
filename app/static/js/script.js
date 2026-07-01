@@ -31,3 +31,18 @@ document.addEventListener('scroll', () => {
     el.style.transform = 'translateY(0)';
   });
 });
+
+// Cita aleatoria del footer
+const FOOTER_QUOTES = [
+  { text: "El que conoce a los demás es sabio. El que se conoce a sí mismo es iluminado.", author: "Lao Tsé" },
+  { text: "La naturaleza es el mejor médico.", author: "Hipócrates" },
+];
+
+function setRandomFooterQuote() {
+  const el = document.getElementById('footer-quote');
+  if (!el) return;
+  const quote = FOOTER_QUOTES[Math.floor(Math.random() * FOOTER_QUOTES.length)];
+  el.textContent = `"${quote.text}" — ${quote.author}`;
+}
+
+document.addEventListener('DOMContentLoaded', setRandomFooterQuote);
