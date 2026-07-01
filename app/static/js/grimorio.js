@@ -1207,4 +1207,3 @@ document.addEventListener('keydown', e=>{
   if(e.key==='ArrowRight') cambiarHierba(1);
   if(e.key==='ArrowLeft') cambiarHierba(-1);
 });
-</script>
