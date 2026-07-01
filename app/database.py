@@ -43,12 +43,21 @@ def init_db():
             nombre_completo TEXT NOT NULL,
             celular TEXT,
             email TEXT,
+            password TEXT,
+            pais_codigo TEXT,
             direccion_completa TEXT,
             ciudad_prov_pais TEXT,
             latitud REAL,
             longitud REAL
         )
     """)
+
+    for col in ["password", "pais_codigo"]:
+        try:
+            conn.execute(f"ALTER TABLE usuarios_y_clientes ADD COLUMN {col} TEXT")
+            conn.commit()
+        except:
+            pass
 
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS botiquin (

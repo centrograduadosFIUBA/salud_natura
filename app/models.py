@@ -20,6 +20,8 @@ class UsuarioIn(BaseModel):
     nombre_completo: str
     celular: Optional[str] = None
     email: Optional[str] = None
+    password: Optional[str] = None
+    pais_codigo: Optional[str] = None
     direccion_completa: Optional[str] = None
     ciudad_prov_pais: Optional[str] = None
     latitud: Optional[float] = None
