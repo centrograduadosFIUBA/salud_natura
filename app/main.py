@@ -234,10 +234,11 @@ async def admin_inicio(request: Request):
     conn = get_db()
     total_remedios = conn.execute("SELECT COUNT(*) FROM base_conocimiento_salud").fetchone()[0]
     total_usuarios = conn.execute("SELECT COUNT(*) FROM usuarios_y_clientes").fetchone()[0]
+    total_botiquin = conn.execute("SELECT COUNT(*) FROM botiquin").fetchone()[0]
     conn.close()
     return templates.TemplateResponse("admin_inicio.html", {
         "request": request, "settings": settings, "seccion": "inicio",
-        "total_remedios": total_remedios, "total_usuarios": total_usuarios,
+        "total_remedios": total_remedios, "total_usuarios": total_usuarios, "total_botiquin": total_botiquin,
     })
 
 
