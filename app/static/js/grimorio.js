@@ -1,4 +1,6 @@
 ﻿let hierbas = [];
+let jugos = [];
+let infusiones = [];
 let current = 0;
 let abierto = false;
 
@@ -61,106 +63,13 @@ function cerrarFuentes(){
 }
 
 /* ── JUGOS INLINE ── */
-const JUGOS = [
-  {
-    nombre: 'Néctar de Lavanda y Manzana Verde',
-    tag: 'Relajante nocturno',
-    fotoId: 4448078,
-    plantas: ['lavanda'],
-    ingredientes: ['2 manzanas verdes en trozos','1 cdta. flores de lavanda comestibles','½ limón, su jugo','1 taza de agua filtrada','1 cda. miel de agave (opcional)','4–5 cubitos de hielo'],
-    pasos: ['Infusiona las flores de lavanda en ¼ taza de agua caliente 3 minutos. Cuela y enfría.','Licuadora: manzana, agua restante, jugo de limón y hielo. Licúa 30 segundos.','Agrega la infusión fría y licúa 45 segundos más hasta mezcla homogénea.','Endulza con miel si deseas. Sirve de inmediato en vaso alto.'],
-    beneficio: 'La lavanda activa receptores GABA induciendo calma progresiva. La manzana verde aporta quercetina y magnesio que relajan la musculatura. Ideal 30 minutos antes de acostarse.'
-  },
-  {
-    nombre: 'Elixir de Plátano y Toronjil',
-    tag: 'Antiestrés natural',
-    fotoId: 12049998,
-    plantas: ['melisa','toronjil','melissa'],
-    ingredientes: ['2 plátanos maduros','2 cdas. hojas frescas de melisa (toronjil)','1 taza de leche de almendras','½ taza de yogur natural','¼ cdta. canela en polvo','5–6 cubitos de hielo'],
-    pasos: ['Lava bien las hojas de melisa y pícalas.','Licuadora: plátanos, leche de almendras, yogur y hielo.','Añade la melisa picada y la canela.','Licúa 1–2 minutos hasta crema homogénea. Sirve de inmediato.'],
-    beneficio: 'La melisa contiene ácido rosmarínico que reduce la ansiedad. El plátano aporta triptófano, precursor de la serotonina. Perfecto para momentos de alta tensión.'
-  },
-  {
-    nombre: 'Limonada de Pasiflora',
-    tag: 'Calmante del sistema nervioso',
-    fotoId: 8540254,
-    plantas: ['pasiflora','maracuya','maracuyá'],
-    ingredientes: ['2 cdas. flores y hojas secas de pasiflora','3 limones medianos, su jugo','3 cdas. miel de abeja o agave','4 tazas de agua filtrada','Menta fresca e hielo al gusto'],
-    pasos: ['Hierve 1 taza de agua, retira del fuego y añade la pasiflora. Infusiona 7 minutos tapado.','Cuela y deja enfriar completamente.','En jarra: jugo de limón, infusión fría, miel y el agua restante. Mezcla bien.','Sirve con hielo y decora con menta fresca.'],
-    beneficio: 'Los flavonoides de la pasiflora interactúan con receptores GABA produciendo efecto calmante sin dependencia. El limón aporta vitamina C que reduce el cortisol circulante.'
-  },
-  {
-    nombre: 'Jugo Verde de Menta y Espinaca',
-    tag: 'Revitalizante relajante',
-    fotoId: 616833,
-    plantas: ['menta','hierbabuena'],
-    ingredientes: ['2 tazas de espinacas frescas','½ taza de hojas de menta fresca','1 manzana verde','½ pepino','1 cdta. jengibre fresco rallado','1 taza de agua de coco','Jugo de 1 limón','Hielo al gusto'],
-    pasos: ['Lava bien todos los vegetales. Pela el pepino y corta en trozos.','Corta la manzana en cuartos sin semillas.','Licuadora: espinaca, menta, manzana, pepino, jengibre e hielo.','Añade agua de coco y jugo de limón. Licúa 1–2 minutos a alta velocidad.'],
-    beneficio: 'La menta actúa como relajante muscular natural. La espinaca es rica en magnesio, el mineral antiestrés. El agua de coco repone electrolitos agotados por el estrés crónico.'
-  },
-  {
-    nombre: 'Licuado de Valeriana y Avena',
-    tag: 'Inductor del sueño',
-    fotoId: 29906263,
-    plantas: ['valeriana'],
-    ingredientes: ['1 taza de leche de almendras','⅓ taza de avena en copos','15 almendras crudas remojadas 4 h','1 cdta. raíz de valeriana seca','½ plátano maduro','¼ cdta. canela · 1 pizca de nuez moscada'],
-    pasos: ['Infusión de valeriana: ½ taza agua caliente, 8 minutos tapado. Cuela y enfría.','Licuadora: avena, almendras escurridas, leche de almendras y plátano.','Añade la infusión fría, canela y nuez moscada.','Licúa 1–2 minutos hasta textura cremosa. Sirve con canela por encima.'],
-    beneficio: 'La valeriana eleva los niveles de GABA produciendo sedación natural sin crear dependencia. La avena contiene melatonina y vitaminas del grupo B que regulan el sistema nervioso.'
-  },
-  {
-    nombre: 'Batido de Cereza y Ashwagandha',
-    tag: 'Adaptógeno antiestrés',
-    fotoId: 7624615,
-    plantas: ['ashwagandha','withania'],
-    ingredientes: ['1 taza de cerezas frescas deshuesadas','½ cdta. polvo de ashwagandha','1 taza de leche de coco','¼ taza de yogur griego natural','1 cda. miel de manuka','½ cdta. extracto de vainilla','1 pizca de canela · hielo'],
-    pasos: ['Lava las cerezas y retira los huesos.','Licuadora: cerezas, leche de coco y yogur.','Añade ashwagandha, miel, vainilla y canela.','Agrega el hielo y licúa 1–2 minutos. Sirve con cerezas frescas.'],
-    beneficio: 'La ashwagandha reduce el cortisol y fortalece la resistencia al estrés a largo plazo. Las cerezas son fuente natural de melatonina y antocianinas con efecto antiinflamatorio.'
-  },
-  {
-    nombre: 'Jugo de Piña y Manzanilla',
-    tag: 'Digestivo antiestrés',
-    fotoId: 11278007,
-    plantas: ['manzanilla','camomila','camomilla'],
-    ingredientes: ['2 tazas de piña fresca en cubos','2 cdas. flores de manzanilla secas','1 manzana amarilla','1 cdta. jengibre fresco rallado','Jugo de ½ limón','1 cda. miel de acacia · hielo'],
-    pasos: ['Infusiona la manzanilla en 1 taza de agua caliente 5 minutos. Cuela y enfría.','Corta la manzana en trozos pequeños.','Licuadora: piña, manzana, jengibre e hielo.','Añade la infusión fría, agua fría y jugo de limón. Licúa 1 minuto.'],
-    beneficio: 'La manzanilla actúa sobre el sistema nervioso entérico calmando espasmos y digestión nerviosa. La bromelina de la piña reduce la inflamación gastrointestinal asociada al estrés.'
-  },
-  {
-    nombre: 'Agua Fresca de Pepino y Toronjil',
-    tag: 'Hidratante calmante',
-    fotoId: 8679633,
-    plantas: [],
-    ingredientes: ['1 pepino grande pelado en rodajas','½ taza de hojas frescas de melisa','Jugo de 1 limón','4 tazas de agua filtrada','Miel o stevia al gusto'],
-    pasos: ['Lava el pepino y la melisa. Pela el pepino y córtalo en rodajas finas.','En jarra grande: pepino, melisa, jugo de limón y agua.','Endulza al gusto y remueve.','Refrigera mínimo 2 horas (mejor toda la noche). Sirve con hielo.'],
-    beneficio: 'La melisa aporta ácido rosmarínico con acción ansiolítica suave. El pepino hidrata y refresca mientras reduce la temperatura corporal elevada por el estrés.'
-  },
-  {
-    nombre: 'Smoothie de Cacao Puro y Lavanda',
-    tag: 'Reconfortante antiestrés',
-    fotoId: 6341422,
-    plantas: [],
-    ingredientes: ['1 taza de leche de almendras tibia','1½ cdas. cacao puro en polvo sin azúcar','1 cdta. flores de lavanda secas comestibles','1 plátano mediano congelado','1 cda. mantequilla de almendras','1 dátil medjool sin hueso · canela · sal marina'],
-    pasos: ['Infusiona la lavanda en la leche tibia 5 minutos. Cuela y reserva.','Licuadora: cacao, mantequilla de almendras, dátil, canela y sal. Vierte la leche infusionada.','Añade el plátano congelado y licúa 1–2 minutos hasta textura suave.','Sirve con nibs de cacao y una flor de lavanda comestible.'],
-    beneficio: 'El cacao puro contiene anandamida —la molécula de la felicidad— y magnesio que relaja el sistema nervioso. La lavanda complementa con su efecto ansiolítico para el estrés emocional.'
-  },
-  {
-    nombre: 'Infusión Fría de Hierba Luisa y Jengibre',
-    tag: 'Digestivo relajante',
-    fotoId: 33789289,
-    plantas: ['hierba luisa','cedron','cedrón','jengibre','verbena'],
-    ingredientes: ['2 cdas. hojas secas de hierba luisa (cedrón)','1 cdta. jengibre fresco rallado','1 cda. miel de flores','Jugo de ½ lima','2 tazas de agua · hielo'],
-    pasos: ['Hierve 1 taza de agua y retira del fuego.','Añade la hierba luisa y el jengibre. Infusiona tapado 6–8 minutos.','Cuela y deja enfriar. Añade el agua fría, miel y jugo de lima.','Sirve con hielo y rodajas de lima.'],
-    beneficio: 'La hierba luisa calma simultáneamente el sistema nervioso y el digestivo. Especialmente eficaz cuando el estrés se manifiesta con náuseas o malestar estomacal.'
-  }
-];
 
-function getJugoParaHierba(nombre){
-  const n = nombre.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
-  return JUGOS.find(j => j.plantas && j.plantas.length && j.plantas.some(p => n.includes(p)));
+function getJugoParaHierba(idRemedio){
+  return jugos.find(j => j.id_remedio === idRemedio);
 }
 
 function renderJugoInline(j){
-  const img = `https://images.pexels.com/photos/${j.fotoId}/pexels-photo-${j.fotoId}.jpeg?auto=compress&cs=tinysrgb&w=400&h=180&fit=crop`;
+  const img = j.foto_url || '';
   return `<div class="jugo-inline">
     <button class="jugo-toggle-btn" onclick="toggleJugoPanel(this)">
       <span>🍹 &nbsp;Elixir herbal &middot; ${j.tag}</span><span>▾</span>
@@ -285,106 +194,13 @@ function idxRenderLista(lista, label){
   }).join('');
 }
 
-const INFUSIONES = [
-  {
-    nombre:'Infusión de Cúrcuma y Lavanda',
-    tag:'Antiinflamatoria articular',
-    fotoId:341514,
-    plantas:['curcuma','cúrcuma','lavanda','lavandula'],
-    ingredientes:['1 rodaja de cúrcuma fresca (2 cm)','1 cucharada de flores de lavanda secas','430 ml de agua filtrada','1 pizca de pimienta negra molida','1 cucharadita de miel cruda (opcional)'],
-    pasos:['Pela y corta la cúrcuma en trozos pequeños','Lleva el agua a ebullición','Añade la cúrcuma y cuece a fuego lento 10 minutos','Apaga el fuego y añade las flores de lavanda','Tapa y deja reposar 5 minutos','Cuela y añade miel al gusto'],
-    beneficio:'Alivia el dolor crónico de rodillas y articulaciones. La curcumina inhibe múltiples vías inflamatorias mientras la lavanda reduce la tensión muscular periarticular y potencia el efecto analgésico.'
-  },
-  {
-    nombre:'Infusión de Jengibre y Romero',
-    tag:'Recuperación muscular',
-    fotoId:6962419,
-    plantas:['jengibre','romero','rosmarinus'],
-    ingredientes:['1 rodaja de jengibre fresco (2-3 cm)','1 cucharadita de hojas de romero secas','450 ml de agua filtrada','1 cucharadita de miel de romero (opcional)','Unas gotas de limón (opcional)'],
-    pasos:['Pela y corta finamente el jengibre','Lleva el agua a ebullición','Añade el jengibre y cuece a fuego lento 5 minutos','Apaga el fuego y añade las hojas de romero','Tapa y deja reposar 7 minutos','Cuela y añade miel y limón al gusto'],
-    beneficio:'Combate la inflamación muscular reduciendo citocinas proinflamatorias. El jengibre y el romero actúan en sinergia mejorando la circulación sanguínea y acelerando la recuperación tisular.'
-  },
-  {
-    nombre:'Infusión de Harpagofito',
-    tag:'Artritis y rigidez de manos',
-    fotoId:6962404,
-    plantas:['harpagofito','garra del diablo','harpagophytum'],
-    ingredientes:['1 cucharada de raíz seca de harpagofito triturada','250 ml de agua filtrada','1 rodaja fina de limón (opcional)','1 ramita pequeña de canela (opcional)','1 cucharadita de miel de acacia (opcional)'],
-    pasos:['Tritura ligeramente la raíz para aumentar la superficie de contacto','Lleva el agua a ebullición','Añade la raíz triturada y reduce el fuego','Cuece a fuego suave 10 minutos','Retira del fuego y deja reposar tapado 5 minutos','Cuela con colador fino y añade limón o miel al gusto'],
-    beneficio:'Alivia la artritis y la rigidez en las articulaciones pequeñas de las manos. El harpagósido inhibe las enzimas que degradan el cartílago y reduce la inflamación sinovial de forma comparable a algunos antiinflamatorios convencionales.'
-  },
-  {
-    nombre:'Infusión de Sauce Blanco y Menta',
-    tag:'Analgésica para la espalda',
-    fotoId:1417945,
-    plantas:['sauce','sauce blanco','salix','menta','hierbabuena','mentha'],
-    ingredientes:['1 cucharadita de corteza de sauce blanco seca','1 cucharadita de hojas de menta fresca o seca','300 ml de agua filtrada','1 cucharadita de miel de tomillo (opcional)','1 rodaja de jengibre fresco (opcional)'],
-    pasos:['Lleva el agua a ebullición','Añade la corteza de sauce blanco y reduce el fuego','Hierve a fuego lento 5 minutos para extraer la salicina','Apaga el fuego y añade las hojas de menta','Tapa y deja reposar 8 minutos','Cuela y añade miel cuando la temperatura baje de 40°C'],
-    beneficio:'Alivia el dolor de espalda cervical, dorsal y lumbar. La salicina del sauce actúa como aspirina natural inhibiendo prostaglandinas, mientras el mentol de la menta relaja la musculatura paravertebral y aporta efecto analgésico local.'
-  },
-  {
-    nombre:'Infusión de Manzanilla e Hinojo',
-    tag:'Digestiva antiinflamatoria',
-    fotoId:8115976,
-    plantas:['manzanilla','camomila','camomilla','hinojo','foeniculum'],
-    ingredientes:['1 cucharada de flores de manzanilla secas','1 cucharadita de semillas de hinojo ligeramente machacadas','400 ml de agua filtrada','1 rodaja de jengibre fresco (opcional)','1 cucharadita de miel de acacia (opcional)'],
-    pasos:['Machaca las semillas de hinojo en un mortero para liberar aceites esenciales','Lleva el agua a ebullición','Añade las semillas de hinojo y las flores de manzanilla','Hierve a fuego lento 7 minutos','Retira del fuego y deja reposar 3-5 minutos','Cuela bien y sirve caliente, con miel si deseas'],
-    beneficio:'Alivia el colon irritable, la hinchazón y las digestiones pesadas. La manzanilla calma la mucosa intestinal irritada mientras el hinojo elimina gases y reduce los espasmos dolorosos gracias a su anetol.'
-  },
-  {
-    nombre:'Infusión de Canela y Manzanilla',
-    tag:'Alivio del dolor menstrual',
-    fotoId:17125144,
-    plantas:['canela','cinnamomum','manzanilla','camomila','camomilla'],
-    ingredientes:['1 rama de canela (Cinnamomum verum)','1 cucharada de flores de manzanilla secas','350 ml de agua filtrada','1 rodaja fina de jengibre fresco (opcional)','1 cucharadita de miel cruda (opcional)','2-3 clavos de olor (opcional)'],
-    pasos:['Parte la rama de canela en trozos pequeños','Lleva el agua a ebullición','Añade la canela y, si deseas, el jengibre y los clavos','Hierve a fuego lento 5 minutos','Retira del fuego y añade las flores de manzanilla','Tapa y deja reposar 10 minutos','Cuela y añade miel al gusto'],
-    beneficio:'Reduce el dolor menstrual y la inflamación pélvica. El cinamaldehído de la canela inhibe las prostaglandinas causantes de las contracciones uterinas dolorosas, mientras la manzanilla aporta efecto calmante y antiinflamatorio general.'
-  },
-  {
-    nombre:'Infusión de Melisa y Lavanda',
-    tag:'Tensión nerviosa y contracturas',
-    fotoId:18745034,
-    plantas:['melisa','toronjil','melissa','lavanda','lavandula'],
-    ingredientes:['1 cucharada de hojas frescas de melisa (o 2 cucharaditas si son secas)','1 cucharadita de flores de lavanda secas','400 ml de agua filtrada','1 cucharadita de miel de azahar (opcional)','1-2 flores de tila (opcional)'],
-    pasos:['Calienta el agua hasta unos 90°C, justo antes del punto de ebullición','Coloca la melisa y la lavanda en una tetera','Vierte el agua caliente sobre las hierbas','Tapa inmediatamente para conservar los aceites esenciales volátiles','Deja reposar 8 minutos','Cuela y añade miel cuando la temperatura baje de 40°C'],
-    beneficio:'Alivia el dolor de cabeza tensional, las contracturas cervicales y el insomnio por estrés. La melisa actúa sobre los receptores GABA reduciendo la ansiedad, mientras la lavanda relaja la musculatura y calma el sistema nervioso.'
-  },
-  {
-    nombre:'Infusión de Ortiga y Limón',
-    tag:'Recuperación post-ejercicio',
-    fotoId:5275234,
-    plantas:['ortiga','urtica'],
-    ingredientes:['1 cucharada de hojas secas de ortiga','Zumo de ½ limón fresco','400 ml de agua filtrada','1 cucharadita de miel cruda (opcional)','1 rodaja de jengibre fresco (opcional)','1 ramita de menta fresca (opcional)'],
-    pasos:['Lleva el agua a ebullición','Añade las hojas secas de ortiga','Hierve a fuego lento 10 minutos para extraer todos los principios activos','Retira del fuego y cuela','Deja enfriar hasta que esté tibia (unos 40°C)','Añade el zumo de limón recién exprimido y miel al gusto'],
-    beneficio:'Acelera la recuperación muscular tras el esfuerzo físico. La ortiga aporta quercetina y minerales esenciales que reducen la inflamación, mientras el limón neutraliza el ácido láctico y aporta vitamina C para la reparación tisular.'
-  },
-  {
-    nombre:'Infusión Dorada de Cúrcuma, Pimienta y Jengibre',
-    tag:'Antiinflamatoria sistémica',
-    fotoId:6962415,
-    plantas:['curcuma','cúrcuma','jengibre'],
-    ingredientes:['1 rodaja de cúrcuma fresca (2-3 cm) o 1 cucharadita de polvo','1 pizca generosa de pimienta negra recién molida','1 rodaja de jengibre fresco (2 cm)','430 ml de agua filtrada','1 cucharadita de aceite de oliva virgen extra (opcional)','1 cucharadita de miel cruda y 1 rodaja de limón (opcional)'],
-    pasos:['Pela y corta finamente la cúrcuma y el jengibre','Lleva el agua a ebullición','Añade la cúrcuma, el jengibre y la pimienta negra','Hierve a fuego suave 10 minutos','Retira del fuego y deja reposar 5 minutos','Añade el aceite de oliva si lo usas para mejorar la absorción de curcumina','Cuela, añade miel y limón al gusto cuando esté a temperatura bebible'],
-    beneficio:'Combate la inflamación crónica sistémica actuando sobre múltiples vías inflamatorias. La piperina de la pimienta negra aumenta la biodisponibilidad de la curcumina hasta un 2000%, potenciando enormemente su efecto antiinflamatorio.'
-  },
-  {
-    nombre:'Infusión de Valeriana y Pasiflora',
-    tag:'Tensión cervical y hombros',
-    fotoId:7948965,
-    plantas:['valeriana','pasiflora','maracuya','maracuyá','passiflora'],
-    ingredientes:['1 cucharadita de raíz seca de valeriana','1 cucharadita de partes aéreas de pasiflora secas','350 ml de agua filtrada','1 cucharadita de miel (opcional)','1-2 flores de tila (opcional)'],
-    pasos:['Calienta el agua hasta unos 90°C, justo antes del punto de ebullición','Añade la valeriana y la pasiflora','Tapa y deja reposar 10 minutos','Cuela la infusión con cuidado','Añade miel al gusto','Bebe caliente, preferiblemente 30 minutos antes de acostarse'],
-    beneficio:'Alivia el dolor de hombros y cuello por tensión muscular acumulada. La valeriana actúa como miorelajante natural reduciendo la tensión del trapecio, mientras la pasiflora modula los receptores GABA para calmar el sistema nervioso y romper el círculo dolor-tensión-dolor.'
-  }
-];
 
-function getInfusionParaHierba(nombre){
-  const n = nombre.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
-  return INFUSIONES.find(inf => inf.plantas && inf.plantas.length && inf.plantas.some(p => n.includes(p)));
+function getInfusionParaHierba(idRemedio){
+  return infusiones.find(inf => inf.id_remedio === idRemedio);
 }
 
 function renderInfusionInline(inf){
-  const img = `https://images.pexels.com/photos/${inf.fotoId}/pexels-photo-${inf.fotoId}.jpeg?auto=compress&cs=tinysrgb&w=400&h=180&fit=crop`;
+  const img = inf.foto_url || '';
   return `<div class="jugo-inline">
     <button class="jugo-toggle-btn" onclick="toggleJugoPanel(this)">
       <span>☕ &nbsp;Infusión medicinal &middot; ${inf.tag}</span><span>▾</span>
@@ -407,7 +223,7 @@ function renderInfusionInline(inf){
 function initIdxInfusionesList(){
   const ul = document.getElementById('idxInfusionesList');
   if(!ul) return;
-  ul.innerHTML = INFUSIONES.map((inf,i)=>`
+  ul.innerHTML = infusiones.map((inf,i)=>`
     <li class="idx-jugos-item" onclick="seleccionarIdxInfusion(${i})">
       <span class="idx-jugos-item-nombre">☕ ${inf.nombre}</span>
       <span class="idx-jugos-item-tag">${inf.tag}</span>
@@ -428,10 +244,10 @@ function seleccionarIdxInfusion(i){
 }
 
 function mostrarInfusion(i){
-  const inf = INFUSIONES[i];
+  const inf = infusiones[i];
   _ocultarVistas();
   document.getElementById('btnIdx').classList.add('visible');
-  const img = `https://images.pexels.com/photos/${inf.fotoId}/pexels-photo-${inf.fotoId}.jpeg?auto=compress&cs=tinysrgb&w=800&h=500&fit=crop`;
+  const img = inf.foto_url || '';
   document.getElementById('infusionViewImg').src = img;
   document.getElementById('infusionViewImg').style.display = 'block';
   document.getElementById('infusionViewTag').textContent = inf.tag;
@@ -445,7 +261,7 @@ function mostrarInfusion(i){
 function initIdxJugosList(){
   const ul = document.getElementById('idxJugosList');
   if(!ul) return;
-  ul.innerHTML = JUGOS.map((j,i)=>`
+  ul.innerHTML = jugos.map((j,i)=>`
     <li class="idx-jugos-item" onclick="seleccionarIdxJugo(${i})">
       <span class="idx-jugos-item-nombre">🍹 ${j.nombre}</span>
       <span class="idx-jugos-item-tag">${j.tag}</span>
@@ -466,10 +282,10 @@ function seleccionarIdxJugo(i){
 }
 
 function mostrarJugo(i){
-  const j = JUGOS[i];
+  const j = jugos[i];
   _ocultarVistas();
   document.getElementById('btnIdx').classList.add('visible');
-  const img = `https://images.pexels.com/photos/${j.fotoId}/pexels-photo-${j.fotoId}.jpeg?auto=compress&cs=tinysrgb&w=800&h=500&fit=crop`;
+  const img = j.foto_url || '';
   document.getElementById('jugoViewImg').src = img;
   document.getElementById('jugoViewImg').style.display = 'block';
   document.getElementById('jugoViewTag').textContent = j.tag;
@@ -497,6 +313,7 @@ function mapearPlanta(p, idx){
   const loteLabel = `Lote ${['I','II','III','IV','V','VI','VII','VIII','IX','X'][loteNum] || (loteNum+1)}`;
   const props = p.propiedades ? p.propiedades.split(',').map(s=>s.trim()).filter(Boolean) : [];
   return {
+    id_remedio: p.id_remedio,
     nombre: p.nombre_remedio,
     lat:    p.planta_base || '',
     lote:   loteLabel,
@@ -515,13 +332,17 @@ function mapearPlanta(p, idx){
 
 async function cargarPlantas(){
   try {
-    const res = await fetch('/api/plantas');
-    const data = await res.json();
-    if(data.ok && data.plantas.length){
-      hierbas = data.plantas.map((p,i) => mapearPlanta(p, i));
-    }
+    const [resP, resJ, resI] = await Promise.all([
+      fetch('/api/plantas'),
+      fetch('/api/jugos'),
+      fetch('/api/infusiones'),
+    ]);
+    const [dataP, dataJ, dataI] = await Promise.all([resP.json(), resJ.json(), resI.json()]);
+    if(dataP.ok && dataP.plantas.length) hierbas = dataP.plantas.map((p,i) => mapearPlanta(p, i));
+    if(dataJ.ok) jugos = dataJ.data;
+    if(dataI.ok) infusiones = dataI.data;
   } catch(e) {
-    console.error('Error al cargar plantas:', e);
+    console.error('Error al cargar datos:', e);
   }
   idxInit();
   initIdxJugosList();
@@ -974,9 +795,9 @@ function renderHierba(idx, dir=0){
   extra.innerHTML = extraHtml;
 
   // Jugo herbal inline
-  const jugo = getJugoParaHierba(h.nombre);
+  const jugo = getJugoParaHierba(h.id_remedio);
   document.getElementById('herbJugo').innerHTML = jugo ? renderJugoInline(jugo) : '';
-  const infusion = getInfusionParaHierba(h.nombre);
+  const infusion = getInfusionParaHierba(h.id_remedio);
   document.getElementById('herbInfusion').innerHTML = infusion ? renderInfusionInline(infusion) : '';
 
   // Indicador

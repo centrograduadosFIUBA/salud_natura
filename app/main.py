@@ -11,7 +11,7 @@ from typing import Optional
 
 from app.config import settings
 from app.database import init_db, get_db
-from app.models import RemedioIn, UsuarioIn
+from app.models import RemedioIn, UsuarioIn, JugoIn, InfusionIn
 
 
 @asynccontextmanager
@@ -216,6 +216,30 @@ async def login_grimorio(payload: dict):
         conn.close()
 
 
+@app.get("/api/jugos")
+async def listar_jugos():
+    import json as _json
+    conn = get_db()
+    rows = [dict(r) for r in conn.execute("SELECT * FROM jugos ORDER BY id").fetchall()]
+    conn.close()
+    for r in rows:
+        r['ingredientes'] = _json.loads(r['ingredientes']) if r.get('ingredientes') else []
+        r['pasos'] = _json.loads(r['pasos']) if r.get('pasos') else []
+    return {"ok": True, "data": rows}
+
+
+@app.get("/api/infusiones")
+async def listar_infusiones():
+    import json as _json
+    conn = get_db()
+    rows = [dict(r) for r in conn.execute("SELECT * FROM infusiones ORDER BY id").fetchall()]
+    conn.close()
+    for r in rows:
+        r['ingredientes'] = _json.loads(r['ingredientes']) if r.get('ingredientes') else []
+        r['pasos'] = _json.loads(r['pasos']) if r.get('pasos') else []
+    return {"ok": True, "data": rows}
+
+
 @app.get("/api/tiendas")
 async def tiendas_cercanas(lat: float, lon: float):
     return {"ok": True, "tiendas": []}
@@ -232,13 +256,17 @@ async def geocodificar_usuario(payload: dict):
 @app.get("/admin")
 async def admin_inicio(request: Request):
     conn = get_db()
-    total_remedios = conn.execute("SELECT COUNT(*) FROM base_conocimiento_salud").fetchone()[0]
-    total_usuarios = conn.execute("SELECT COUNT(*) FROM usuarios_y_clientes").fetchone()[0]
-    total_botiquin = conn.execute("SELECT COUNT(*) FROM botiquin").fetchone()[0]
+    total_remedios   = conn.execute("SELECT COUNT(*) FROM base_conocimiento_salud").fetchone()[0]
+    total_usuarios   = conn.execute("SELECT COUNT(*) FROM usuarios_y_clientes").fetchone()[0]
+    total_botiquin   = conn.execute("SELECT COUNT(*) FROM botiquin").fetchone()[0]
+    total_jugos      = conn.execute("SELECT COUNT(*) FROM jugos").fetchone()[0]
+    total_infusiones = conn.execute("SELECT COUNT(*) FROM infusiones").fetchone()[0]
     conn.close()
     return templates.TemplateResponse("admin_inicio.html", {
         "request": request, "settings": settings, "seccion": "inicio",
-        "total_remedios": total_remedios, "total_usuarios": total_usuarios, "total_botiquin": total_botiquin,
+        "total_remedios": total_remedios, "total_usuarios": total_usuarios,
+        "total_botiquin": total_botiquin, "total_jugos": total_jugos,
+        "total_infusiones": total_infusiones,
     })
 
 
@@ -388,3 +416,115 @@ async def admin_usuarios_eliminar(id_usuario: int):
     conn.commit()
     conn.close()
     return RedirectResponse("/admin/usuarios?mensaje=Usuario eliminado", status_code=303)
+
+
+@app.get("/admin/jugos")
+async def admin_jugos(request: Request, mensaje: Optional[str] = None):
+    conn = get_db()
+    jugos = conn.execute("SELECT j.*, b.nombre_remedio FROM jugos j LEFT JOIN base_conocimiento_salud b ON j.id_remedio = b.id_remedio ORDER BY j.id").fetchall()
+    remedios = conn.execute("SELECT id_remedio, nombre_remedio FROM base_conocimiento_salud ORDER BY nombre_remedio").fetchall()
+    conn.close()
+    return templates.TemplateResponse("admin_jugos.html", {
+        "request": request, "settings": settings,
+        "jugos": jugos, "remedios": remedios, "mensaje": mensaje,
+    })
+
+
+@app.post("/admin/jugos/guardar")
+async def admin_jugos_guardar(
+    nombre: str = Form(...),
+    tag: str = Form(""),
+    foto_url: str = Form(""),
+    ingredientes: str = Form(""),
+    pasos: str = Form(""),
+    beneficio: str = Form(""),
+    id_remedio: str = Form(""),
+    id: str = Form(""),
+):
+    import json
+    ing_list = [x.strip() for x in ingredientes.splitlines() if x.strip()]
+    pasos_list = [x.strip() for x in pasos.splitlines() if x.strip()]
+    ing_json = json.dumps(ing_list, ensure_ascii=False)
+    pasos_json = json.dumps(pasos_list, ensure_ascii=False)
+    id_rem = int(id_remedio) if id_remedio else None
+    conn = get_db()
+    if id:
+        conn.execute(
+            "UPDATE jugos SET nombre=?, tag=?, foto_url=?, ingredientes=?, pasos=?, beneficio=?, id_remedio=? WHERE id=?",
+            (nombre, tag or None, foto_url or None, ing_json, pasos_json, beneficio or None, id_rem, int(id)),
+        )
+        mensaje = "Jugo actualizado"
+    else:
+        conn.execute(
+            "INSERT INTO jugos (nombre, tag, foto_url, ingredientes, pasos, beneficio, id_remedio) VALUES (?,?,?,?,?,?,?)",
+            (nombre, tag or None, foto_url or None, ing_json, pasos_json, beneficio or None, id_rem),
+        )
+        mensaje = "Jugo creado"
+    conn.commit()
+    conn.close()
+    return RedirectResponse(f"/admin/jugos?mensaje={mensaje}", status_code=303)
+
+
+@app.post("/admin/jugos/{id}/eliminar")
+async def admin_jugos_eliminar(id: int):
+    conn = get_db()
+    conn.execute("DELETE FROM jugos WHERE id=?", (id,))
+    conn.commit()
+    conn.close()
+    return RedirectResponse("/admin/jugos?mensaje=Jugo eliminado", status_code=303)
+
+
+@app.get("/admin/infusiones")
+async def admin_infusiones(request: Request, mensaje: Optional[str] = None):
+    conn = get_db()
+    infusiones = conn.execute("SELECT i.*, b.nombre_remedio FROM infusiones i LEFT JOIN base_conocimiento_salud b ON i.id_remedio = b.id_remedio ORDER BY i.id").fetchall()
+    remedios = conn.execute("SELECT id_remedio, nombre_remedio FROM base_conocimiento_salud ORDER BY nombre_remedio").fetchall()
+    conn.close()
+    return templates.TemplateResponse("admin_infusiones.html", {
+        "request": request, "settings": settings,
+        "infusiones": infusiones, "remedios": remedios, "mensaje": mensaje,
+    })
+
+
+@app.post("/admin/infusiones/guardar")
+async def admin_infusiones_guardar(
+    nombre: str = Form(...),
+    tag: str = Form(""),
+    foto_url: str = Form(""),
+    ingredientes: str = Form(""),
+    pasos: str = Form(""),
+    beneficio: str = Form(""),
+    id_remedio: str = Form(""),
+    id: str = Form(""),
+):
+    import json
+    ing_list = [x.strip() for x in ingredientes.splitlines() if x.strip()]
+    pasos_list = [x.strip() for x in pasos.splitlines() if x.strip()]
+    ing_json = json.dumps(ing_list, ensure_ascii=False)
+    pasos_json = json.dumps(pasos_list, ensure_ascii=False)
+    id_rem = int(id_remedio) if id_remedio else None
+    conn = get_db()
+    if id:
+        conn.execute(
+            "UPDATE infusiones SET nombre=?, tag=?, foto_url=?, ingredientes=?, pasos=?, beneficio=?, id_remedio=? WHERE id=?",
+            (nombre, tag or None, foto_url or None, ing_json, pasos_json, beneficio or None, id_rem, int(id)),
+        )
+        mensaje = "Infusión actualizada"
+    else:
+        conn.execute(
+            "INSERT INTO infusiones (nombre, tag, foto_url, ingredientes, pasos, beneficio, id_remedio) VALUES (?,?,?,?,?,?,?)",
+            (nombre, tag or None, foto_url or None, ing_json, pasos_json, beneficio or None, id_rem),
+        )
+        mensaje = "Infusión creada"
+    conn.commit()
+    conn.close()
+    return RedirectResponse(f"/admin/infusiones?mensaje={mensaje}", status_code=303)
+
+
+@app.post("/admin/infusiones/{id}/eliminar")
+async def admin_infusiones_eliminar(id: int):
+    conn = get_db()
+    conn.execute("DELETE FROM infusiones WHERE id=?", (id,))
+    conn.commit()
+    conn.close()
+    return RedirectResponse("/admin/infusiones?mensaje=Infusión eliminada", status_code=303)

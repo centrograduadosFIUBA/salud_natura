@@ -79,5 +79,31 @@ def init_db():
     except:
         pass
 
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS jugos (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombre TEXT NOT NULL,
+            tag TEXT,
+            foto_url TEXT,
+            ingredientes TEXT,
+            pasos TEXT,
+            beneficio TEXT,
+            id_remedio INTEGER REFERENCES base_conocimiento_salud(id_remedio)
+        )
+    """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS infusiones (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombre TEXT NOT NULL,
+            tag TEXT,
+            foto_url TEXT,
+            ingredientes TEXT,
+            pasos TEXT,
+            beneficio TEXT,
+            id_remedio INTEGER REFERENCES base_conocimiento_salud(id_remedio)
+        )
+    """)
+
     conn.commit()
     conn.close()

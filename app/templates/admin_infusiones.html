@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infusiones — Admin {{ settings.app_name }}</title>
+    <link rel="stylesheet" href="/static/css/admin.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2>🌿 Admin</h2>
+            <p>{{ settings.app_name }}</p>
+        </div>
+        <ul>
+            <li><a href="/admin">🏠 Inicio</a></li>
+            <li><a href="/admin/remedios">🌱 Remedios</a></li>
+            <li><a href="/admin/botiquin">🩹 Botiquín</a></li>
+            <li><a href="/admin/jugos">🍹 Jugos</a></li>
+            <li><a href="/admin/infusiones" class="active">☕ Infusiones</a></li>
+            <li><a href="/admin/usuarios">👥 Usuarios</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <a href="/">← Volver al sitio</a>
+        </div>
+    </nav>
+    <main class="content">
+        <div class="page-header">
+            <h1>☕ Infusiones medicinales</h1>
+            <button class="btn btn-primary" onclick="abrirModal()">+ Nueva Infusión</button>
+        </div>
+
+        {% if mensaje %}
+        <div class="alert">{{ mensaje }}</div>
+        {% endif %}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Tag</th>
+                    <th>Planta vinculada</th>
+                    <th>Foto URL</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in infusiones %}
+                <tr>
+                    <td>{{ i.id }}</td>
+                    <td>{{ i.nombre }}</td>
+                    <td>{{ i.tag or '-' }}</td>
+                    <td>{{ i.nombre_remedio or '—' }}</td>
+                    <td class="truncate">{{ i.foto_url or '-' }}</td>
+                    <td class="acciones">
+                        <button class="btn btn-sm" onclick="editarInfusion({{ i.id }}, '{{ i.nombre | e }}', '{{ (i.tag or '') | e }}', '{{ (i.foto_url or '') | e }}', {{ i.id_remedio or 'null' }}, '{{ (i.beneficio or '') | e }}')">✏️</button>
+                        <form method="post" action="/admin/infusiones/{{ i.id }}/eliminar" style="display:inline" onsubmit="return confirm('¿Eliminar esta infusión?')">
+                            <button class="btn btn-sm btn-danger">🗑️</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% if not infusiones %}
+                <tr><td colspan="6" class="empty">No hay infusiones cargadas</td></tr>
+                {% endif %}
+            </tbody>
+        </table>
+
+        <div id="modal" class="modal" style="display:none">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modal-titulo">Nueva Infusión</h2>
+                    <button class="btn-close" onclick="cerrarModal()">✕</button>
+                </div>
+                <form method="post" action="/admin/infusiones/guardar">
+                    <input type="hidden" name="id" id="f_id">
+                    <label>Nombre *
+                        <input type="text" name="nombre" id="f_nombre" required>
+                    </label>
+                    <label>Tag / etiqueta
+                        <input type="text" name="tag" id="f_tag" placeholder="Ej: Antiinflamatoria articular">
+                    </label>
+                    <label>Planta vinculada
+                        <select name="id_remedio" id="f_remedio">
+                            <option value="">— Sin vincular —</option>
+                            {% for r in remedios %}
+                            <option value="{{ r.id_remedio }}">{{ r.nombre_remedio }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                    <label>URL de foto
+                        <input type="text" name="foto_url" id="f_foto" placeholder="https://...">
+                    </label>
+                    <label>Ingredientes (uno por línea)
+                        <textarea name="ingredientes" id="f_ingredientes" rows="6" placeholder="1 rodaja de cúrcuma fresca&#10;1 cdta. flores de lavanda&#10;..."></textarea>
+                    </label>
+                    <label>Pasos de preparación (uno por línea)
+                        <textarea name="pasos" id="f_pasos" rows="6" placeholder="Lleva el agua a ebullición.&#10;Añade la cúrcuma.&#10;..."></textarea>
+                    </label>
+                    <label>Beneficio
+                        <textarea name="beneficio" id="f_beneficio" rows="3"></textarea>
+                    </label>
+                    <div class="modal-actions">
+                        <button type="button" class="btn" onclick="cerrarModal()">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+    function abrirModal() {
+        document.getElementById('modal-titulo').textContent = 'Nueva Infusión';
+        document.getElementById('f_id').value = '';
+        document.getElementById('f_nombre').value = '';
+        document.getElementById('f_tag').value = '';
+        document.getElementById('f_remedio').value = '';
+        document.getElementById('f_foto').value = '';
+        document.getElementById('f_ingredientes').value = '';
+        document.getElementById('f_pasos').value = '';
+        document.getElementById('f_beneficio').value = '';
+        document.getElementById('modal').style.display = 'flex';
+    }
+    function editarInfusion(id, nombre, tag, foto, idRemedio, beneficio) {
+        document.getElementById('modal-titulo').textContent = 'Editar Infusión';
+        document.getElementById('f_id').value = id;
+        document.getElementById('f_nombre').value = nombre;
+        document.getElementById('f_tag').value = tag;
+        document.getElementById('f_remedio').value = idRemedio || '';
+        document.getElementById('f_foto').value = foto;
+        document.getElementById('f_beneficio').value = beneficio;
+        document.getElementById('modal').style.display = 'flex';
+    }
+    function cerrarModal() {
+        document.getElementById('modal').style.display = 'none';
+    }
+    </script>
+</body>
+</html>

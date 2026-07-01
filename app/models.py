@@ -30,3 +30,23 @@ class UsuarioIn(BaseModel):
 
 class UsuarioOut(UsuarioIn):
     id_usuario: int
+
+
+class JugoIn(BaseModel):
+    nombre: str
+    tag: Optional[str] = None
+    foto_url: Optional[str] = None
+    ingredientes: Optional[str] = None
+    pasos: Optional[str] = None
+    beneficio: Optional[str] = None
+    id_remedio: Optional[int] = None
+
+
+class InfusionIn(BaseModel):
+    nombre: str
+    tag: Optional[str] = None
+    foto_url: Optional[str] = None
+    ingredientes: Optional[str] = None
+    pasos: Optional[str] = None
+    beneficio: Optional[str] = None
+    id_remedio: Optional[int] = None
