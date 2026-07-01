@@ -10,6 +10,7 @@ class RemedioIn(BaseModel):
     dosificacion: Optional[str] = None
     link_articulo_web: Optional[str] = None
     imagen_url: Optional[str] = None
+    nivel_evidencia: Optional[str] = None
 
 
 class RemedioOut(RemedioIn):

@@ -108,7 +108,6 @@ async def buscar_remedios(q: str = Query(..., min_length=1)):
 @app.get("/api/botiquin")
 async def listar_botiquin():
     conn = get_db()
-    # Calcular índice del grimorio (posición 0-based en lista ordenada por id_remedio)
     idx_map = {r[0]: i for i, r in enumerate(
         conn.execute("SELECT id_remedio FROM base_conocimiento_salud ORDER BY id_remedio").fetchall()
     )}
@@ -146,8 +145,8 @@ async def obtener_remedio(id_remedio: int):
 async def crear_remedio(remedio: RemedioIn):
     conn = get_db()
     cursor = conn.execute(
-        "INSERT INTO base_conocimiento_salud (nombre_remedio, planta_base, propiedades, contraindicaciones, dosificacion, link_articulo_web) VALUES (?, ?, ?, ?, ?, ?)",
-        (remedio.nombre_remedio, remedio.planta_base, remedio.propiedades, remedio.contraindicaciones, remedio.dosificacion, remedio.link_articulo_web),
+        "INSERT INTO base_conocimiento_salud (nombre_remedio, planta_base, propiedades, contraindicaciones, dosificacion, link_articulo_web, nivel_evidencia) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        (remedio.nombre_remedio, remedio.planta_base, remedio.propiedades, remedio.contraindicaciones, remedio.dosificacion, remedio.link_articulo_web, remedio.nivel_evidencia),
     )
     conn.commit()
     id_nuevo = cursor.lastrowid
@@ -262,19 +261,20 @@ async def admin_remedios_guardar(
     dosificacion: str = Form(""),
     link_articulo_web: str = Form(""),
     imagen_url: str = Form(""),
+    nivel_evidencia: str = Form(""),
     id_remedio: str = Form(""),
 ):
     conn = get_db()
     if id_remedio:
         conn.execute(
-            "UPDATE base_conocimiento_salud SET nombre_remedio=?, planta_base=?, propiedades=?, contraindicaciones=?, dosificacion=?, link_articulo_web=?, imagen_url=? WHERE id_remedio=?",
-            (nombre_remedio, planta_base or None, propiedades or None, contraindicaciones or None, dosificacion or None, link_articulo_web or None, imagen_url or None, int(id_remedio)),
+            "UPDATE base_conocimiento_salud SET nombre_remedio=?, planta_base=?, propiedades=?, contraindicaciones=?, dosificacion=?, link_articulo_web=?, imagen_url=?, nivel_evidencia=? WHERE id_remedio=?",
+            (nombre_remedio, planta_base or None, propiedades or None, contraindicaciones or None, dosificacion or None, link_articulo_web or None, imagen_url or None, nivel_evidencia or None, int(id_remedio)),
         )
         mensaje = "Remedio actualizado"
     else:
         conn.execute(
-            "INSERT INTO base_conocimiento_salud (nombre_remedio, planta_base, propiedades, contraindicaciones, dosificacion, link_articulo_web, imagen_url) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (nombre_remedio, planta_base or None, propiedades or None, contraindicaciones or None, dosificacion or None, link_articulo_web or None, imagen_url or None),
+            "INSERT INTO base_conocimiento_salud (nombre_remedio, planta_base, propiedades, contraindicaciones, dosificacion, link_articulo_web, imagen_url, nivel_evidencia) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (nombre_remedio, planta_base or None, propiedades or None, contraindicaciones or None, dosificacion or None, link_articulo_web or None, imagen_url or None, nivel_evidencia or None),
         )
         mensaje = "Remedio creado"
     conn.commit()
