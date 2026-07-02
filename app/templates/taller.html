@@ -23,6 +23,63 @@
             </div>
         </section>
 
+        <section class="conceptos">
+            <h2>Conceptos básicos</h2>
+            <p class="conceptos-intro">No hace falta ser programador para colaborar en este proyecto. Sí es útil entender de qué se habla cuando se mencionan estos términos.</p>
+
+            <div class="concepto-grid">
+
+                <div class="concepto-card">
+                    <div class="concepto-icono">🖥️</div>
+                    <h3>Frontend vs Backend</h3>
+                    <p>Una aplicación web tiene dos mitades. El <strong>frontend</strong> es todo lo que el usuario ve y toca: el diseño, los botones, los textos en pantalla. El <strong>backend</strong> es la parte invisible que corre en un servidor: procesa los datos, consulta la base de datos y devuelve respuestas. Cuando abrís el grimorio, el frontend dibuja el libro; el backend le responde con la lista de plantas. Ambas partes se comunican por la red usando una API.</p>
+                </div>
+
+                <div class="concepto-card">
+                    <div class="concepto-icono">⚡</div>
+                    <h3>Páginas web dinámicas</h3>
+                    <p>Una página <strong>estática</strong> siempre muestra lo mismo: está escrita en HTML fijo y cualquier cambio requiere editar el archivo. Una página <strong>dinámica</strong> genera su contenido en el momento en que se la visita: consulta una base de datos, aplica lógica y arma el HTML resultante. Salud Natura es dinámica: cuando alguien agrega una planta desde el admin, aparece automáticamente en el grimorio sin tocar ningún archivo.</p>
+                </div>
+
+                <div class="concepto-card">
+                    <div class="concepto-icono">🏗️</div>
+                    <h3>HTML · CSS · JavaScript</h3>
+                    <p>Son los tres lenguajes del frontend. <strong>HTML</strong> define la estructura: qué elementos hay en la página (títulos, párrafos, botones, imágenes). <strong>CSS</strong> define el estilo: colores, tipografías, tamaños y posiciones. <strong>JavaScript</strong> agrega comportamiento: reacciona a los clics del usuario, llama a la API para pedir datos y actualiza la pantalla sin recargar la página. En este proyecto, podés cambiar visualmente el sitio tocando solo HTML y CSS, sin necesidad de entender JavaScript.</p>
+                </div>
+
+                <div class="concepto-card">
+                    <div class="concepto-icono">🗄️</div>
+                    <h3>Base de datos relacional</h3>
+                    <p>Una base de datos relacional organiza la información en <strong>tablas</strong>, igual que una planilla de cálculo. Cada tabla tiene filas (registros) y columnas (campos). Lo que la hace "relacional" es que las tablas se pueden <strong>relacionar entre sí</strong>: la tabla de jugos tiene una columna <code>id_remedio</code> que apunta a la tabla de remedios, evitando duplicar información. Este proyecto usa <strong>SQLite</strong>, una base de datos relacional que se guarda en un único archivo, ideal para proyectos pequeños y medianos.</p>
+                </div>
+
+                <div class="concepto-card">
+                    <div class="concepto-icono">🔍</div>
+                    <h3>SQL</h3>
+                    <p><strong>SQL</strong> (Structured Query Language) es el lenguaje para hablarle a una base de datos relacional. Con SQL podés consultar datos (<code>SELECT</code>), insertar registros nuevos (<code>INSERT</code>), modificar existentes (<code>UPDATE</code>) y eliminarlos (<code>DELETE</code>). Por ejemplo, <code>SELECT * FROM jugos WHERE id_remedio = 9</code> devuelve todos los jugos relacionados con la manzanilla. No hace falta memorizarlo: podés pedirle a una IA que escriba la consulta que necesitás describiendo lo que querés obtener.</p>
+                </div>
+
+                <div class="concepto-card">
+                    <div class="concepto-icono">📦</div>
+                    <h3>JSON</h3>
+                    <p><strong>JSON</strong> (JavaScript Object Notation) es el formato estándar en que los datos viajan entre el frontend y el backend. Se parece a un diccionario: claves entre comillas, valores separados por comas, todo entre llaves. Por ejemplo: <code>{"nombre": "Manzanilla", "propiedades": "digestiva, calmante"}</code>. Cuando el grimorio le pide a la API la lista de plantas, el servidor responde con un JSON. El navegador lo recibe, lo lee y dibuja las tarjetas en pantalla. Es liviano, legible y compatible con todos los lenguajes de programación.</p>
+                </div>
+
+                <div class="concepto-card">
+                    <div class="concepto-icono">🔌</div>
+                    <h3>Endpoint / API</h3>
+                    <p>Un <strong>endpoint</strong> es una URL del servidor que está esperando recibir pedidos y devuelve datos. Una <strong>API</strong> (Application Programming Interface) es el conjunto de todos esos endpoints. Por ejemplo, <code>GET /api/plantas</code> es un endpoint que devuelve la lista de plantas en formato JSON. <code>POST /api/registro</code> es otro endpoint que recibe los datos de un nuevo usuario y los guarda en la base de datos. Las APIs permiten que el frontend y el backend hablen entre sí, y también que otras aplicaciones usen los datos del sistema.</p>
+                </div>
+
+                <div class="concepto-card">
+                    <div class="concepto-icono">🌿</div>
+                    <h3>Git y control de versiones</h3>
+                    <p><strong>Git</strong> es un sistema que registra cada cambio en el código a lo largo del tiempo, como un historial con "deshacer" ilimitado. Cada <strong>commit</strong> es una foto del estado del proyecto en un momento dado, con un mensaje que explica qué cambió. Un <strong>repositorio</strong> contiene todo el historial. Una <strong>rama</strong> (branch) es una línea de trabajo paralela: podés experimentar sin tocar el código principal. <strong>GitHub</strong> es la plataforma donde se alojan los repositorios y donde los equipos colaboran enviando <strong>Pull Requests</strong> — propuestas de cambio que otros pueden revisar antes de aceptar.</p>
+                </div>
+
+            </div>
+        </section>
+
         <section class="paso">
             <div class="paso-numero">1</div>
             <div class="paso-contenido">
