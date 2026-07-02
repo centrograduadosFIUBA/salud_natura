@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Taller — {{ settings.app_name }}</title>
-    <link rel="stylesheet" href="/static/css/taller.css">
+    <link rel="icon" type="image/jpeg" href="/static/img/logo.jpg?v={{ settings.static_version }}">
+    <link rel="stylesheet" href="/static/css/taller.css?v={{ settings.static_version }}">
 </head>
 <body>
     <header>
@@ -20,6 +21,220 @@
             <div class="repo-box">
                 <p><strong>Repositorio del proyecto:</strong></p>
                 <a href="https://github.com/centrograduadosFIUBA/salud_natura" target="_blank">https://github.com/centrograduadosFIUBA/salud_natura</a>
+            </div>
+        </section>
+
+        <section class="conceptos">
+            <h2>Conceptos básicos</h2>
+            <p class="conceptos-intro">No hace falta ser programador para colaborar en este proyecto. Sí es útil entender de qué se habla cuando se mencionan estos términos.</p>
+
+            <div class="concepto-grid">
+
+                <div class="concepto-card">
+                    <div class="concepto-icono">🖥️</div>
+                    <h3>Frontend vs Backend</h3>
+                    <p>Una aplicación web tiene dos mitades. El <strong>frontend</strong> es todo lo que el usuario ve y toca: el diseño, los botones, los textos en pantalla. El <strong>backend</strong> es la parte invisible que corre en un servidor: procesa los datos, consulta la base de datos y devuelve respuestas. Cuando abrís el grimorio, el frontend dibuja el libro; el backend le responde con la lista de plantas. Ambas partes se comunican por la red usando una API.</p>
+                </div>
+
+                <div class="concepto-card">
+                    <div class="concepto-icono">⚡</div>
+                    <h3>Páginas web dinámicas</h3>
+                    <p>Una página <strong>estática</strong> siempre muestra lo mismo: está escrita en HTML fijo y cualquier cambio requiere editar el archivo. Una página <strong>dinámica</strong> genera su contenido en el momento en que se la visita: consulta una base de datos, aplica lógica y arma el HTML resultante. Salud Natura es dinámica: cuando alguien agrega una planta desde el admin, aparece automáticamente en el grimorio sin tocar ningún archivo.</p>
+                </div>
+
+                <div class="concepto-card">
+                    <div class="concepto-icono">🏗️</div>
+                    <h3>HTML · CSS · JavaScript</h3>
+                    <p>Son los tres lenguajes del frontend. <strong>HTML</strong> define la estructura: qué elementos hay en la página (títulos, párrafos, botones, imágenes). <strong>CSS</strong> define el estilo: colores, tipografías, tamaños y posiciones. <strong>JavaScript</strong> agrega comportamiento: reacciona a los clics del usuario, llama a la API para pedir datos y actualiza la pantalla sin recargar la página. En este proyecto, podés cambiar visualmente el sitio tocando solo HTML y CSS, sin necesidad de entender JavaScript.</p>
+                </div>
+
+                <div class="concepto-card">
+                    <div class="concepto-icono">🗄️</div>
+                    <h3>Base de datos relacional</h3>
+                    <p>Una base de datos relacional organiza la información en <strong>tablas</strong>, igual que una planilla de cálculo. Cada tabla tiene filas (registros) y columnas (campos). Lo que la hace "relacional" es que las tablas se pueden <strong>relacionar entre sí</strong>: la tabla de jugos tiene una columna <code>id_remedio</code> que apunta a la tabla de remedios, evitando duplicar información. Este proyecto usa <strong>SQLite</strong>, una base de datos relacional que se guarda en un único archivo, ideal para proyectos pequeños y medianos.</p>
+                </div>
+
+                <div class="concepto-card">
+                    <div class="concepto-icono">🔍</div>
+                    <h3>SQL</h3>
+                    <p><strong>SQL</strong> (Structured Query Language) es el lenguaje para hablarle a una base de datos relacional. Con SQL podés consultar datos (<code>SELECT</code>), insertar registros nuevos (<code>INSERT</code>), modificar existentes (<code>UPDATE</code>) y eliminarlos (<code>DELETE</code>). Por ejemplo, <code>SELECT * FROM jugos WHERE id_remedio = 9</code> devuelve todos los jugos relacionados con la manzanilla. No hace falta memorizarlo: podés pedirle a una IA que escriba la consulta que necesitás describiendo lo que querés obtener.</p>
+                </div>
+
+                <div class="concepto-card">
+                    <div class="concepto-icono">📦</div>
+                    <h3>JSON</h3>
+                    <p><strong>JSON</strong> (JavaScript Object Notation) es el formato estándar en que los datos viajan entre el frontend y el backend. Se parece a un diccionario: claves entre comillas, valores separados por comas, todo entre llaves. Por ejemplo: <code>{"nombre": "Manzanilla", "propiedades": "digestiva, calmante"}</code>. Cuando el grimorio le pide a la API la lista de plantas, el servidor responde con un JSON. El navegador lo recibe, lo lee y dibuja las tarjetas en pantalla. Es liviano, legible y compatible con todos los lenguajes de programación.</p>
+                </div>
+
+                <div class="concepto-card">
+                    <div class="concepto-icono">🔌</div>
+                    <h3>Endpoint / API</h3>
+                    <p>Un <strong>endpoint</strong> es una URL del servidor que está esperando recibir pedidos y devuelve datos. Una <strong>API</strong> (Application Programming Interface) es el conjunto de todos esos endpoints. Por ejemplo, <code>GET /api/plantas</code> es un endpoint que devuelve la lista de plantas en formato JSON. <code>POST /api/registro</code> es otro endpoint que recibe los datos de un nuevo usuario y los guarda en la base de datos. Las APIs permiten que el frontend y el backend hablen entre sí, y también que otras aplicaciones usen los datos del sistema.</p>
+                </div>
+
+                <div class="concepto-card">
+                    <div class="concepto-icono">🌿</div>
+                    <h3>Git y control de versiones</h3>
+                    <p><strong>Git</strong> es un sistema que registra cada cambio en el código a lo largo del tiempo, como un historial con "deshacer" ilimitado. Cada <strong>commit</strong> es una foto del estado del proyecto en un momento dado, con un mensaje que explica qué cambió. Un <strong>repositorio</strong> contiene todo el historial. Una <strong>rama</strong> (branch) es una línea de trabajo paralela: podés experimentar sin tocar el código principal. <strong>GitHub</strong> es la plataforma donde se alojan los repositorios y donde los equipos colaboran enviando <strong>Pull Requests</strong> — propuestas de cambio que otros pueden revisar antes de aceptar.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="recomendaciones">
+            <h2>Recomendaciones para el desarrollo</h2>
+            <p class="conceptos-intro">Buenas prácticas que evitan la mayoría de los problemas al colaborar en un proyecto real.</p>
+
+            <div class="rec-lista">
+
+                <div class="rec-item">
+                    <div class="rec-icono">📐</div>
+                    <div class="rec-texto">
+                        <h3>Definí los datos antes de escribir código</h3>
+                        <p>Antes de tocar un archivo, pensá qué información necesitás guardar: ¿qué tabla? ¿qué campos? ¿hay relaciones con otras tablas? Por ejemplo, si querés agregar "recetas", preguntate: ¿una receta puede tener varias plantas o solo una? ¿tiene pasos o es texto libre? ¿necesita una foto? Esas decisiones definen la estructura de la base de datos, y cambiarla después de tener datos cuesta mucho más que pensarla bien desde el principio.</p>
+                    </div>
+                </div>
+
+                <div class="rec-item">
+                    <div class="rec-icono">🪜</div>
+                    <div class="rec-texto">
+                        <h3>Hacé cambios pequeños y revisá seguido</h3>
+                        <p>No intentes hacer todo de una vez. Agregá un campo → verificá que se guarda → agregá el formulario → verificá que aparece en pantalla → commit. Cada paso chico es fácil de deshacer si algo falla. Un cambio grande que rompió algo en el medio es difícil de diagnosticar. El historial de Git es tu red de seguridad: un commit por cada cosa que funciona.</p>
+                    </div>
+                </div>
+
+                <div class="rec-item">
+                    <div class="rec-icono">🗂️</div>
+                    <div class="rec-texto">
+                        <h3>Entendé qué archivos se generan y mirales adentro</h3>
+                        <p>Este proyecto genera archivos que no están en el repositorio: la base de datos (<code>data/salud_natura.db</code>), el entorno virtual (<code>.venv/</code>), los archivos de caché de Python (<code>__pycache__/</code>). Entender qué es cada cosa te ayuda a no confundirte: si borrás el <code>.venv</code> tenés que reinstalar dependencias; si borrás el <code>.db</code> perdés todos los datos. Podés explorar la base de datos con <a href="https://sqlitebrowser.org/" target="_blank">DB Browser for SQLite</a> para ver las tablas y los registros directamente.</p>
+                    </div>
+                </div>
+
+                <div class="rec-item">
+                    <div class="rec-icono">🚫</div>
+                    <div class="rec-texto">
+                        <h3>No hardcodees datos en el código</h3>
+                        <p>Hardcodear significa poner un dato directamente en el código en lugar de guardarlo en la base de datos o en la configuración. Si ponés los nombres de las plantas en el HTML, cada vez que cambia una planta tenés que editar el archivo. Si están en la base de datos, las cambiás desde el admin sin tocar código. Como regla: los datos que el negocio puede querer editar van a la BD; la configuración del sistema (claves, rutas, nombre de la app) va a un archivo de settings; solo la lógica va en el código.</p>
+                    </div>
+                </div>
+
+                <div class="rec-item rec-item-destacado">
+                    <div class="rec-icono">🚀</div>
+                    <div class="rec-texto">
+                        <h3>Cómo arrancar tu propio proyecto desde este prototipo</h3>
+
+                        <p>Este proyecto es una plantilla funcional completa: tiene base de datos, API, panel de administración, frontend y deploy automático. No hace falta empezar de cero. La estrategia es <strong>adaptar este código a tu dominio</strong> antes de escribir una sola línea nueva.</p>
+
+                        <h4>Paso 1 — Definí tu dominio antes de abrir el editor</h4>
+                        <p>Antes de tocar código, respondé estas preguntas en papel: ¿Qué entidades principales tiene tu sistema? ¿Qué datos guarda cada una? ¿Cómo se relacionan entre sí? Por ejemplo, si tu proyecto es una biblioteca: entidades = libros, autores, préstamos. Un libro tiene título, año, ISBN, id_autor. Un préstamo tiene id_libro, id_usuario, fecha. Ese diseño define tus tablas — y cambiar tablas después de tener datos es costoso.</p>
+
+                        <h4>Paso 2 — Pedile al LLM que adapte las configuraciones iniciales</h4>
+                        <p>Una vez que tenés el diseño en papel, hacé un fork de este repositorio y abrilo con tu asistente de IA. Describile tu proyecto y pedile que adapte los archivos clave uno por uno, en este orden:</p>
+                        <ol>
+                            <li><code>settings.py</code> — nombre de la app, versión, configuración general</li>
+                            <li><code>database.py</code> — reemplazar las tablas existentes por las tuyas</li>
+                            <li><code>models.py</code> — los modelos Pydantic que validan los datos que entran por la API</li>
+                            <li><code>main.py</code> — los endpoints GET y POST para cada tabla</li>
+                            <li>Los templates de admin — un ABM (Alta-Baja-Modificación) por tabla</li>
+                        </ol>
+                        <p>No le pidas todo a la vez. Pedí un archivo, revisalo, probalo, y recién entonces pedí el siguiente.</p>
+
+                        <h4>Paso 3 — El ciclo de desarrollo: pensar → pedir → revisar → commitear</h4>
+                        <p>Cada funcionalidad nueva sigue el mismo ciclo: <strong>pensás</strong> qué querés lograr y lo describís en lenguaje natural → <strong>le pedís</strong> al LLM que lo implemente → <strong>revisás</strong> el código que generó (aunque no lo entiendas todo, fijate que tenga sentido) → lo <strong>probás</strong> en el navegador → <strong>commiteás</strong> si funciona. Nunca acumules varios cambios sin commitear: si algo se rompe, no vas a saber qué lo causó.</p>
+
+                        <h4>Paso 4 — Empezá por los datos, no por el diseño</h4>
+                        <p>El error más común es arrancar cambiando colores y tipografías antes de tener los datos funcionando. El diseño visual es lo más fácil de cambiar al final. Lo difícil de cambiar después es la estructura de la base de datos y la lógica del backend. Prioridad: primero que los datos entren y salgan correctamente; después que se vean bien.</p>
+
+                        <h4>Paso 5 — Levantá el servidor local y dejalo corriendo mientras desarrollás</h4>
+                        <p>Con <code>uvicorn app.main:app --reload</code> el servidor se reinicia automáticamente cada vez que guardás un archivo Python. Así podés probar cada cambio de inmediato sin reiniciar nada manualmente. Abrí el navegador en <code>localhost:8000</code> y dejalo al lado del editor. Si algo se rompe, el error aparece en la terminal — copialo y pegáselo al LLM con contexto de qué estabas haciendo.</p>
+
+                        <h4>El LLM es un colaborador, no un diseñador</h4>
+                        <p>El LLM puede escribir código muy bueno, pero no conoce tu negocio ni tus datos. Cuanto más específico seas al pedirle — nombres de tablas, campos, tipos de datos, relaciones, qué hace cada pantalla — mejor va a ser el resultado. Si le decís "hacé un proyecto de biblioteca" vas a obtener algo genérico que después vas a tener que corregir mucho. Si le decís "necesito una tabla <code>libros</code> con campos título, año, ISBN y un campo <code>id_autor</code> que referencia a la tabla <code>autores</code>" vas a obtener exactamente lo que necesitás. La precisión en el pedido es la habilidad más importante para trabajar bien con IA.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="articulo">
+            <h2>Resistí la tentación de "tirarle" un PDF a Claude Code y que se arregle</h2>
+
+            <p>Es una de las primeras tentaciones cuando empezamos a trabajar con Claude Code. Tenemos un folleto, un documento de Word, un PDF de una empresa o un manual de productos y pensamos: <em>"Se lo paso a Claude Code y que haga la página."</em></p>
+
+            <p>A veces funciona sorprendentemente bien. Otras veces... el resultado termina siendo un verdadero dolor de cabeza.</p>
+
+            <p>El problema no es Claude Code. El problema es que un PDF <strong>no es una especificación técnica</strong>.</p>
+
+            <p>Un PDF suele mezclar muchas cosas al mismo tiempo: información importante, textos comerciales, ejemplos, imágenes, comentarios, datos históricos, información repetida, detalles que no corresponden a una página web.</p>
+
+            <p>Cuando Claude Code recibe ese documento, tiene que interpretar qué es importante y qué no. Como cualquier desarrollador al que le entregan un documento ambiguo, completa los espacios vacíos tomando decisiones por su cuenta.</p>
+
+            <p>Y ahí aparecen problemas muy comunes:</p>
+            <ul>
+                <li>Hardcodea datos que deberían ser configurables.</li>
+                <li>Coloca información en secciones incorrectas.</li>
+                <li>Crea páginas que nadie pidió.</li>
+                <li>Mezcla contenido con lógica de programación.</li>
+                <li>Duplica información.</li>
+                <li>Inventa estructuras porque el documento no las definía claramente.</li>
+                <li>Hace "suposiciones inteligentes" que muchas veces no coinciden con lo que el cliente quería.</li>
+            </ul>
+
+            <h3>Un flujo mucho más profesional</h3>
+
+            <p>En lugar de hacer esto:</p>
+            <div class="flujo flujo-malo">
+                <span class="flujo-paso">PDF</span>
+                <span class="flujo-flecha">→</span>
+                <span class="flujo-paso">Claude Code</span>
+            </div>
+
+            <p>Conviene trabajar así:</p>
+            <div class="flujo flujo-bueno">
+                <span class="flujo-paso">PDF</span>
+                <span class="flujo-flecha">→</span>
+                <span class="flujo-paso">LLM Analista</span>
+                <span class="flujo-flecha">→</span>
+                <span class="flujo-paso">Especificación</span>
+                <span class="flujo-flecha">→</span>
+                <span class="flujo-paso">Claude Code</span>
+            </div>
+
+            <h3>Paso 1 — Conversá con un LLM</h3>
+            <p>Podés usar ChatGPT, Claude en modo conversación, Gemini o cualquier otro modelo. Su trabajo no es programar: su trabajo es <strong>comprender el documento</strong>. Durante esta etapa conviene hacer preguntas como:</p>
+            <ul>
+                <li>¿Qué información es realmente importante?</li>
+                <li>¿Qué páginas debería tener el sitio?</li>
+                <li>¿Qué secciones necesita cada página?</li>
+                <li>¿Qué información falta?</li>
+                <li>¿Qué cosas son ambiguas?</li>
+                <li>¿Qué decisiones habría que consultar con el cliente?</li>
+                <li>¿Qué datos deberían quedar parametrizados?</li>
+            </ul>
+            <p>En otras palabras, el LLM actúa como un <strong>analista funcional</strong>.</p>
+
+            <h3>Paso 2 — Construí una especificación</h3>
+            <p>Una buena especificación debería indicar:</p>
+            <ul>
+                <li>Objetivo del sitio y público al que está dirigido.</li>
+                <li>Estructura de navegación y páginas que tendrá.</li>
+                <li>Contenido de cada sección y comportamiento esperado.</li>
+                <li>Componentes reutilizables y datos configurables.</li>
+                <li>Reglas de negocio, restricciones y — muy importante — cosas que <strong>no</strong> deben hacerse.</li>
+            </ul>
+            <p>Cuanto más clara sea esta especificación, menos tendrá que "imaginar" Claude Code.</p>
+
+            <h3>Paso 3 — Recién ahí empezá a programar</h3>
+            <p>Claude Code funciona mucho mejor cuando recibe instrucciones precisas. En lugar de interpretar un PDF completo, recibe una descripción clara de lo que debe construir. Eso reduce enormemente los errores y hace que el proyecto sea mucho más fácil de mantener y continuar.</p>
+
+            <h3>Pensá como un equipo de desarrollo</h3>
+            <p>En un proyecto profesional normalmente no sucede <strong>Cliente → Programador</strong>. Sucede <strong>Cliente → Analista → Especificación → Programador</strong>. Cuando trabajamos con IA ocurre exactamente lo mismo: el LLM conversacional cumple el rol del analista; Claude Code cumple el rol del desarrollador. Cada uno hace aquello para lo que está mejor preparado.</p>
+
+            <div class="articulo-regla">
+                <p>No le pidas a Claude Code que descubra qué querías hacer. <strong>Explicáselo.</strong></p>
+                <p>Invertir veinte minutos en conversar con un LLM para transformar un PDF en una especificación detallada suele ahorrar varias horas de correcciones y retrabajo.</p>
+                <p class="articulo-cita">Los mejores proyectos con IA no empiezan escribiendo código. Empiezan escribiendo una buena especificación.</p>
             </div>
         </section>
 
