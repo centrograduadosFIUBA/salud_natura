@@ -8,17 +8,34 @@ from typing import Optional
 from app.config import settings
 from app.database import init_db, get_db
 from app.models import RemedioIn, UsuarioIn
+from auth.database import engine as auth_engine
+from auth.models import Base as AuthBase
+from auth.routes import router as auth_router
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_db()
+    async with auth_engine.begin() as conn:
+        await conn.run_sync(AuthBase.metadata.create_all)
     yield
+    await auth_engine.dispose()
 
 
 app = FastAPI(title=settings.app_name, lifespan=lifespan)
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 templates = Jinja2Templates(directory="app/templates")
+app.include_router(auth_router)
+
+
+@app.get("/login")
+async def login_page(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
+
+
+@app.get("/registro")
+async def registro_page(request: Request):
+    return templates.TemplateResponse("registro.html", {"request": request})
 
 
 @app.get("/")

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar Sesión – Salud Natura</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" />
+  <style>
+    .auth-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(160deg, #0a1a0d 0%, #0d2010 60%, #080f0a 100%);
+      padding: 40px 20px;
+    }
+    .auth-card {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(212,175,55,.25);
+      border-radius: 12px;
+      padding: 48px 40px 40px;
+      width: 100%;
+      max-width: 420px;
+      backdrop-filter: blur(4px);
+    }
+    .auth-card h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem;
+      color: #d4af37;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    .auth-card .subtitle {
+      font-family: 'EB Garamond', serif;
+      font-size: .95rem;
+      color: rgba(232,224,208,.5);
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .auth-card label {
+      font-family: 'Cinzel', serif;
+      font-size: .6rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(232,224,208,.6);
+      display: block;
+      margin-bottom: 6px;
+    }
+    .auth-card input {
+      width: 100%;
+      padding: 12px 14px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(212,175,55,.2);
+      border-radius: 6px;
+      color: #e8e0d0;
+      font-family: 'EB Garamond', serif;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color .2s;
+      box-sizing: border-box;
+    }
+    .auth-card input:focus {
+      border-color: #d4af37;
+    }
+    .auth-card .form-group {
+      margin-bottom: 20px;
+    }
+    .auth-card .btn-auth {
+      width: 100%;
+      padding: 14px;
+      background: #d4af37;
+      color: #0a1a0d;
+      border: none;
+      border-radius: 6px;
+      font-family: 'Cinzel', serif;
+      font-size: .7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s, transform .1s;
+    }
+    .auth-card .btn-auth:hover {
+      background: #c5a231;
+    }
+    .auth-card .btn-auth:active {
+      transform: scale(.98);
+    }
+    .auth-card .btn-auth:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+    .auth-card .auth-footer {
+      text-align: center;
+      margin-top: 24px;
+      font-family: 'EB Garamond', serif;
+      font-size: .9rem;
+      color: rgba(232,224,208,.5);
+    }
+    .auth-card .auth-footer a {
+      color: #d4af37;
+      text-decoration: none;
+    }
+    .auth-card .auth-footer a:hover {
+      text-decoration: underline;
+    }
+    .auth-error {
+      background: rgba(200,50,50,.15);
+      border: 1px solid rgba(200,50,50,.3);
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-family: 'EB Garamond', serif;
+      font-size: .9rem;
+      color: #e07070;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .auth-success {
+      background: rgba(50,200,50,.15);
+      border: 1px solid rgba(50,200,50,.3);
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-family: 'EB Garamond', serif;
+      font-size: .9rem;
+      color: #70e070;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .auth-logo {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .auth-logo img {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 2px solid rgba(212,175,55,.3);
+    }
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(10,26,13,.3);
+      border-top-color: #0a1a0d;
+      border-radius: 50%;
+      animation: spin .6s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="auth-page">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <img src="/static/img/logo.jpg" alt="Salud Natura" />
+      </div>
+      <h1>Iniciar Sesión</h1>
+      <p class="subtitle">Accede al Grimorio Digital</p>
+
+      <div class="auth-error" id="error-msg"></div>
+      <div class="auth-success" id="success-msg"></div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label for="email">Correo electrónico</label>
+          <input type="email" id="email" name="email" required placeholder="tu@correo.com" />
+        </div>
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" name="password" required placeholder="••••••••" />
+        </div>
+        <button type="submit" class="btn-auth" id="btn-submit">
+          Ingresar
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        ¿No tienes cuenta? <a href="/registro">Regístrate aquí</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btn-submit');
+      const errEl = document.getElementById('error-msg');
+      const sucEl = document.getElementById('success-msg');
+      errEl.style.display = 'none';
+      sucEl.style.display = 'none';
+
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> Ingresando...';
+
+      try {
+        const res = await fetch('/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value,
+          }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          errEl.textContent = data.detail || 'Error al iniciar sesión';
+          errEl.style.display = 'block';
+          return;
+        }
+
+        localStorage.setItem('access_token', data.access_token);
+        localStorage.setItem('usuario', JSON.stringify(data.usuario));
+        window.location.href = '/';
+      } catch (err) {
+        errEl.textContent = 'Error de conexión con el servidor';
+        errEl.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Ingresar';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -78,6 +78,15 @@ header {
 }
 .btn-registro-nav:hover { background: rgba(212,175,55,.12); }
 
+.nav-auth { display: flex; align-items: center; gap: .6rem; }
+.btn-login-nav {
+  font-family: 'Cinzel', serif; font-size: .7rem; letter-spacing: 1.5px;
+  text-transform: uppercase; text-decoration: none;
+  color: rgba(232,224,208,.7); padding: .38rem .6rem;
+  transition: color .3s; white-space: nowrap;
+}
+.btn-login-nav:hover { color: var(--dorado); }
+
 /* ========== HERO ========== */
 .hero {
   min-height: 100vh;
@@ -424,6 +433,7 @@ footer {
 
 /* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
+  .nav-auth { display: none; }
   .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; width: 100%; background: var(--verde-oscuro); padding: 1rem 2rem; gap: 1rem; }
   .nav-links.open { display: flex; }
   .hamburger { display: block; }
