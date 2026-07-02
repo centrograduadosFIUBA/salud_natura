@@ -17,6 +17,21 @@ header {
 header h1 { font-size: 2rem; margin-bottom: 0.3rem; }
 .tagline { font-size: 1.2rem; font-weight: bold; opacity: 0.95; }
 
+.btn-volver {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 1rem;
+    background: #ffffff;
+    color: #2d5016;
+    border: none;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+.btn-volver:hover { background: #e8f0e0; }
+
 main {
     max-width: 800px;
     margin: 2rem auto;
