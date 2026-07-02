@@ -4,14 +4,30 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from contextlib import asynccontextmanager
 from typing import Optional
-import hashlib, os, sys
+import hashlib, os, sys, smtplib
+from email.mime.text import MIMEText
 
 # ── Cargar config privada ──
 try:
-    sys.path.insert(0, r"C:\Users\CONECTIA BA\OneDrive\Escritorio\SaludNatura_archivos")
-    from config_secretos import ADMIN_PASSWORD
+    from config_secretos import ADMIN_PASSWORD, GMAIL_USER, GMAIL_PASSWORD
 except ImportError:
     ADMIN_PASSWORD = "SaludNatura2026!"
+    GMAIL_USER = ""
+    GMAIL_PASSWORD = ""
+
+def _enviar_correo(asunto: str, cuerpo: str):
+    if not GMAIL_USER or not GMAIL_PASSWORD:
+        return
+    try:
+        msg = MIMEText(cuerpo, "plain", "utf-8")
+        msg["Subject"] = asunto
+        msg["From"] = GMAIL_USER
+        msg["To"] = GMAIL_USER
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+            server.login(GMAIL_USER, GMAIL_PASSWORD)
+            server.sendmail(GMAIL_USER, GMAIL_USER, msg.as_string())
+    except Exception:
+        pass
 
 def _hash_password(password: str) -> str:
     """Hash seguro con salt usando pbkdf2 (sin instalar nada extra)."""
@@ -156,6 +172,29 @@ async def crear_remedio(remedio: RemedioIn):
     id_nuevo = cursor.lastrowid
     conn.close()
     return {"ok": True, "id_remedio": id_nuevo}
+
+
+@app.post("/api/contacto")
+async def contacto(request: Request):
+    body = await request.json()
+    nombre  = body.get("nombre", "").strip()
+    email   = body.get("email", "").strip()
+    mensaje = body.get("mensaje", "").strip()
+    id_usuario = body.get("id_usuario")
+    if not nombre or not email or not mensaje:
+        return {"ok": False, "error": "Faltan campos"}
+    conn = get_db()
+    conn.execute(
+        "INSERT INTO consultas (nombre, email, mensaje, id_usuario) VALUES (?, ?, ?, ?)",
+        (nombre, email, mensaje, id_usuario)
+    )
+    conn.commit()
+    conn.close()
+    _enviar_correo(
+        f"Nueva consulta de {nombre} — Salud Natura",
+        f"Nombre: {nombre}\nCorreo: {email}\n\nMensaje:\n{mensaje}"
+    )
+    return {"ok": True}
 
 
 @app.post("/api/registro")
@@ -441,3 +480,24 @@ async def admin_usuarios_eliminar(request: Request, id_usuario: int):
     conn.commit()
     conn.close()
     return RedirectResponse("/admin/usuarios?mensaje=Usuario eliminado", status_code=303)
+
+
+@app.get("/admin/consultas")
+async def admin_consultas(request: Request, mensaje: Optional[str] = None):
+    if not _admin_ok(request): return _redir_login()
+    conn = get_db()
+    consultas = conn.execute("SELECT * FROM consultas ORDER BY fecha DESC").fetchall()
+    conn.close()
+    return templates.TemplateResponse("admin_consultas.html", {
+        "request": request, "settings": settings, "consultas": consultas, "mensaje": mensaje,
+    })
+
+
+@app.post("/admin/consultas/{id}/eliminar")
+async def admin_consultas_eliminar(request: Request, id: int):
+    if not _admin_ok(request): return _redir_login()
+    conn = get_db()
+    conn.execute("DELETE FROM consultas WHERE id=?", (id,))
+    conn.commit()
+    conn.close()
+    return RedirectResponse("/admin/consultas?mensaje=Consulta eliminada", status_code=303)
