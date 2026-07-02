@@ -1,9 +1,7 @@
 import sqlite3
 import os
 
-_PRIMARY_DB = r"C:\Users\CONECTIA BA\OneDrive\Escritorio\SaludNatura_archivos\salud_natura.db"
-_FALLBACK_DB = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "salud_natura.db")
-DB_PATH = _PRIMARY_DB if os.path.exists(_PRIMARY_DB) else _FALLBACK_DB
+DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "salud_natura.db")
 
 
 def get_db():
