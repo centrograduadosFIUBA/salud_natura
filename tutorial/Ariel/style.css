@@ -32,6 +32,18 @@ main {
 
 .descripcion p { font-size: 1.1rem; color: #444; }
 
+.btn-volver {
+    background: #2d5016;
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 2rem auto;
+    display: block;
+}
+
 footer {
     background: #2d5016;
     color: #f5f0e8;
