@@ -1,84 +1,191 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-    font-family: Arial, sans-serif;
-    background: #f5f5f0;
-    color: #333;
-    line-height: 1.7;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f0f4ec;
+    color: #1a1a1a;
+    line-height: 1.75;
 }
 
+/* HEADER */
 header {
     background: #2d5016;
     color: #f5f0e8;
     text-align: center;
-    padding: 2rem 1rem;
+    padding: 3rem 1rem 2.5rem;
+    position: relative;
+    overflow: hidden;
 }
 
-header h1 { font-size: 2rem; margin-bottom: 0.3rem; }
-header p { font-size: 1.1rem; opacity: 0.9; }
+header::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 200px; height: 200px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+}
 
+header::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: -40px;
+    width: 260px; height: 260px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+}
+
+header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    position: relative;
+    z-index: 1;
+}
+
+header p {
+    font-size: 1.1rem;
+    opacity: 0.85;
+    margin-top: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* BADGE DE TALLER EN VIVO */
+.badge-live {
+    display: inline-block;
+    background: #ff4444;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 0.2rem 0.7rem;
+    border-radius: 20px;
+    margin-bottom: 0.8rem;
+    position: relative;
+    z-index: 1;
+}
+
+.badge-live::before {
+    content: '● ';
+    font-size: 0.6rem;
+}
+
+/* MAIN */
 main {
-    max-width: 800px;
-    margin: 2rem auto;
+    max-width: 820px;
+    margin: 2.5rem auto;
     padding: 0 1rem;
 }
 
+/* SECCIONES */
 section {
     background: white;
-    border-radius: 10px;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    border-radius: 12px;
+    padding: 2rem 2.2rem;
+    margin-bottom: 1.8rem;
+    box-shadow: 0 2px 10px rgba(45,80,22,0.08);
+    border-left: 4px solid #2d5016;
+    position: relative;
 }
 
-h2 {
+section h2 {
     color: #2d5016;
+    font-size: 1.2rem;
+    font-weight: 700;
     margin-bottom: 1rem;
-    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+section h2::before {
+    content: attr(data-num);
+    background: #2d5016;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }
 
 p { margin-bottom: 0.8rem; }
+p:last-child { margin-bottom: 0; }
 
-a {
-    color: #2d5016;
-    font-weight: bold;
-}
+a { color: #2d5016; font-weight: 600; }
+a:hover { color: #4a8024; }
 
-blockquote {
+/* RESALTADO DE CÓDIGO */
+strong {
     background: #e8f5e9;
-    border-left: 4px solid #2d5016;
-    border-radius: 0 8px 8px 0;
-    padding: 1rem 1.2rem;
-    margin: 1rem 0;
-    font-style: italic;
+    color: #1a3a08;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.92em;
 }
 
+/* BLOCKQUOTE — prompt para alumnos */
+blockquote {
+    background: #f0f7eb;
+    border-left: 4px solid #4a8024;
+    border-radius: 0 10px 10px 0;
+    padding: 1.2rem 1.5rem;
+    margin: 1rem 0 0;
+    font-style: italic;
+    color: #2a3a1a;
+    font-size: 1.02rem;
+    line-height: 1.7;
+}
+
+blockquote::before {
+    content: '"';
+    font-size: 2rem;
+    color: #4a8024;
+    line-height: 0;
+    vertical-align: -0.4rem;
+    margin-right: 0.2rem;
+}
+
+/* COLABORADORES */
 ul {
     list-style: none;
-    margin-top: 0.5rem;
-}
-
-ul li {
-    margin-bottom: 0.5rem;
+    margin-top: 0.8rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
 }
 
 ul li a {
     display: inline-block;
     background: #2d5016;
     color: white;
-    padding: 0.5rem 1.2rem;
-    border-radius: 6px;
+    padding: 0.55rem 1.4rem;
+    border-radius: 8px;
     text-decoration: none;
-    font-weight: normal;
-    transition: background 0.2s;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: background 0.2s, transform 0.1s;
 }
 
-ul li a:hover { background: #4a8024; }
+ul li a:hover {
+    background: #4a8024;
+    transform: translateY(-1px);
+    color: white;
+}
 
+/* FOOTER */
 footer {
     background: #2d5016;
-    color: #f5f0e8;
+    color: #c8ddb0;
     text-align: center;
-    padding: 1.5rem 1rem;
+    padding: 1.8rem 1rem;
     margin-top: 3rem;
+    font-size: 0.9rem;
 }

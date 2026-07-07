@@ -9,6 +9,7 @@
 <body>
 
 <header>
+    <div class="badge-live">En vivo</div>
     <h1>Taller de Páginas Web con IA</h1>
     <p>Construí tu primera página web paso a paso</p>
 </header>
@@ -16,7 +17,7 @@
 <main>
 
     <section>
-        <h2>Cómo trabajamos</h2>
+        <h2 data-num="1">Cómo trabajamos</h2>
         <p>En este taller el docente trabaja con una IA que se llama Claude Code.</p>
         <p>Claude Code no es el Claude del navegador. Es una versión especial que tiene acceso a la computadora del docente. Puede crear carpetas, crear archivos, instalar cosas, y subir código a internet. Todo en tiempo real.</p>
         <p>Cuando el docente le da una instrucción — por ejemplo "creá un archivo HTML" — Claude Code lo crea, lo sube al servidor, y en segundos aparece en esta página.</p>
@@ -24,7 +25,7 @@
     </section>
 
     <section>
-        <h2>Cómo enviamos mails desde Claude Code</h2>
+        <h2 data-num="2">Cómo enviamos mails desde Claude Code</h2>
         <p>Claude Code puede enviar mails desde Gmail directamente desde el código, usando Python. No abre el navegador — se conecta a Gmail con una clave especial.</p>
         <p>Esa clave se llama <strong>contraseña de aplicación</strong>. No es tu contraseña normal de Gmail. Es una clave de 16 caracteres que Google genera específicamente para que programas externos puedan enviar mails en tu nombre.</p>
         <p>Para obtenerla hay que ir a:</p>
@@ -34,17 +35,17 @@
     </section>
 
     <section>
-        <h2>Cómo interactuar con Git</h2>
+        <h2 data-num="3">Cómo interactuar con Git</h2>
         <p>Git es el sistema que guarda el historial de cambios del proyecto. Cada vez que modificamos un archivo, Git puede registrar ese cambio con un mensaje que explica qué se hizo.</p>
         <p>Desde Claude Code, Git se usa con tres comandos principales:</p>
-        <p><strong>1. git add</strong> — le decís a Git qué archivos querés guardar</p>
-        <p><strong>2. git commit</strong> — guardás los cambios con un mensaje descriptivo</p>
-        <p><strong>3. git push</strong> — subís los cambios a GitHub, y desde ahí se despliegan automáticamente al servidor</p>
+        <p><strong>git add</strong> — le decís a Git qué archivos querés guardar</p>
+        <p><strong>git commit</strong> — guardás los cambios con un mensaje descriptivo</p>
+        <p><strong>git push</strong> — subís los cambios a GitHub, y desde ahí se despliegan automáticamente al servidor</p>
         <p>En este taller, cada vez que el docente dice "subilo", Claude Code ejecuta esos tres comandos y en segundos el cambio aparece en la página que están viendo.</p>
     </section>
 
     <section>
-        <h2>¿Cómo puede Claude Code hacer push a GitHub?</h2>
+        <h2 data-num="4">¿Cómo puede Claude Code hacer push a GitHub?</h2>
         <p>Para que Claude Code pueda subir cambios a GitHub, necesita tener permiso. Ese permiso se configura una sola vez en la computadora del docente.</p>
         <p>La forma más común es usando <strong>GitHub CLI</strong> — una herramienta que se instala en la computadora y se autentica con tu cuenta de GitHub. Una vez autenticada, Git sabe que tiene permiso para subir cambios a tus repositorios sin pedir contraseña cada vez.</p>
         <p><strong>1.</strong> Instalás GitHub CLI una sola vez</p>
@@ -54,15 +55,15 @@
     </section>
 
     <section>
-        <h2>Paso 1 — Tu primera página HTML</h2>
+        <h2 data-num="5">Paso 1 — Tu primera página HTML</h2>
         <p>Copiá este prompt y pegalo en tu IA:</p>
         <blockquote>
-            "Creá un archivo HTML con tu nombre, el nombre de tu proyecto y una frase que lo describa. Sin CSS, sin JavaScript. Solo HTML básico. Explicame qué hace cada línea."
+            Creá un archivo HTML con tu nombre, el nombre de tu proyecto y una frase que lo describa. Sin CSS, sin JavaScript. Solo HTML básico. Explicame qué hace cada línea.
         </blockquote>
     </section>
 
     <section>
-        <h2>Colaboradores</h2>
+        <h2 data-num="★">Colaboradores</h2>
         <ul>
             <li><a href="Ariel/">Ariel</a></li>
             <li><a href="Agustina%20DG/">Agustina DG</a></li>
@@ -73,7 +74,7 @@
 </main>
 
 <footer>
-    <p>Centro de Graduados de Ingeniería</p>
+    <p>Centro de Graduados de Ingeniería — UBA</p>
 </footer>
 
 </body>
