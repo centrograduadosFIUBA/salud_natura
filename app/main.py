@@ -270,12 +270,13 @@ async def admin_inicio(request: Request):
     total_botiquin   = conn.execute("SELECT COUNT(*) FROM botiquin").fetchone()[0]
     total_jugos      = conn.execute("SELECT COUNT(*) FROM jugos").fetchone()[0]
     total_infusiones = conn.execute("SELECT COUNT(*) FROM infusiones").fetchone()[0]
+    total_vendedores = conn.execute("SELECT COUNT(*) FROM vendedores").fetchone()[0]
     conn.close()
     return templates.TemplateResponse("admin_inicio.html", {
         "request": request, "settings": settings, "seccion": "inicio",
         "total_remedios": total_remedios, "total_usuarios": total_usuarios,
         "total_botiquin": total_botiquin, "total_jugos": total_jugos,
-        "total_infusiones": total_infusiones,
+        "total_infusiones": total_infusiones, "total_vendedores": total_vendedores,
     })
 
 
@@ -537,3 +538,51 @@ async def admin_infusiones_eliminar(id: int):
     conn.commit()
     conn.close()
     return RedirectResponse("/admin/infusiones?mensaje=Infusión eliminada", status_code=303)
+
+
+@app.get("/admin/vendedores")
+async def admin_vendedores(request: Request, mensaje: Optional[str] = None):
+    conn = get_db()
+    vendedores = conn.execute("SELECT * FROM vendedores ORDER BY nombre_completo").fetchall()
+    conn.close()
+    return templates.TemplateResponse("admin_vendedores.html", {
+        "request": request, "settings": settings,
+        "vendedores": vendedores, "mensaje": mensaje,
+    })
+
+
+@app.post("/admin/vendedores/guardar")
+async def admin_vendedores_guardar(
+    nombre_completo: str = Form(...),
+    rubro: str = Form(""),
+    zona: str = Form(""),
+    celular: str = Form(""),
+    email: str = Form(""),
+    descripcion: str = Form(""),
+    id: str = Form(""),
+):
+    conn = get_db()
+    if id:
+        conn.execute(
+            "UPDATE vendedores SET nombre_completo=?, rubro=?, zona=?, celular=?, email=?, descripcion=? WHERE id=?",
+            (nombre_completo, rubro or None, zona or None, celular or None, email or None, descripcion or None, int(id)),
+        )
+        mensaje = "Vendedor actualizado"
+    else:
+        conn.execute(
+            "INSERT INTO vendedores (nombre_completo, rubro, zona, celular, email, descripcion) VALUES (?,?,?,?,?,?)",
+            (nombre_completo, rubro or None, zona or None, celular or None, email or None, descripcion or None),
+        )
+        mensaje = "Vendedor creado"
+    conn.commit()
+    conn.close()
+    return RedirectResponse(f"/admin/vendedores?mensaje={mensaje}", status_code=303)
+
+
+@app.post("/admin/vendedores/{id}/eliminar")
+async def admin_vendedores_eliminar(id: int):
+    conn = get_db()
+    conn.execute("DELETE FROM vendedores WHERE id=?", (id,))
+    conn.commit()
+    conn.close()
+    return RedirectResponse("/admin/vendedores?mensaje=Vendedor eliminado", status_code=303)

@@ -105,5 +105,17 @@ def init_db():
         )
     """)
 
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS vendedores (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombre_completo TEXT NOT NULL,
+            rubro TEXT,
+            zona TEXT,
+            celular TEXT,
+            email TEXT,
+            descripcion TEXT
+        )
+    """)
+
     conn.commit()
     conn.close()

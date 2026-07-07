@@ -50,3 +50,16 @@ class InfusionIn(BaseModel):
     pasos: Optional[str] = None
     beneficio: Optional[str] = None
     id_remedio: Optional[int] = None
+
+
+class VendedorIn(BaseModel):
+    nombre_completo: str
+    rubro: Optional[str] = None
+    zona: Optional[str] = None
+    celular: Optional[str] = None
+    email: Optional[str] = None
+    descripcion: Optional[str] = None
+
+
+class VendedorOut(VendedorIn):
+    id: int

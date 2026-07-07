@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendedores — Admin {{ settings.app_name }}</title>
+    <link rel="stylesheet" href="/static/css/admin.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2>🌿 Admin</h2>
+            <p>{{ settings.app_name }}</p>
+        </div>
+        <ul>
+            <li><a href="/admin">🏠 Inicio</a></li>
+            <li><a href="/admin/remedios">🌱 Remedios</a></li>
+            <li><a href="/admin/botiquin">🩹 Botiquín</a></li>
+            <li><a href="/admin/jugos">🍹 Jugos</a></li>
+            <li><a href="/admin/infusiones">☕ Infusiones</a></li>
+            <li><a href="/admin/usuarios">👥 Usuarios</a></li>
+            <li><a href="/admin/vendedores" class="active">🏪 Vendedores</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <a href="/">← Volver al sitio</a>
+        </div>
+    </nav>
+    <main class="content">
+        <div class="page-header">
+            <h1>🏪 Vendedores</h1>
+            <button class="btn btn-primary" onclick="abrirModal()">+ Nuevo Vendedor</button>
+        </div>
+
+        {% if mensaje %}
+        <div class="alert">{{ mensaje }}</div>
+        {% endif %}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Rubro</th>
+                    <th>Zona</th>
+                    <th>Celular</th>
+                    <th>Email</th>
+                    <th>Descripción</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for v in vendedores %}
+                <tr>
+                    <td>{{ v.id }}</td>
+                    <td>{{ v.nombre_completo }}</td>
+                    <td>{{ v.rubro or '-' }}</td>
+                    <td>{{ v.zona or '-' }}</td>
+                    <td>{{ v.celular or '-' }}</td>
+                    <td>{{ v.email or '-' }}</td>
+                    <td class="truncate">{{ v.descripcion or '-' }}</td>
+                    <td class="acciones">
+                        <button class="btn btn-sm" onclick="editarVendedor({{ v.id }}, '{{ v.nombre_completo | e }}', '{{ (v.rubro or '') | e }}', '{{ (v.zona or '') | e }}', '{{ (v.celular or '') | e }}', '{{ (v.email or '') | e }}', '{{ (v.descripcion or '') | e }}')">✏️</button>
+                        <form method="post" action="/admin/vendedores/{{ v.id }}/eliminar" style="display:inline" onsubmit="return confirm('¿Eliminar este vendedor?')">
+                            <button class="btn btn-sm btn-danger">🗑️</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% if not vendedores %}
+                <tr><td colspan="8" class="empty">No hay vendedores cargados</td></tr>
+                {% endif %}
+            </tbody>
+        </table>
+
+        <div id="modal" class="modal" style="display:none">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modal-titulo">Nuevo Vendedor</h2>
+                    <button class="btn-close" onclick="cerrarModal()">✕</button>
+                </div>
+                <form method="post" action="/admin/vendedores/guardar">
+                    <input type="hidden" name="id" id="f_id">
+                    <label>Nombre completo *
+                        <input type="text" name="nombre_completo" id="f_nombre" required>
+                    </label>
+                    <label>Rubro
+                        <input type="text" name="rubro" id="f_rubro" placeholder="Ej: Naturista, Herboristería...">
+                    </label>
+                    <label>Zona
+                        <input type="text" name="zona" id="f_zona" placeholder="Ej: CABA, GBA Norte...">
+                    </label>
+                    <label>Celular
+                        <input type="text" name="celular" id="f_celular" placeholder="+54...">
+                    </label>
+                    <label>Email
+                        <input type="email" name="email" id="f_email">
+                    </label>
+                    <label>Descripción
+                        <textarea name="descripcion" id="f_descripcion" rows="3"></textarea>
+                    </label>
+                    <div class="modal-actions">
+                        <button type="button" class="btn" onclick="cerrarModal()">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+    function abrirModal() {
+        document.getElementById('modal-titulo').textContent = 'Nuevo Vendedor';
+        document.getElementById('f_id').value = '';
+        document.getElementById('f_nombre').value = '';
+        document.getElementById('f_rubro').value = '';
+        document.getElementById('f_zona').value = '';
+        document.getElementById('f_celular').value = '';
+        document.getElementById('f_email').value = '';
+        document.getElementById('f_descripcion').value = '';
+        document.getElementById('modal').style.display = 'flex';
+    }
+    function editarVendedor(id, nombre, rubro, zona, celular, email, descripcion) {
+        document.getElementById('modal-titulo').textContent = 'Editar Vendedor';
+        document.getElementById('f_id').value = id;
+        document.getElementById('f_nombre').value = nombre;
+        document.getElementById('f_rubro').value = rubro;
+        document.getElementById('f_zona').value = zona;
+        document.getElementById('f_celular').value = celular;
+        document.getElementById('f_email').value = email;
+        document.getElementById('f_descripcion').value = descripcion;
+        document.getElementById('modal').style.display = 'flex';
+    }
+    function cerrarModal() {
+        document.getElementById('modal').style.display = 'none';
+    }
+    </script>
+</body>
+</html>
