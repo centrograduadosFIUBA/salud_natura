@@ -21,6 +21,8 @@ class Settings(BaseSettings):
     database_url: str = "sqlite:///data/salud_natura.db"
     environment: str = "development"
     static_version: str = _get_static_version()
+    plantnet_api_key: str = ""
+    plantnet_project: str = "all"
 
     class Config:
         env_file = ".env"

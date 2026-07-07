@@ -2,7 +2,8 @@ import json
 import urllib.parse
 import urllib.request
 
-from fastapi import FastAPI, Form, HTTPException, Query, Request
+import httpx
+from fastapi import FastAPI, Form, HTTPException, Query, Request, UploadFile, File
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -60,6 +61,14 @@ async def newsletter(request: Request):
 @app.get("/taller")
 async def taller(request: Request):
     return templates.TemplateResponse("taller.html", {
+        "request": request,
+        "settings": settings,
+    })
+
+
+@app.get("/identificar")
+async def identificar_planta_page(request: Request):
+    return templates.TemplateResponse("identificar.html", {
         "request": request,
         "settings": settings,
     })
@@ -174,6 +183,60 @@ async def registrar_usuario(usuario: UsuarioIn):
     id_nuevo = cursor.lastrowid
     conn.close()
     return {"ok": True, "id_usuario": id_nuevo}
+
+
+@app.post("/api/identificar-planta")
+async def identificar_planta(
+    imagen: UploadFile = File(...),
+    organo: str = Form("auto"),
+):
+    if not settings.plantnet_api_key:
+        raise HTTPException(
+            status_code=503,
+            detail="El servicio de identificación no está configurado. Falta PLANTNET_API_KEY.",
+        )
+
+    if imagen.content_type not in ("image/jpeg", "image/png"):
+        raise HTTPException(status_code=400, detail="La imagen debe ser JPEG o PNG.")
+
+    contenido = await imagen.read()
+    if len(contenido) > 50 * 1024 * 1024:
+        raise HTTPException(status_code=400, detail="La imagen supera el tamaño máximo permitido (50 MB).")
+
+    url = f"https://my-api.plantnet.org/v2/identify/{settings.plantnet_project}"
+    params = {"api-key": settings.plantnet_api_key, "lang": "es"}
+    files = {"images": (imagen.filename or "foto.jpg", contenido, imagen.content_type)}
+    data = {"organs": organo}
+
+    try:
+        async with httpx.AsyncClient(timeout=20) as client:
+            resp = await client.post(url, params=params, data=data, files=files)
+    except httpx.RequestError:
+        raise HTTPException(status_code=502, detail="No se pudo contactar al servicio de identificación (Pl@ntNet).")
+
+    if resp.status_code == 404:
+        return {"ok": True, "planta": False, "mensaje": "No se detectó ninguna planta en la imagen."}
+    if resp.status_code >= 400:
+        raise HTTPException(status_code=502, detail=f"Pl@ntNet respondió con un error ({resp.status_code}).")
+
+    payload = resp.json()
+    resultados = payload.get("results", [])[:5]
+    especies = []
+    for r in resultados:
+        especie = r.get("species", {})
+        especies.append({
+            "score": r.get("score"),
+            "nombre_cientifico": especie.get("scientificNameWithoutAuthor"),
+            "familia": especie.get("family", {}).get("scientificNameWithoutAuthor"),
+            "nombres_comunes": especie.get("commonNames", []),
+        })
+
+    return {
+        "ok": True,
+        "planta": True,
+        "mejor_coincidencia": payload.get("bestMatch"),
+        "especies": especies,
+    }
 
 
 def _geocodificar(direccion: str, ciudad: str):
