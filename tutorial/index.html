@@ -19,5 +19,20 @@
 
     <p>Eso que van a ver hoy es exactamente cómo trabaja un desarrollador profesional.</p>
 
+
+    <h2>Cómo enviamos mails desde Claude Code</h2>
+
+    <p>Claude Code puede enviar mails desde Gmail directamente desde el código, usando Python. No abre el navegador — se conecta a Gmail con una clave especial.</p>
+
+    <p>Esa clave se llama <strong>contraseña de aplicación</strong>. No es tu contraseña normal de Gmail. Es una clave de 16 caracteres que Google genera específicamente para que programas externos puedan enviar mails en tu nombre.</p>
+
+    <p>Para obtenerla hay que ir a:</p>
+
+    <p><a href="https://myaccount.google.com/apppasswords">https://myaccount.google.com/apppasswords</a></p>
+
+    <p>Requisito: la cuenta de Google tiene que tener activada la verificación en dos pasos.</p>
+
+    <p>Una vez obtenida, la clave se guarda en un archivo llamado <strong>.env</strong> en la computadora. Ese archivo nunca se sube a internet — está protegido por el <strong>.gitignore</strong>.</p>
+
 </body>
 </html>
