@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Identificar Planta — Salud Natura</title>
+  <link rel="icon" type="image/jpeg" href="/static/img/logo.jpg?v={{ settings.static_version }}"/>
+  <link rel="stylesheet" href="/static/css/style.css?v={{ settings.static_version }}"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet"/>
+  <style>
+    body { background:#0d1810; color:rgba(232,224,208,.9); display:flex; flex-direction:column; min-height:100vh; }
+    .id-wrap { flex:1; display:flex; align-items:center; justify-content:center; padding:40px 20px; }
+    .id-card {
+      background:rgba(255,255,255,.04); border:1px solid rgba(184,146,74,.25);
+      border-radius:8px; padding:48px 40px; max-width:560px; width:100%; text-align:center;
+    }
+    .id-logo { font-size:2.5rem; margin-bottom:8px; }
+    .id-title { font-family:'Cinzel',serif; font-size:1.5rem; color:#d4af37; margin-bottom:8px; }
+    .id-sub { font-family:'EB Garamond',serif; font-size:1rem; color:rgba(232,224,208,.6); margin-bottom:32px; }
+
+    .id-drop {
+      border:2px dashed rgba(184,146,74,.4); border-radius:8px; padding:28px 16px;
+      cursor:pointer; transition:border-color .2s, background .2s; position:relative;
+    }
+    .id-drop:hover, .id-drop.dragover { border-color:#d4af37; background:rgba(212,175,55,.05); }
+    .id-drop input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; }
+    .id-drop-icon { font-size:2rem; margin-bottom:8px; }
+    .id-drop-text { font-family:'EB Garamond',serif; font-size:.95rem; color:rgba(232,224,208,.7); }
+    .id-drop-text span { color:#d4af37; text-decoration:underline; }
+
+    .id-preview { margin-top:20px; display:none; }
+    .id-preview img { max-width:100%; max-height:280px; border-radius:6px; border:1px solid rgba(184,146,74,.3); }
+
+    .id-field { text-align:left; margin-top:20px; }
+    .id-label { font-family:'Cinzel',serif; font-size:.55rem; letter-spacing:2px; text-transform:uppercase; color:#b8924a; display:block; margin-bottom:6px; }
+    .id-select {
+      width:100%; box-sizing:border-box; background:rgba(255,255,255,.05); border:1px solid rgba(184,146,74,.3);
+      border-radius:4px; padding:12px 14px; color:rgba(232,224,208,.9); font-family:'EB Garamond',serif; font-size:1rem;
+    }
+
+    .id-btn {
+      width:100%; margin-top:20px; padding:14px; background:linear-gradient(135deg,#b8924a,#d4af37);
+      border:none; border-radius:4px; color:#0d1810; font-family:'Cinzel',serif; font-size:.75rem;
+      letter-spacing:2px; text-transform:uppercase; cursor:pointer; font-weight:700; transition:opacity .2s;
+    }
+    .id-btn:hover { opacity:.88; }
+    .id-btn:disabled { opacity:.5; cursor:default; }
+
+    .id-msg { margin-top:20px; font-family:'EB Garamond',serif; font-size:.95rem; min-height:24px; }
+    .id-msg.err { color:#e07070; }
+    .id-msg strong { color:#d4af37; }
+
+    .id-resultados { margin-top:28px; text-align:left; display:none; }
+    .id-best {
+      font-family:'EB Garamond',serif; font-style:italic; font-size:1.05rem; color:#7ec87e; margin-bottom:16px;
+    }
+    .id-especie {
+      background:rgba(255,255,255,.03); border:1px solid rgba(184,146,74,.2); border-radius:6px;
+      padding:14px 16px; margin-bottom:10px;
+    }
+    .id-especie-nombre { font-family:'EB Garamond',serif; font-style:italic; font-size:1.05rem; color:#e8e0d0; }
+    .id-especie-comunes { font-family:'EB Garamond',serif; font-size:.85rem; color:rgba(232,224,208,.55); margin-top:2px; }
+    .id-especie-score {
+      float:right; font-family:'Cinzel',serif; font-size:.7rem; color:#d4af37; letter-spacing:1px;
+    }
+
+    .id-footer { margin-top:36px; font-family:'EB Garamond',serif; font-size:.8rem; color:rgba(232,224,208,.3); }
+    .id-footer a { color:#b8924a; text-decoration:none; }
+  </style>
+</head>
+<body>
+  <div class="id-wrap">
+    <div class="id-card">
+      <div class="id-logo">🌿🔍</div>
+      <h1 class="id-title">Identificar una Planta</h1>
+      <p class="id-sub">Subí una foto de una hoja, flor o fruto y nuestra guía de reconocimiento visual te ayudará a identificar la especie.</p>
+
+      <form id="idForm" onsubmit="identificar(event)">
+        <label class="id-drop" id="idDrop">
+          <input type="file" id="idFile" accept="image/jpeg,image/png" required />
+          <div class="id-drop-icon">📷</div>
+          <div class="id-drop-text">Arrastrá una imagen o <span>elegí un archivo</span></div>
+        </label>
+
+        <div class="id-preview" id="idPreview">
+          <img id="idPreviewImg" alt="Vista previa" />
+        </div>
+
+        <div class="id-field">
+          <label class="id-label" for="idOrgano">¿Qué parte de la planta es?</label>
+          <select class="id-select" id="idOrgano">
+            <option value="auto">Detectar automáticamente</option>
+            <option value="leaf">Hoja</option>
+            <option value="flower">Flor</option>
+            <option value="fruit">Fruto</option>
+            <option value="bark">Corteza / Tallo</option>
+            <option value="habit">Planta entera</option>
+          </select>
+        </div>
+
+        <button class="id-btn" type="submit" id="idBtn">Identificar Planta</button>
+      </form>
+
+      <div class="id-msg" id="idMsg"></div>
+
+      <div class="id-resultados" id="idResultados">
+        <div class="id-best" id="idBest"></div>
+        <div id="idLista"></div>
+      </div>
+
+      <div class="id-footer">
+        <a href="/">← Volver al inicio</a> &nbsp;·&nbsp;
+        Identificación provista por <a href="https://plantnet.org" target="_blank" rel="noopener">Pl@ntNet</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  const dropZone = document.getElementById('idDrop');
+  const fileInput = document.getElementById('idFile');
+  const preview = document.getElementById('idPreview');
+  const previewImg = document.getElementById('idPreviewImg');
+
+  fileInput.addEventListener('change', () => mostrarPreview(fileInput.files[0]));
+
+  ['dragover', 'dragleave', 'drop'].forEach(evt => {
+    dropZone.addEventListener(evt, (e) => {
+      e.preventDefault();
+      dropZone.classList.toggle('dragover', evt === 'dragover');
+      if (evt === 'drop' && e.dataTransfer.files.length) {
+        fileInput.files = e.dataTransfer.files;
+        mostrarPreview(e.dataTransfer.files[0]);
+      }
+    });
+  });
+
+  function mostrarPreview(file) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      previewImg.src = e.target.result;
+      preview.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  async function identificar(e) {
+    e.preventDefault();
+    const btn = document.getElementById('idBtn');
+    const msg = document.getElementById('idMsg');
+    const resultadosEl = document.getElementById('idResultados');
+    const bestEl = document.getElementById('idBest');
+    const listaEl = document.getElementById('idLista');
+
+    msg.className = 'id-msg';
+    msg.textContent = '';
+    resultadosEl.style.display = 'none';
+    listaEl.innerHTML = '';
+
+    const archivo = fileInput.files[0];
+    if (!archivo) {
+      msg.className = 'id-msg err';
+      msg.textContent = 'Elegí una imagen primero.';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Identificando…';
+
+    // 🚧 EN CONSTRUCCIÓN: todavía no está configurada la API key de Pl@ntNet.
+    // Cuando la tengas, borrá este bloque y descomentá el bloque real más abajo.
+    setTimeout(() => {
+      msg.className = 'id-msg';
+      msg.innerHTML = '🚧 <strong>Función en construcción.</strong> Muy pronto vas a poder identificar tu planta acá.';
+      btn.disabled = false;
+      btn.textContent = 'Identificar Planta';
+    }, 600);
+    return;
+
+    /* --- Código real (activar cuando esté la API key de Pl@ntNet) ---
+    try {
+      const formData = new FormData();
+      formData.append('imagen', archivo);
+      formData.append('organo', document.getElementById('idOrgano').value);
+
+      const resp = await fetch('/api/identificar-planta', { method: 'POST', body: formData });
+      const json = await resp.json();
+
+      if (!resp.ok) {
+        throw new Error(json.detail || 'Error del servidor');
+      }
+
+      if (!json.planta) {
+        msg.className = 'id-msg err';
+        msg.textContent = json.mensaje || 'No se detectó ninguna planta en la imagen.';
+        return;
+      }
+
+      bestEl.textContent = '🌱 Mejor coincidencia: ' + (json.mejor_coincidencia || '—');
+      json.especies.forEach(esp => {
+        const div = document.createElement('div');
+        div.className = 'id-especie';
+        const score = esp.score ? (esp.score * 100).toFixed(1) + '%' : '';
+        const comunes = (esp.nombres_comunes || []).join(', ');
+        div.innerHTML = `
+          <span class="id-especie-score">${score}</span>
+          <div class="id-especie-nombre">${esp.nombre_cientifico || ''}</div>
+          <div class="id-especie-comunes">${esp.familia ? esp.familia + (comunes ? ' · ' : '') : ''}${comunes}</div>
+        `;
+        listaEl.appendChild(div);
+      });
+      resultadosEl.style.display = 'block';
+    } catch (err) {
+      msg.className = 'id-msg err';
+      msg.textContent = err.message || 'Algo salió mal, intentá de nuevo.';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Identificar Planta';
+    }
+    --- fin código real --- */
+  }
+  </script>
+</body>
+</html>
