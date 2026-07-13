@@ -78,7 +78,7 @@ header {
 }
 .btn-registro-nav:hover { background: rgba(212,175,55,.12); }
 
-.nav-auth { display: flex; align-items: center; gap: .6rem; }
+.nav-auth { display: flex; align-items: center; gap: .6rem; margin-left: 1.5rem; }
 .btn-login-nav {
   font-family: 'Cinzel', serif; font-size: .7rem; letter-spacing: 1.5px;
   text-transform: uppercase; text-decoration: none;

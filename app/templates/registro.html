@@ -174,9 +174,15 @@
       <div class="auth-success" id="success-msg"></div>
 
       <form id="registro-form">
-        <div class="form-group">
-          <label for="nombre_completo">Nombre completo</label>
-          <input type="text" id="nombre_completo" name="nombre_completo" required placeholder="Tu nombre" />
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre" />
+          </div>
+          <div class="form-group">
+            <label for="apellido">Apellido</label>
+            <input type="text" id="apellido" name="apellido" required placeholder="Tu apellido" />
+          </div>
         </div>
         <div class="form-group">
           <label for="email">Correo electrónico</label>
@@ -202,7 +208,8 @@
       </form>
 
       <div class="auth-footer">
-        ¿Ya tienes cuenta? <a href="/login">Inicia sesión</a>
+        ¿Ya tienes cuenta? <a href="/login">Inicia sesión</a><br/>
+        <span style="font-size:.8rem;">¿Olvidaste tu contraseña? <a href="/login?recuperar=1">Recupérala aquí</a></span>
       </div>
     </div>
   </div>
@@ -224,7 +231,8 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            nombre_completo: document.getElementById('nombre_completo').value,
+            nombre: document.getElementById('nombre').value,
+            apellido: document.getElementById('apellido').value,
             email: document.getElementById('email').value,
             password: document.getElementById('password').value,
             whatsapp: document.getElementById('whatsapp').value || null,
@@ -235,7 +243,7 @@
         const data = await res.json();
 
         if (!res.ok) {
-          errEl.textContent = data.detail || 'Error al registrarse';
+          errEl.textContent = (data && data.detail) || data?.error || 'Error al registrarse';
           errEl.style.display = 'block';
           return;
         }

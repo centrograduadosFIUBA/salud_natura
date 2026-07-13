@@ -31,7 +31,7 @@
         <li><a href="/taller">Taller</a></li>
       </ul>
       <div class="hamburger" onclick="toggleMenu()">☰</div>
-      <div class="nav-auth">
+      <div class="nav-auth" id="nav-auth">
         <a href="/login" class="btn-login-nav">Iniciar Sesión</a>
         <a href="/registro" class="btn-registro-nav">Registrarse</a>
       </div>
@@ -152,7 +152,6 @@
             grid.appendChild(card);
           }
         }).catch(()=>{
-          // Si el servidor no responde, mostrar mensaje simple
           document.getElementById('lotes-grid').innerHTML = '<div class="lote-card lote-cta"><p>Abre el servidor para ver todas las hierbas</p><a href="/grimorio" class="btn-primary small">Ir al Grimorio</a></div>';
         });
       })();
@@ -262,7 +261,7 @@
     <div class="sueno-container">
       <div class="sueno-header">
         <span class="sueno-eyebrow">🌙 Rituales nocturnos · Plantas de la noche</span>
-        <h2>Sueño &amp; <em>Bienestar</em></h2>
+        <h2>Sueño & <em>Bienestar</em></h2>
         <p>La naturaleza tiene sus propios somníferos. Seis plantas aliadas del descanso profundo que la tradición herbal lleva siglos conociendo.</p>
       </div>
       <div class="sueno-grid">
@@ -516,5 +515,19 @@
   </footer>
 
   <script src="/static/js/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var token = localStorage.getItem('access_token');
+      var navAuth = document.getElementById('nav-auth');
+      if (token && navAuth) {
+        try {
+          var usuario = JSON.parse(localStorage.getItem('usuario'));
+          if (usuario && usuario.nombre) {
+            navAuth.innerHTML = '<span style="color:#d4af37;font-family:\'Cinzel\',serif;font-size:.75rem;margin-right:12px;">👤 ' + usuario.nombre + '</span><a href="#" onclick="localStorage.clear();location.href=\'/\'" style="color:rgba(232,224,208,.5);font-family:\'Cinzel\',serif;font-size:.6rem;letter-spacing:1px;text-transform:uppercase;text-decoration:none;">Salir</a>';
+          }
+        } catch(e) {}
+      }
+    });
+  </script>
 </body>
 </html>
